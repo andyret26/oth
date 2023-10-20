@@ -1,0 +1,26 @@
+# Ignore Visual Studio files
+.vscode/
+*.suo
+*.sln
+*.user
+*.userprefs
+/.vs/
+/.vscode/
+/.idea/
+
+# Ignore build output folders
+/bin/
+/obj/
+/[Dd]ebug/
+/[Rr]elease/
+
+# Ignore NuGet package files
+/packages/
+*.nupkg
+
+# Ignore user-specific files and settings
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+*.env
