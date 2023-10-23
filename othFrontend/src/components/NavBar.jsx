@@ -17,7 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 
 export default function NavBar() {
     const navigate = useNavigate()
-    const { loginWithPopup, isAuthenticated, logout } = useAuth0()
+    const { loginWithPopup, isAuthenticated, logout, user } = useAuth0()
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -91,7 +91,7 @@ export default function NavBar() {
                   {}
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                      <Avatar alt="Remy Sharp" src={user.picture} />
                     </IconButton>
                   </Tooltip>
                   <Menu
