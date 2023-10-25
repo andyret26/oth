@@ -2,19 +2,33 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-  settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: './othFrontend/tsconfig.json'
+  },
+  plugins: [
+    'react',
+    '@typescript-eslint',
+    'prettier'
+  ],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ],
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": "off",
   },
 }
