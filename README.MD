@@ -19,6 +19,7 @@ dotnet run
 # Frontend
 VITE_AUTH_DOMAIN=AuthDomainHere
 VITE_AUTH_CLIENT_ID=ClienIDHere
+VITE_OSU_API_KEY=OsuApiKeyHere
 
 # Backend
 SUPABASE_CONNECTION="ConnectionStringHere"
