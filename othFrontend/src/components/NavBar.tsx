@@ -13,10 +13,13 @@ import MenuItem from "@mui/material/MenuItem"
 import AdbIcon from "@mui/icons-material/Adb"
 import Button from "@mui/material/Button"
 import { useAuth0 } from "@auth0/auth0-react"
+import { getUserDataAsync } from "../services/osuApiService"
+import { AddPlayerAsync } from "../services/othApiService"
 
 export default function NavBar() {
   const navigate = useNavigate()
-  const { loginWithPopup, isAuthenticated, logout, user } = useAuth0()
+  const { loginWithPopup, isAuthenticated, logout, user, getIdTokenClaims } =
+    useAuth0()
 
   const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement | null>(null)
   const [anchorElUser, setAnchorElUser] = useState<HTMLButtonElement | null>(
@@ -36,6 +39,14 @@ export default function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
+  }
+
+  const handleLogin = async () => {
+    await loginWithPopup()
+    const claims = await getIdTokenClaims()
+    const osuId = claims!.sub.split("|")[2]
+    const osuUserData = await getUserDataAsync(osuId)
+    AddPlayerAsync(osuUserData[0])
   }
 
   return (
@@ -139,7 +150,7 @@ export default function NavBar() {
             </Box>
           ) : (
             <Box>
-              <Button onClick={() => loginWithPopup()}>Login</Button>
+              <Button onClick={() => handleLogin()}>Login</Button>
             </Box>
           )}
         </Toolbar>

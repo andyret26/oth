@@ -1,4 +1,4 @@
-using othApi.dbModels;
+using othApi.Data.Entities;
 
 namespace othApi.Services.Players;
 

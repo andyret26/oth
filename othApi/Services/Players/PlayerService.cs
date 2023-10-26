@@ -2,8 +2,8 @@
 
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using othApi.dbModels;
-using WebApi.Helpers;
+using othApi.Data;
+using othApi.Data.Entities;
 
 namespace othApi.Services.Players;
 
@@ -38,7 +38,7 @@ public class PlayerService : IPlayerService
     {
         try
         {
-            var player = _db.Players.SingleOrDefault((p) => p.Id == id);
+            var player = _db.Players.SingleOrDefault((p) => p.User_id == id);
             return player;
         }
         catch (SqlException err)
@@ -66,29 +66,32 @@ public class PlayerService : IPlayerService
 
     public Player? Update(Player player)
     {
-        try
-        {
-            var playerToUpdate = _db.Players.SingleOrDefault((t) => t.Id == player.Id);
-            if (playerToUpdate != null)
-            {
-                playerToUpdate.Name = player.Name;
-                playerToUpdate.Rank = player.Rank;
-                playerToUpdate.Country = player.Country;
-                playerToUpdate.Tournaments = player.Tournaments;
 
-                _db.SaveChanges();
-                return playerToUpdate;
-            }
-            else
-            {
-                return null;
-            }
+        throw new NotImplementedException();
+        // TODO use automapper to update
+        // try
+        // {
+        //     var playerToUpdate = _db.Players.SingleOrDefault((t) => t.Id == player.Id);
+        //     if (playerToUpdate != null)
+        //     {
+        //         playerToUpdate.Name = player.Name;
+        //         playerToUpdate.Rank = player.Rank;
+        //         playerToUpdate.Country = player.Country;
+        //         playerToUpdate.Tournaments = player.Tournaments;
 
-        }
-        catch (SqlException err)
-        {
-            Console.WriteLine(err.Message);
-            throw;
-        }
+        //         _db.SaveChanges();
+        //         return playerToUpdate;
+        //     }
+        //     else
+        //     {
+        //         return null;
+        //     }
+
+        // }
+        // catch (SqlException err)
+        // {
+        //     Console.WriteLine(err.Message);
+        //     throw;
+        // }
     }
 }

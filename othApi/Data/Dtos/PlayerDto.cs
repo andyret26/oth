@@ -1,10 +1,8 @@
+using othApi.Data.Entities;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace othApi.Data.Entities;
-public class Player
+namespace othApi.Data.Dtos;
+public class PlayerDto
 {
-    [Key]
     public int User_id { get; set; }
     public string Username { get; set; } = null!;
     public int Pp_rank { get; set; }

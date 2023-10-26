@@ -1,13 +1,14 @@
 using System.Text;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Data.SqlClient;
 using Microsoft.OpenApi.Models;
 using othApi.Services.Tournaments;
 using othApi.Services.Players;
+using othApi.Data;
+using System.Reflection;
 
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -54,6 +55,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Oth!", Version = "v1" });
 
+    
     // Add JWT Authentication support in Swagger
     var securityScheme = new OpenApiSecurityScheme
     {
@@ -74,10 +76,14 @@ builder.Services.AddSwaggerGen(c =>
     {
         { securityScheme, new List<string>() }
     });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
 
-
+// Add AutoMapper service
+builder.Services.AddAutoMapper(typeof(Program));
 
 
 var app = builder.Build();

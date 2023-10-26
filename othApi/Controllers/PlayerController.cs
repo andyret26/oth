@@ -1,124 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Helpers;
-using othApi.dbModels;
+using othApi.Data.Entities;
+using othApi.Data;
+using othApi.Data.Dtos;
+using othApi.Services.Players;
+using AutoMapper;
 
 namespace othApi.Controllers
 {
     [Route("api/v1/player")]
     [ApiController]
+    [Produces("application/Json")]
+    [Consumes("application/Json")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class PlayerController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IPlayerService _playerService;
+        private readonly IMapper _mapper;
 
-        public PlayerController(DataContext context)
+        public PlayerController(IPlayerService playerService, IMapper mapper)
         {
-            _context = context;
+            _playerService = playerService;
+            _mapper = mapper;
         }
 
         // GET: api/Player
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
-        {
-          if (_context.Players == null)
-          {
-              return NotFound();
-          }
-            return await _context.Players.ToListAsync();
-        }
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        // {
+
+        // }
 
         // GET: api/Player/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(int id)
+        public  ActionResult<PlayerDto> GetPlayer(int id)
         {
-          if (_context.Players == null)
-          {
-              return NotFound();
-          }
-            var player = await _context.Players.FindAsync(id);
-
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            return player;
+            var player = _playerService.GetById(id);
+            var playerDto = _mapper.Map<PlayerDto>(player);
+            return playerDto;
         }
 
         // PUT: api/Player/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, Player player)
-        {
-            if (id != player.Id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutPlayer(int id, Player player)
+        // {
+        //     if (id != player.Id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(player).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         // POST: api/Player
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player player)
+        public ActionResult<PlayerDto> PostPlayer(PlayerPostDto player)
         {
-          if (_context.Players == null)
-          {
-              return Problem("Entity set 'DataContext.Players'  is null.");
-          }
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlayer", new { id = player.Id }, player);
+            var playerPostDto = _mapper.Map<Player>(player);
+            var addedPlayer = _playerService.Post(playerPostDto);
+            var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+            return CreatedAtAction("GetPlayer", new { id = player.User_id }, playerDto);
         }
 
         // DELETE: api/Player/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlayer(int id)
-        {
-            if (_context.Players == null)
-            {
-                return NotFound();
-            }
-            var player = await _context.Players.FindAsync(id);
-            if (player == null)
-            {
-                return NotFound();
-            }
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeletePlayer(int id)
+        // {
 
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
-        private bool PlayerExists(int id)
-        {
-            return (_context.Players?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        // private bool PlayerExists(int id)
+        // {
+        //     return (_context.Players?.Any(e => e.Id == id)).GetValueOrDefault();
+        // }
     }
 }

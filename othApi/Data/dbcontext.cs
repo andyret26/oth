@@ -1,7 +1,7 @@
-namespace WebApi.Helpers;
+namespace othApi.Data;
 
 using Microsoft.EntityFrameworkCore;
-using othApi.dbModels;
+using othApi.Data.Entities;
 
 public class DataContext : DbContext
 {
