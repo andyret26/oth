@@ -30,6 +30,7 @@ module.exports = {
     ],
     "import/prefer-default-export": "off",
     "react/react-in-jsx-scope": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "react/jsx-props-no-spreading": "off",
   },
 }

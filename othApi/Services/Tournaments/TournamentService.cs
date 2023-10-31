@@ -1,6 +1,7 @@
 
 
 using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Entities;
 
@@ -16,7 +17,10 @@ public class TournamentService : ITournamentService
 
     public Tournament? Delete(int id)
     {
-        throw new NotImplementedException();
+        System.Console.WriteLine("Delete called");
+        _db.Tournaments.Where((t) => t.Id == id).ExecuteDelete();
+        _db.SaveChanges();
+        return null;
     }
 
     public List<Tournament> Get()

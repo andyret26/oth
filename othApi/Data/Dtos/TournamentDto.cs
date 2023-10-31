@@ -1,5 +1,7 @@
-namespace othApi.Data.Entities;
-public class Tournament
+using othApi.Data.Entities;
+
+namespace othApi.Data.Dtos;
+public class TournamentDto
 {
     public int Id { get; set; }
     public DateTime? Date { get; set; }

@@ -21,3 +21,19 @@ export interface OsuUserData {
   total_seconds_played: string
   pp_country_rank: string
 }
+
+export interface TournamentPost {
+  date: string
+  name: string
+  teamName: string
+  forumPostLink: string
+  mainSheetLink: string
+  bracketLink: string
+  rankRange: string
+  seed: number
+  format: string
+  teamSize: string
+  placement: string
+  notes: string
+  teamMateIds: number[]
+}
