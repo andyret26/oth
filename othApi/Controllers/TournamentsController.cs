@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
+using othApi.Services.OsuApi;
 using othApi.Services.Tournaments;
 
 namespace othApi.Controllers
@@ -18,10 +19,13 @@ namespace othApi.Controllers
     {
         private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
-        public TournamentsController(ITournamentService tournamentService, IMapper mapper)
+        private readonly IOsuApiService _osuApiService;
+
+        public TournamentsController(ITournamentService tournamentService, IMapper mapper, IOsuApiService osuApiService)
         {
             _tournamentService = tournamentService;
             _mapper = mapper;
+            _osuApiService = osuApiService;
         }
 
         [HttpGet]
@@ -43,11 +47,12 @@ namespace othApi.Controllers
         [HttpPost]
         public ActionResult<TournamentDto> PostTournament([FromBody] TournamentPostDto tournament)
         {
-
-            var tournamentToPost = _mapper.Map<Tournament>(tournament);
-            var addedTournament = _tournamentService.Post(tournamentToPost);
-            var tournamentDto = _mapper.Map<TournamentDto>(addedTournament);
-            return CreatedAtAction("GetTournament", new { id = addedTournament.Id }, tournamentDto);
+            Console.WriteLine(_osuApiService.GetToken().Result);
+            // var tournamentToPost = _mapper.Map<Tournament>(tournament);
+            // var addedTournament = _tournamentService.Post(tournamentToPost);
+            // var tournamentDto = _mapper.Map<TournamentDto>(addedTournament);
+            // return CreatedAtAction("GetTournament", new { id = addedTournament.Id }, tournamentDto);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -56,25 +61,6 @@ namespace othApi.Controllers
             _tournamentService.Delete(id);
             return NoContent();
         }
-
-        [HttpGet("TeamMateExists/{id}")]
-        public ActionResult<bool> TeamMateExists(int id)
-        {
-            
-            return _tournamentService.TeamMateExists(id);
-        }
-
-        // TODO: AddTeamMate Here and in serveices, When done, IN FRONTENED use Teammate exist to check if the team mate exists, if not, add it, if it does, do nothing
-        // [HttpPost("AddTeamMate/{id}")]
-        // public ActionResult<bool> TeamMateExists(int id, [FromBody] TeamMatePostDto teamMate)
-        // {
-        //     var teamMateToAdd = _mapper.Map<TeamMate>(teamMate);
-        //     return _tournamentService.AddTeamMate(id, teamMateToAdd);
-        // }
-        // {
-            
-        //     return _tournamentService.TeamMateExists(id);
-        // }
 
 
     }

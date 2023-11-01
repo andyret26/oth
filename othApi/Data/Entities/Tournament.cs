@@ -14,6 +14,6 @@ public class Tournament
     public string? TeamSize { get; set; }
     public string? Placement { get; set; }
     public string? Notes { get; set; }
-    public List<TeamMate>? TeamMates { get; set; }
+    public List<Player>? TeamMates { get; set; }
 
 }

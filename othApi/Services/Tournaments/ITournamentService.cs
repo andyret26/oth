@@ -7,6 +7,4 @@ public interface ITournamentService
     Tournament Post(Tournament tournament);
     Tournament? Update(Tournament tournament);
     Tournament? Delete(int id);
-    bool TeamMateExists(int id);
-
 }

@@ -9,12 +9,14 @@ using othApi.Services.Tournaments;
 using othApi.Services.Players;
 using othApi.Data;
 using System.Reflection;
+using othApi.Services.OsuApi;
 
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IOsuApiService, OsuApiService>();
 builder.Services.AddCors();
 
 var test = await FetchJwksAsync(Environment.GetEnvironmentVariable("JWKS_URI"));
