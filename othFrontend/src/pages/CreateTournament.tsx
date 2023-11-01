@@ -10,6 +10,7 @@ import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
+import { AddTournamentAsync } from "../services/othApiService"
 // TODO convert teamMateIds to a list of numbers , in iterfaces have one form interface and one Tournament interface
 export default function CreateTournament() {
   const [date, setDate] = useState<string | null>(null)
@@ -56,8 +57,21 @@ export default function CreateTournament() {
   ]
   const onSubmit: SubmitHandler<TournamentPost> = (data) => {
     const properDate = new Date(date as string)
-    const allData = { ...data, date: properDate.toISOString() }
-    console.log(allData)
+    let teamMateIds: number[] | null
+
+    const teamMateIdsString = data.teamMateIds as string
+    if (teamMateIdsString) {
+      teamMateIds = teamMateIdsString.split(",").map((id) => +id)
+    } else {
+      teamMateIds = null
+    }
+    const allData = {
+      ...data,
+      date: properDate.toISOString(),
+      teamMateIds,
+      seed: data.seed ? +data.seed : null,
+    }
+    AddTournamentAsync(allData)
   }
   return (
     <div className="create-tournament-page">

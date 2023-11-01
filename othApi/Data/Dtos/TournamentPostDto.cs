@@ -1,3 +1,5 @@
+using othApi.Data.Entities;
+
 namespace othApi.Data.Dtos;
 public class TournamentPostDto
 {
@@ -10,9 +12,9 @@ public class TournamentPostDto
     public string? RankRange { get; set; }
     public int? Seed { get; set; }
     public string? Format { get; set; }
-    public int? TeamSize { get; set; }
-    public int? Placement { get; set; }
+    public string? TeamSize { get; set; }
+    public string? Placement { get; set; }
     public string? Notes { get; set; }
-    public List<int>? TeamMateIds { get; set; }
+    public List<int>? TeamMatesIds { get; set; }
 
 }

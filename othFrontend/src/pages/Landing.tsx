@@ -1,3 +1,14 @@
+import { Test } from "../services/osuApiService"
+
 export default function Landing() {
-  return <div>Landing</div>
+  const handleClick = () => {
+    Test()
+  }
+  return (
+    <div>
+      <button type="button" onClick={() => handleClick()}>
+        CLick
+      </button>
+    </div>
+  )
 }

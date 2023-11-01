@@ -23,17 +23,17 @@ export interface OsuUserData {
 }
 
 export interface TournamentPost {
-  date: string
+  date: string | null
   name: string
-  teamName: string
-  forumPostLink: string
-  mainSheetLink: string
-  bracketLink: string
-  rankRange: string
-  seed: number
-  format: string
-  teamSize: string
-  placement: string
-  notes: string
-  teamMateIds: number[]
+  teamName: string | null
+  forumPostLink: string | null
+  mainSheetLink: string | null
+  bracketLink: string | null
+  rankRange: string | null
+  seed: number | null
+  format: string | null
+  teamSize: string | null
+  placement: string | null
+  notes: string | null
+  teamMateIds: number[] | string | null
 }

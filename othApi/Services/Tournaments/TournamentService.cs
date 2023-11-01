@@ -103,4 +103,17 @@ public class TournamentService : ITournamentService
         // }
 
     }
+
+    public bool TeamMateExists(int id)
+    {
+        var teamMate = _db.TeamMates.SingleOrDefault((t) => t.Id == id);
+        if(teamMate != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

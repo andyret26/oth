@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,7 @@ namespace othApi.Controllers
         [HttpPost]
         public ActionResult<TournamentDto> PostTournament([FromBody] TournamentPostDto tournament)
         {
+
             var tournamentToPost = _mapper.Map<Tournament>(tournament);
             var addedTournament = _tournamentService.Post(tournamentToPost);
             var tournamentDto = _mapper.Map<TournamentDto>(addedTournament);
@@ -54,5 +56,26 @@ namespace othApi.Controllers
             _tournamentService.Delete(id);
             return NoContent();
         }
+
+        [HttpGet("TeamMateExists/{id}")]
+        public ActionResult<bool> TeamMateExists(int id)
+        {
+            
+            return _tournamentService.TeamMateExists(id);
+        }
+
+        // TODO: AddTeamMate Here and in serveices, When done, IN FRONTENED use Teammate exist to check if the team mate exists, if not, add it, if it does, do nothing
+        // [HttpPost("AddTeamMate/{id}")]
+        // public ActionResult<bool> TeamMateExists(int id, [FromBody] TeamMatePostDto teamMate)
+        // {
+        //     var teamMateToAdd = _mapper.Map<TeamMate>(teamMate);
+        //     return _tournamentService.AddTeamMate(id, teamMateToAdd);
+        // }
+        // {
+            
+        //     return _tournamentService.TeamMateExists(id);
+        // }
+
+
     }
 }

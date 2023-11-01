@@ -9,7 +9,7 @@ using othApi.Services.Tournaments;
 using othApi.Services.Players;
 using othApi.Data;
 using System.Reflection;
-// TODO delete old db tables and do new migrations
+
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
