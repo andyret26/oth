@@ -1,4 +1,5 @@
 using AutoMapper;
+using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 
@@ -8,8 +9,14 @@ namespace othApi.Services.Mappers
     {
         public PlayerMapper()
         {
-            CreateMap<PlayerPostDto, Player>();
             CreateMap<Player, PlayerDto>();
+
+
+            CreateMap<PlayerResponseData, Player>()
+                .ForMember(
+                    (p) => p.Global_rank,
+                    (opt) => opt.MapFrom(prd => prd.Statistics_rulesets.Osu.Global_rank));
+
         }
     }
 }

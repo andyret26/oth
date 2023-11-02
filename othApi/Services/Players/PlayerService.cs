@@ -38,7 +38,7 @@ public class PlayerService : IPlayerService
     {
         try
         {
-            var player = _db.Players.SingleOrDefault((p) => p.User_id == id);
+            var player = _db.Players.SingleOrDefault((p) => p.Id == id);
             return player;
         }
         catch (SqlException err)

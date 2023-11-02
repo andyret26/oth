@@ -3,6 +3,7 @@ using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
@@ -45,9 +46,9 @@ namespace othApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<TournamentDto> PostTournament([FromBody] TournamentPostDto tournament)
+        public  ActionResult<TournamentDto> PostTournament([FromBody] TournamentPostDto tournament)
         {
-            Console.WriteLine(_osuApiService.GetToken().Result);
+            // Console.WriteLine(_osuApiService.GetPlayer("3191010"));
             // var tournamentToPost = _mapper.Map<Tournament>(tournament);
             // var addedTournament = _tournamentService.Post(tournamentToPost);
             // var tournamentDto = _mapper.Map<TournamentDto>(addedTournament);
@@ -62,6 +63,11 @@ namespace othApi.Controllers
             return NoContent();
         }
 
+        [HttpGet("token")]
+        public ActionResult<string> GetToken() {
+            
+            return _osuApiService.GetToken().Result;
+        }
 
     }
 }

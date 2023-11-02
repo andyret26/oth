@@ -55,15 +55,15 @@ namespace othApi.Controllers
 
         // POST: api/Player
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public ActionResult<PlayerDto> PostPlayer(PlayerPostDto player)
-        {
+        // [HttpPost]
+        // public ActionResult<PlayerDto> PostPlayer(int id)
+        // {
 
-            var playerPostDto = _mapper.Map<Player>(player);
-            var addedPlayer = _playerService.Post(playerPostDto);
-            var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
-            return CreatedAtAction("GetPlayer", new { id = player.User_id }, playerDto);
-        }
+        //     var playerPostDto = _mapper.Map<Player>(player);
+        //     var addedPlayer = _playerService.Post(playerPostDto);
+        //     var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+        //     return CreatedAtAction("GetPlayer", new { id = player.User_id }, playerDto);
+        // }
 
         // DELETE: api/Player/5
         // [HttpDelete("{id}")]

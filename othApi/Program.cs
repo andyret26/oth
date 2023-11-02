@@ -10,7 +10,7 @@ using othApi.Services.Players;
 using othApi.Data;
 using System.Reflection;
 using othApi.Services.OsuApi;
-
+// TODO UPDATE SUPABASED DB TABELS WITH MIGRATE
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -19,7 +19,7 @@ builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IOsuApiService, OsuApiService>();
 builder.Services.AddCors();
 
-var test = await FetchJwksAsync(Environment.GetEnvironmentVariable("JWKS_URI"));
+var test = await FetchJwksAsync(Environment.GetEnvironmentVariable("JWKS_URI")!);
 
 builder.Services.AddAuthentication(options =>
 {
