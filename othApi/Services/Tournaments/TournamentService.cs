@@ -4,15 +4,19 @@ using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Entities;
+using othApi.Services.OsuApi;
 
 namespace othApi.Services.Tournaments;
 
 public class TournamentService : ITournamentService
 {
     private readonly DataContext _db;
-    public TournamentService(DataContext db)
+    private readonly IOsuApiService _osuApiService;
+
+    public TournamentService(DataContext db, IOsuApiService osuApiService)
     {
         _db = db;
+        _osuApiService = osuApiService;
     }
 
     public Tournament? Delete(int id)
@@ -102,6 +106,21 @@ public class TournamentService : ITournamentService
         //     throw;
         // }
 
+    }
+
+    public Tournament? AddTeamMates(List<Player> TeamMates, int tourneyId)
+    {
+        var tournament = _db.Tournaments.SingleOrDefault((t) => t.Id == tourneyId);
+        if (tournament != null)
+        {
+            tournament.TeamMates = TeamMates;
+            _db.SaveChanges();
+            return tournament;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

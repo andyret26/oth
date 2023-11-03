@@ -48,6 +48,20 @@ public class PlayerService : IPlayerService
         };
     }
 
+    public List<Player>? GetMultipleById(List<int> ids)
+    {
+        try
+        {
+            var players = _db.Players.Where((p) => ids.Contains(p.Id)).ToList();
+            return players;
+        }
+        catch (SqlException err)
+        {
+            Console.WriteLine(err.Message);
+            throw;
+        };
+    }
+
     public Player Post(Player player)
     {
         try

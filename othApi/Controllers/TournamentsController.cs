@@ -8,6 +8,7 @@ using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 using othApi.Services.OsuApi;
+using othApi.Services.Players;
 using othApi.Services.Tournaments;
 
 namespace othApi.Controllers
@@ -21,12 +22,14 @@ namespace othApi.Controllers
         private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
         private readonly IOsuApiService _osuApiService;
+        private readonly IPlayerService _playerService;
 
-        public TournamentsController(ITournamentService tournamentService, IMapper mapper, IOsuApiService osuApiService)
+        public TournamentsController(ITournamentService tournamentService, IMapper mapper, IOsuApiService osuApiService, IPlayerService playerService)
         {
             _tournamentService = tournamentService;
             _mapper = mapper;
             _osuApiService = osuApiService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -46,14 +49,38 @@ namespace othApi.Controllers
         }
 
         [HttpPost]
-        public  ActionResult<TournamentDto> PostTournament([FromBody] TournamentPostDto tournament)
+        public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
-            // Console.WriteLine(_osuApiService.GetPlayer("3191010"));
-            // var tournamentToPost = _mapper.Map<Tournament>(tournament);
-            // var addedTournament = _tournamentService.Post(tournamentToPost);
-            // var tournamentDto = _mapper.Map<TournamentDto>(addedTournament);
-            // return CreatedAtAction("GetTournament", new { id = addedTournament.Id }, tournamentDto);
-            return Ok();
+            var tournamentToPost = _mapper.Map<Tournament>(tournament);
+            var addedTournament = _tournamentService.Post(tournamentToPost);
+
+
+            if (tournament.TeamMatesIds != null) {
+                // Check if players exists in db if not add them
+                var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMatesIds);
+                if (playersDoNotExists != null) {
+                    foreach (var player in playersDoNotExists)
+                    {
+                        _playerService.Post(player);
+                    }
+                }
+
+                //  Get Players from db
+                var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMatesIds);
+                if(teamMatesToAdd == null) {
+                    return NotFound("One or more players do not exist in the database");
+                }
+                var resTournament = _tournamentService.AddTeamMates(teamMatesToAdd, addedTournament.Id);
+                
+                var tDto = _mapper.Map<TournamentDto>(resTournament);
+
+                return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
+            }
+            else {
+                var tDto = _mapper.Map<TournamentDto>(addedTournament);
+
+                return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
+            }
         }
 
         [HttpDelete("{id}")]

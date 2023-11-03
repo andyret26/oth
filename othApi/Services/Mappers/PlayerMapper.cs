@@ -10,12 +10,14 @@ namespace othApi.Services.Mappers
         public PlayerMapper()
         {
             CreateMap<Player, PlayerDto>();
-
+            CreateMap<Player, PlayerWithoutTournamentsDto>();
 
             CreateMap<PlayerResponseData, Player>()
                 .ForMember(
                     (p) => p.Global_rank,
                     (opt) => opt.MapFrom(prd => prd.Statistics_rulesets.Osu.Global_rank));
+            
+
 
         }
     }

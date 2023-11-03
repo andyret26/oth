@@ -6,6 +6,7 @@ using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Entities;
+using othApi.Services.Players;
 
 namespace othApi.Services.OsuApi;
 
@@ -13,10 +14,12 @@ class OsuApiService : IOsuApiService
 {
     private readonly string BaseUrl = "https://osu.ppy.sh/api/v2";
     private readonly IMapper _mapper;
+    private readonly IPlayerService _playerService;
 
-    public OsuApiService(IMapper mapper)
+    public OsuApiService(IMapper mapper, IPlayerService playerService)
     {
         _mapper = mapper;
+        _playerService = playerService;
     }
     public async Task<string> GetToken()
     {
@@ -58,14 +61,30 @@ class OsuApiService : IOsuApiService
     }
 
 
-    public async Task<Player[]> GetPlayers(List<int> ids) {
+    public async Task<Player[]?> GetPlayers(List<int> ids) {
         string bearerToken = await GetToken();
+
+        // Check if players already exist in DB
+        var playerIdsToAdd = new List<int>();
+        foreach (int id in ids)
+        {
+            if (!_playerService.Exists(id))
+            {
+                playerIdsToAdd.Add(id);
+            }
+        }
+        
+        if (playerIdsToAdd.Count == 0) {
+            Console.WriteLine("All players already exist in DB");
+            return null;
+        }
+        // DO Request
 
         var baseUrl = new Uri("https://osu.ppy.sh/api/v2/users");
 
         var queryParams = new List<KeyValuePair<string, string>>();
 
-        foreach (int id in ids)
+        foreach (int id in playerIdsToAdd)
         {
             queryParams.Add(new KeyValuePair<string, string>("ids[]", id.ToString()));
         }
