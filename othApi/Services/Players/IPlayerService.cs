@@ -9,5 +9,6 @@ public interface IPlayerService
     Player Post(Player player);
     Player? Update(Player player);
     Player? Delete(int id);
+    bool Exists(int id);
 
 }

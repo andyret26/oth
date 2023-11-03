@@ -13,7 +13,6 @@ import MenuItem from "@mui/material/MenuItem"
 import AdbIcon from "@mui/icons-material/Adb"
 import Button from "@mui/material/Button"
 import { useAuth0 } from "@auth0/auth0-react"
-import { getUserDataAsync } from "../services/osuApiService"
 import { AddPlayerAsync } from "../services/othApiService"
 
 export default function NavBar() {
@@ -45,8 +44,7 @@ export default function NavBar() {
     await loginWithPopup()
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
-    const osuUserData = await getUserDataAsync(osuId)
-    AddPlayerAsync(osuUserData[0])
+    AddPlayerAsync(osuId)
   }
 
   return (

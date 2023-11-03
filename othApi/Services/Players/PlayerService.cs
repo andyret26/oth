@@ -94,4 +94,18 @@ public class PlayerService : IPlayerService
         //     throw;
         // }
     }
+
+    public bool Exists(int id)
+    {
+        try
+        {
+            var player = _db.Players.SingleOrDefault((p) => p.Id == id);
+            return player != null;
+        }
+        catch (SqlException err)
+        {
+            Console.WriteLine(err.Message);
+            throw;
+        }
+    }
 }

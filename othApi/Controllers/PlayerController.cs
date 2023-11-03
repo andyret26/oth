@@ -5,6 +5,7 @@ using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Services.Players;
 using AutoMapper;
+using othApi.Services.OsuApi;
 
 namespace othApi.Controllers
 {
@@ -17,11 +18,13 @@ namespace othApi.Controllers
     {
         private readonly IPlayerService _playerService;
         private readonly IMapper _mapper;
+        private readonly IOsuApiService _osuApiService;
 
-        public PlayerController(IPlayerService playerService, IMapper mapper)
+        public PlayerController(IPlayerService playerService, IMapper mapper, IOsuApiService osuApiService)
         {
             _playerService = playerService;
             _mapper = mapper;
+            _osuApiService = osuApiService;
         }
 
         // GET: api/Player
@@ -55,15 +58,16 @@ namespace othApi.Controllers
 
         // POST: api/Player
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPost]
-        // public ActionResult<PlayerDto> PostPlayer(int id)
-        // {
+        [HttpPost("{id}")]
+        public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
+        {
 
-        //     var playerPostDto = _mapper.Map<Player>(player);
-        //     var addedPlayer = _playerService.Post(playerPostDto);
-        //     var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
-        //     return CreatedAtAction("GetPlayer", new { id = player.User_id }, playerDto);
-        // }
+            var players = await _osuApiService.GetPlayers(new List<int> { id });
+            System.Console.WriteLine(players[0].Username);
+            var addedPlayer = _playerService.Post(players[0]);
+            var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+            return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
+        }
 
         // DELETE: api/Player/5
         // [HttpDelete("{id}")]
@@ -78,5 +82,11 @@ namespace othApi.Controllers
         // {
         //     return (_context.Players?.Any(e => e.Id == id)).GetValueOrDefault();
         // }
+
+        [HttpGet("exists/{id}")]
+        public ActionResult<bool> Exists(int id)
+        {
+            return _playerService.Exists(id);
+        }
     }
 }
