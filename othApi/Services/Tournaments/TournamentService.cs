@@ -31,7 +31,7 @@ public class TournamentService : ITournamentService
     {
         try
         {
-            var tournaments = _db.Tournaments.ToList();
+            var tournaments = _db.Tournaments.Include((t) => t.TeamMates).ToList();
             return tournaments;
         }
         catch (SqlException err)
@@ -45,7 +45,7 @@ public class TournamentService : ITournamentService
     {
         try
         {
-            var tournament = _db.Tournaments.SingleOrDefault((t) => t.Id == id);
+            var tournament = _db.Tournaments.Include(t => t.TeamMates).SingleOrDefault((t) => t.Id == id);
             return tournament;
         }
         catch (SqlException err)

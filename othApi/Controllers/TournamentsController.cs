@@ -33,18 +33,18 @@ namespace othApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Tournament>> GetTournaments()
+        public ActionResult<List<TournamentDto>> GetTournaments()
         {
             var tournaments = _tournamentService.Get();
-            var tournamentDtos = _mapper.Map<List<Tournament>>(tournaments);
+            var tournamentDtos = _mapper.Map<List<TournamentDto>>(tournaments);
             return tournamentDtos;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Tournament> GetTournament(int id)
+        public ActionResult<TournamentDto> GetTournament(int id)
         {
             var tournament = _tournamentService.GetById(id);
-            var tournamentDto = _mapper.Map<Tournament>(tournament);
+            var tournamentDto = _mapper.Map<TournamentDto>(tournament);
             return tournamentDto;
         }
 

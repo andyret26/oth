@@ -13,7 +13,6 @@ namespace othApi.Controllers
     [ApiController]
     [Produces("application/Json")]
     [Consumes("application/Json")]
-    [ApiConventionType(typeof(DefaultApiConventions))]
     public class PlayerController : ControllerBase
     {
         private readonly IPlayerService _playerService;
