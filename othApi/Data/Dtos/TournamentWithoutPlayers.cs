@@ -1,8 +1,7 @@
-using othApi.Data.Entities;
-
 namespace othApi.Data.Dtos;
-public class TournamentPostDto
+public class TournamentWithoutPlayersDto
 {
+    public int Id { get; set; }
     public DateTime? Date { get; set; }
     public string Name { get; set; } = null!;
     public string? TeamName { get; set; }
@@ -15,6 +14,5 @@ public class TournamentPostDto
     public string? TeamSize { get; set; }
     public string? Placement { get; set; }
     public string? Notes { get; set; }
-    public List<int>? TeamMateIds { get; set; }
 
 }

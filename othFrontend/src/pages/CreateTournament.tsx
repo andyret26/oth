@@ -8,11 +8,13 @@ import { Autocomplete } from "@mui/material"
 
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
+import { useAuth0 } from "@auth0/auth0-react"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
 // TODO convert teamMateIds to a list of numbers , in iterfaces have one form interface and one Tournament interface
 export default function CreateTournament() {
+  const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<string | null>(null)
   const {
     register,
@@ -55,13 +57,16 @@ export default function CreateTournament() {
     "Top 64 (Round of 32)",
     "Did Not Qualify",
   ]
-  const onSubmit: SubmitHandler<TournamentPost> = (data) => {
+  const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
+    const claims = await getIdTokenClaims()
+    const osuId = claims!.sub.split("|")[2]
     const properDate = new Date(date as string)
     let teamMateIds: number[] | null
 
     const teamMateIdsString = data.teamMateIds as string
     if (teamMateIdsString) {
       teamMateIds = teamMateIdsString.split(",").map((id) => +id)
+      teamMateIds.push(parseInt(osuId, 10))
     } else {
       teamMateIds = null
     }

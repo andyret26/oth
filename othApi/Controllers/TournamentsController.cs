@@ -55,9 +55,9 @@ namespace othApi.Controllers
             var addedTournament = _tournamentService.Post(tournamentToPost);
 
 
-            if (tournament.TeamMatesIds != null) {
+            if (tournament.TeamMateIds != null) {
                 // Check if players exists in db if not add them
-                var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMatesIds);
+                var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMateIds);
                 if (playersDoNotExists != null) {
                     foreach (var player in playersDoNotExists)
                     {
@@ -66,7 +66,7 @@ namespace othApi.Controllers
                 }
 
                 //  Get Players from db
-                var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMatesIds);
+                var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMateIds);
                 if(teamMatesToAdd == null) {
                     return NotFound("One or more players do not exist in the database");
                 }

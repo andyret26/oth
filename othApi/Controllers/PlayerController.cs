@@ -58,11 +58,17 @@ namespace othApi.Controllers
         // POST: api/Player
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("{id}")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(201, Type = typeof(PlayerDto))]
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
 
             var players = await _osuApiService.GetPlayers(new List<int> { id });
-            System.Console.WriteLine(players[0].Username);
+            if (players == null)
+            {
+                return NotFound($"Player with id {id} not found");
+            }
+
             var addedPlayer = _playerService.Post(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
             return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
