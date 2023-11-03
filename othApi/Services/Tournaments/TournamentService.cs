@@ -123,4 +123,10 @@ public class TournamentService : ITournamentService
         }
     }
 
+    public List<Tournament> GetByPlayerId(int playerId)
+    {
+        var tournaments = _db.Tournaments.Include((t) => t.TeamMates).Where((t) => t.TeamMates!.Any((p) => p.Id == playerId)).ToList();
+        return tournaments;
+    }
+
 }

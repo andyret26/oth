@@ -83,6 +83,7 @@ namespace othApi.Controllers
             }
         }
 
+
         [HttpDelete("{id}")]
         public ActionResult DeleteTournament(int id)
         {
@@ -94,6 +95,15 @@ namespace othApi.Controllers
         public ActionResult<string> GetToken() {
             
             return _osuApiService.GetToken().Result;
+        }
+
+        [HttpGet("player/{id}")]
+        // Get tournaments where player id is {id}
+        public ActionResult<List<TournamentDto>> GetTournamentsByPlayerId(int id) {
+            var tournaments = _tournamentService.GetByPlayerId(id);
+            var tournamentDtos = _mapper.Map<List<TournamentDto>>(tournaments);
+            return tournamentDtos;
+
         }
 
     }

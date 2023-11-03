@@ -37,3 +37,29 @@ export interface TournamentPost {
   notes: string | null
   teamMateIds: number[] | string | null
 }
+
+export interface Tournamet {
+  id: number
+  date: string
+  name: string
+  teamName: string
+  forumPostLink: string
+  mainSheetLink: string
+  bracketLink: string
+  rankRange: string
+  seed: number
+  format: string
+  teamSize: string
+  placement: string
+  notes: string
+  teamMates: Player[]
+}
+
+export interface Player {
+  id: number
+  username: string
+  avatar_url: string
+  global_rank: number
+  country_code: string
+  tournaments: Tournamet[]
+}

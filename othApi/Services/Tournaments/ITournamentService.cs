@@ -8,4 +8,5 @@ public interface ITournamentService
     Tournament? Update(Tournament tournament);
     Tournament? Delete(int id);
     Tournament? AddTeamMates(List<Player> TeamMates, int tournamentId);
+    List<Tournament> GetByPlayerId(int playerId);
 }

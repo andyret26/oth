@@ -68,7 +68,7 @@ export default function CreateTournament() {
       teamMateIds = teamMateIdsString.split(",").map((id) => +id)
       teamMateIds.push(parseInt(osuId, 10))
     } else {
-      teamMateIds = null
+      teamMateIds = [+osuId]
     }
     const allData = {
       ...data,
@@ -76,6 +76,7 @@ export default function CreateTournament() {
       teamMateIds,
       seed: data.seed ? +data.seed : null,
     }
+    console.log(allData)
     AddTournamentAsync(allData)
   }
   return (
