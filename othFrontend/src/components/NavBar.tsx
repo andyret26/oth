@@ -87,7 +87,12 @@ export default function NavBar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link className="nav-link" to="/history">
+                <Link className="nav-link-menu" to="/history">
+                  My History
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link className="nav-link-menu" to="/history">
                   My History
                 </Link>
               </MenuItem>
@@ -95,11 +100,12 @@ export default function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <MenuItem onClick={handleCloseNavMenu}>
-              <Link className="nav-link" to="/history">
-                My History
-              </Link>
-            </MenuItem>
+            <Link className="nav-link" to="/history">
+              My History
+            </Link>
+            <Link className="nav-link" to="/history">
+              My History
+            </Link>
           </Box>
           {isAuthenticated ? (
             <Box sx={{ flexGrow: 0 }}>
