@@ -38,9 +38,9 @@ export interface TournamentPost {
   teamMateIds: number[] | string | null
 }
 
-export interface Tournamet {
+export interface Tournament {
   id: number
-  date: string
+  date: Date
   name: string
   teamName: string
   forumPostLink: string
@@ -61,5 +61,5 @@ export interface Player {
   avatar_url: string
   global_rank: number
   country_code: string
-  tournaments: Tournamet[]
+  tournaments: Tournament[]
 }

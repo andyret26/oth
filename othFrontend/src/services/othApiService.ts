@@ -1,5 +1,5 @@
 import axios from "axios"
-import { TournamentPost, Tournamet } from "../helpers/interfaces"
+import { TournamentPost, Tournament } from "../helpers/interfaces"
 
 const OTH_API_URL = "http://localhost:5110/api/v1"
 
@@ -10,15 +10,13 @@ export async function AddPlayerAsync(id: number): Promise<void> {
     console.log("Player already exists")
     return
   }
-  const response2 = await axios.post(`${OTH_API_URL}/player/${id}`)
-  console.log(response2.data)
+  await axios.post(`${OTH_API_URL}/player/${id}`)
 }
 
 export async function GetTournamentsByPlayerIdAsync(
   id: number
-): Promise<Tournamet[]> {
+): Promise<Tournament[]> {
   const response = await axios.get(`${OTH_API_URL}/tournament/player/${id}`)
-  console.log(response.data)
   return response.data
 }
 

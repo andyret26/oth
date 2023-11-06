@@ -1,3 +1,10 @@
+#root {
+    height: 100vh;
+    --bg1: #1c1719;
+    --bg2: #382e32;
+    background-color: var(--bg1);
+}
+
 #root > div {
     display: flex;
     justify-content: center;
@@ -10,6 +17,14 @@ a {
     text-decoration: none;
     color: inherit;
     margin: 0px;
+}
+
+p {
+    margin: 0px;
+}
+
+.nav-bar {
+    background-color: #3d2932 !important;
 }
 
 .nav-link {
