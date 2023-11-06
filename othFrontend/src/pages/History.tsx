@@ -9,7 +9,7 @@ import "../css/HistoryPage.css"
 export default function History() {
   const { getIdTokenClaims } = useAuth0()
   const [tournaments, setTournaments] = useState<Tournament[]>([])
-
+  // TODO: Add loading state and fix page when reload page
   useEffect(() => {
     const setTourney = async () => {
       const claims = await getIdTokenClaims()
@@ -17,7 +17,7 @@ export default function History() {
       setTournaments(await GetTournamentsByPlayerIdAsync(+osuId))
     }
     setTourney()
-  }, [])
+  }, [getIdTokenClaims])
 
   async function handleClick() {
     console.log("click")
@@ -29,22 +29,27 @@ export default function History() {
 
   return (
     <div className="history-page">
-      <h1>History</h1>
+      <h1 className="text-3xl pb-8">History</h1>
       <div className="tourney-card-container">
         {tournaments.map((t) => (
           <div className="tourney-card" key={t.id}>
             <p className="t-name">{t.name}</p>
-            <p className="t-info t-date">
-              {dayjs(t.date).format("DD MMM YYYY")}
-            </p>
-            <div className="t-ps">
-              <p className={`t-placement ${t.placement.substring(1, 3)}`}>
-                {t.placement.split("(")[0]}
+            <div className="w-full flex justify-between mt-2">
+              <div className="flex flex-col items-center">
+                <p className={`t-placement ${t.placement.substring(1, 3)}`}>
+                  {t.placement.split("(")[0]}
+                </p>
+                <p className="t-seed">Seed: {t.seed}</p>
+              </div>
+              <p className="">{t.rankRange}</p>
+              <p className="text-white/75">
+                {dayjs(t.date).format("DD MMM YYYY")}
               </p>
-              <p className="t-seed">Seed: {t.seed}</p>
             </div>
-            <p className="t-info t-format">{t.format}</p>
-            <p className="t-info t-team-size">{t.teamSize}</p>
+            <div className="text-sm flex flex-col items-center absolute bottom-3 right-4">
+              <p className="">{t.teamSize}</p>
+              <p className="">{t.format}</p>
+            </div>
           </div>
         ))}
       </div>

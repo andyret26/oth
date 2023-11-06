@@ -16,9 +16,6 @@
 
     border-radius: 10px;
 
-    & > * {
-        width: 100%;
-    }
 }
 
 .select > label {
@@ -34,10 +31,6 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
-
-    & > * {
-        width: 100%;
-    }
 }
 
 @media screen and (min-width: 768px) {

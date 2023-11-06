@@ -32,7 +32,7 @@
 
 .t-info {
     position: absolute;
-    font-size: small;
+    font-size: 0.875rem;
 }
 
 .t-name {
@@ -46,21 +46,10 @@
 
 .t-date {
     top: 50px;
-    right: 15px;
+    right: 16px;
 }
 
 
-.t-ps {
-    position: absolute;
-    left: 15px;
-    top: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    
-}
 
 .t-placement {
     text-align: center;
@@ -75,19 +64,19 @@
 }
 
 .t-seed {
-    font-size: small;
+    font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.75);
 }
 
 
 .t-team-size {
     bottom: 32px;
-    right: 15px;
+    right: 16px;
 }
 
 .t-format {
     bottom: 15px;
-    right: 15px;
+    right: 16px;
 }
 
 
