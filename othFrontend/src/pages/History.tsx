@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
+import "animate.css"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
@@ -37,7 +38,10 @@ export default function History() {
       ) : (
         <div className="tourney-card-container">
           {tournaments.map((t) => (
-            <div className="tourney-card" key={t.id}>
+            <div
+              className="tourney-card animate__animated animate__fadeInLeft"
+              key={t.id}
+            >
               <p className="t-name">{t.name}</p>
               <div className="w-full flex justify-between mt-2">
                 <div className="flex flex-col items-center">

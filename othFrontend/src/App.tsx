@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/" Component={Landing} />
             <Route path="/history" Component={History} />
-            <Route path="/CreateTournamet" Component={CreateTournament} />
+            <Route path="/tournament/create" Component={CreateTournament} />
           </Routes>
         </BrowserRouter>
       </LocalizationProvider>

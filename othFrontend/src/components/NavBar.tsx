@@ -94,7 +94,7 @@ export default function NavBar() {
                 </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link className="nav-link-menu" to="/history">
+                <Link className="nav-link-menu" to="/createTournament">
                   My History
                 </Link>
               </MenuItem>
@@ -105,7 +105,7 @@ export default function NavBar() {
             <Link className="nav-link" to="/history">
               My History
             </Link>
-            <Link className="nav-link" to="/history">
+            <Link className="nav-link" to="/tournament/create">
               My History
             </Link>
           </Box>
