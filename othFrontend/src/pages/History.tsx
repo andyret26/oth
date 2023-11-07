@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import axios from "axios"
 import CircularProgress from "@mui/material/CircularProgress"
+import { TbTournament } from "react-icons/tb"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
@@ -58,23 +59,24 @@ export default function History() {
                   <p className="">{t.teamSize}</p>
                   <p className="">{t.format}</p>
                 </div>
-                <div className="flex gap-2 absolute bottom-2 left-3 text-sm">
-                  {t.forumPostLink ?? (
-                    <a
-                      href={t.forumPostLink}
-                      className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
-                    >
-                      Forum Post
-                    </a>
-                  )}
-                  {t.bracketLink ?? (
-                    <a
-                      href={t.bracketLink}
-                      className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
-                    >
-                      Bracket
-                    </a>
-                  )}
+                <div className="flex gap-2 absolute bottom-2 left-3 text-sm font-medium">
+                  {/* {t.forumPostLink ?? ( */}
+                  <a
+                    href={t.forumPostLink}
+                    className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
+                  >
+                    Forum Post
+                  </a>
+                  {/*  )} */}
+                  {/* {t.bracketLink ?? ( */}
+                  <a
+                    href={t.bracketLink}
+                    className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+                  >
+                    <TbTournament size={20} className="inline mr-1" />
+                    <p className="inline">Bracket</p>
+                  </a>
+                  {/*  )} */}
                 </div>
               </div>
             </FadeInOnScroll>
