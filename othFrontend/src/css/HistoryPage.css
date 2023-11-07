@@ -21,7 +21,7 @@
 .tourney-card {
     background-color: var(--bg2);
     width: 25rem;
-    height: 150px;
+    height: 175px;
     padding: 10px;
     border-radius: 15px;
     display: flex;
