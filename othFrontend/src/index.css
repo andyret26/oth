@@ -1,12 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-#root {
-    height: 100vh;
+:root {
     --bg1: #1c1719;
     --bg2: #382e32;
     background-color: var(--bg1);
+    height: 100vh;
+}
+
+#root {
+    height: 100vh;
+    background-color: var(--bg1);
+
 }
 
 #root > div {
@@ -34,9 +39,7 @@ p {
 .nav-link {
     font-size: 18px;
     padding: 5px 10px;
-    background-color: var(--bg2);
     border-radius: 5px;
-    margin-right: 15px;
 }
 .nav-link:hover {
     background-color: #6c585e;

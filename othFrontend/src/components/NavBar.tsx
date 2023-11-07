@@ -95,7 +95,7 @@ export default function NavBar() {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link className="nav-link-menu" to="/createTournament">
-                  My History
+                  Add Tournament
                 </Link>
               </MenuItem>
             </Menu>
@@ -106,7 +106,7 @@ export default function NavBar() {
               My History
             </Link>
             <Link className="nav-link" to="/tournament/create">
-              My History
+              Add Tournament
             </Link>
           </Box>
           {isAuthenticated ? (
