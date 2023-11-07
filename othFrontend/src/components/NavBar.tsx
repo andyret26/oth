@@ -10,7 +10,6 @@ import Container from "@mui/material/Container"
 import Avatar from "@mui/material/Avatar"
 import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
-import AdbIcon from "@mui/icons-material/Adb"
 import Button from "@mui/material/Button"
 import { useAuth0 } from "@auth0/auth0-react"
 import { AddPlayerAsync } from "../services/othApiService"
@@ -51,10 +50,13 @@ export default function NavBar() {
     <AppBar position="static" className="nav-bar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-
           <Link to="/" className="nav-logo-text">
-            OTH!
+            <img
+              src="src/assets/othLogo.png"
+              width={50}
+              alt="Logo"
+              className="mr-3"
+            />
           </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

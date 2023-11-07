@@ -34,12 +34,12 @@ p {
 .nav-link {
     font-size: 18px;
     padding: 5px 10px;
-    background-color: rgb(100, 100, 100);
+    background-color: var(--bg2);
     border-radius: 5px;
     margin-right: 15px;
 }
 .nav-link:hover {
-    background-color: rgb(150, 150, 150);
+    background-color: #6c585e;
 }
 
 .nav-logo-text {
