@@ -7,6 +7,7 @@ import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
 import "animate.css"
+import { FadeInOnScroll } from "../components/FadeInOnScroll"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
@@ -38,46 +39,45 @@ export default function History() {
       ) : (
         <div className="tourney-card-container">
           {tournaments.map((t) => (
-            <div
-              className="tourney-card animate__animated animate__fadeInLeft"
-              key={t.id}
-            >
-              <p className="t-name">{t.name}</p>
-              <div className="w-full flex justify-between mt-2">
-                <div className="flex flex-col items-center">
-                  <p className={`t-placement ${t.placement.substring(1, 3)}`}>
-                    {t.placement.split("(")[0]}
+            <FadeInOnScroll>
+              <div className="tourney-card" key={t.id}>
+                <p className="t-name">{t.name}</p>
+                <div className="w-full flex justify-between mt-2">
+                  <div className="flex flex-col items-center">
+                    <p className={`t-placement ${t.placement.substring(1, 3)}`}>
+                      {t.placement.split("(")[0]}
+                    </p>
+                    <p className="t-seed">Seed: {t.seed}</p>
+                  </div>
+                  <p className="">{t.rankRange}</p>
+                  <p className="text-white/75">
+                    {dayjs(t.date).format("DD MMM YYYY")}
                   </p>
-                  <p className="t-seed">Seed: {t.seed}</p>
                 </div>
-                <p className="">{t.rankRange}</p>
-                <p className="text-white/75">
-                  {dayjs(t.date).format("DD MMM YYYY")}
-                </p>
+                <div className="text-sm flex flex-col items-center absolute bottom-3 right-4">
+                  <p className="">{t.teamSize}</p>
+                  <p className="">{t.format}</p>
+                </div>
+                <div className="flex gap-2 absolute bottom-2 left-3 text-sm">
+                  {t.forumPostLink ?? (
+                    <a
+                      href={t.forumPostLink}
+                      className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
+                    >
+                      Forum Post
+                    </a>
+                  )}
+                  {t.bracketLink ?? (
+                    <a
+                      href={t.bracketLink}
+                      className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+                    >
+                      Bracket
+                    </a>
+                  )}
+                </div>
               </div>
-              <div className="text-sm flex flex-col items-center absolute bottom-3 right-4">
-                <p className="">{t.teamSize}</p>
-                <p className="">{t.format}</p>
-              </div>
-              <div className="flex gap-2 absolute bottom-2 left-3 text-sm">
-                {t.forumPostLink ?? (
-                  <a
-                    href={t.forumPostLink}
-                    className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
-                  >
-                    Forum Post
-                  </a>
-                )}
-                {t.bracketLink ?? (
-                  <a
-                    href={t.bracketLink}
-                    className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
-                  >
-                    Bracket
-                  </a>
-                )}
-              </div>
-            </div>
+            </FadeInOnScroll>
           ))}
         </div>
       )}

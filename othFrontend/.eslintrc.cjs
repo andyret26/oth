@@ -32,5 +32,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/prop-types": "off",
   },
 }
