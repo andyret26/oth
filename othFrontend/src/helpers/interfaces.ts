@@ -36,6 +36,7 @@ export interface TournamentPost {
   placement: string | null
   notes: string | null
   teamMateIds: number[] | string | null
+  addedById: number
 }
 
 export interface Tournament {

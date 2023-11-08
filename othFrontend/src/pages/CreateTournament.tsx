@@ -75,6 +75,7 @@ export default function CreateTournament() {
       date: properDate.toISOString(),
       teamMateIds,
       seed: data.seed ? +data.seed : null,
+      addedById: +osuId,
     }
     console.log(allData)
     AddTournamentAsync(allData)
