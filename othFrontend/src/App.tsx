@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar"
 import History from "./pages/History"
 import Landing from "./pages/Landing"
 import CreateTournament from "./pages/CreateTournament"
+import EditTournament from "./pages/EditTournament"
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Route path="/" Component={Landing} />
             <Route path="/history" Component={History} />
             <Route path="/tournament/create" Component={CreateTournament} />
-            <Route path="/tournament/edit/:id" Component={CreateTournament} />
+            <Route path="/tournament/edit/:id" Component={EditTournament} />
           </Routes>
         </BrowserRouter>
       </LocalizationProvider>
