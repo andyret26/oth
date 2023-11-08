@@ -79,5 +79,4 @@ Thumbs.db
 
 # Webpack cache
 node_modules/.cache/
-**/Migrations/
 */google-service-account.json

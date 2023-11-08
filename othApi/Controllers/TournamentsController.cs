@@ -1,6 +1,7 @@
 ﻿
 using System.Diagnostics;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -49,6 +50,7 @@ namespace othApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
             var tournamentToPost = _mapper.Map<Tournament>(tournament);
@@ -85,18 +87,13 @@ namespace othApi.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize]
         public ActionResult DeleteTournament(int id)
         {
             _tournamentService.Delete(id);
             return NoContent();
         }
-
-        [HttpGet("token")]
-        public ActionResult<string> GetToken() {
-            
-            return _osuApiService.GetToken().Result;
-        }
-
+        
         [HttpGet("player/{id}")]
         // Get tournaments where player id is {id}
         public ActionResult<List<TournamentDto>> GetTournamentsByPlayerId(int id) {

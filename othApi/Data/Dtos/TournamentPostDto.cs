@@ -16,5 +16,6 @@ public class TournamentPostDto
     public string? Placement { get; set; }
     public string? Notes { get; set; }
     public List<int>? TeamMateIds { get; set; }
+    public int AddedById { get; set; }
 
 }
