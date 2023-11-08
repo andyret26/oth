@@ -9,6 +9,7 @@ import { Autocomplete } from "@mui/material"
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
+import { TbX } from "react-icons/tb"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
@@ -16,6 +17,8 @@ import { AddTournamentAsync } from "../services/othApiService"
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<string | null>(null)
+  const [teamMateIds, setTeamMateIds] = useState<number[]>([])
+  const [tempValue, setTempValue] = useState<string>("")
   const {
     register,
     handleSubmit,
@@ -61,15 +64,7 @@ export default function CreateTournament() {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
     const properDate = new Date(date as string)
-    let teamMateIds: number[] | null
 
-    const teamMateIdsString = data.teamMateIds as string
-    if (teamMateIdsString) {
-      teamMateIds = teamMateIdsString.split(",").map((id) => +id)
-      teamMateIds.push(parseInt(osuId, 10))
-    } else {
-      teamMateIds = [+osuId]
-    }
     const allData = {
       ...data,
       date: properDate.toISOString(),
@@ -80,6 +75,33 @@ export default function CreateTournament() {
     console.log(allData)
     AddTournamentAsync(allData, claims!.__raw)
   }
+
+  function handleTeamMateChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    const { value } = e.target
+    setTempValue(value)
+  }
+
+  function handleTeamMatePress(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === ",") {
+      const target = e.target as HTMLInputElement
+      const { value } = target
+      const id = +value.substring(0, value.length - 1)
+      if (Number.isNaN(id)) {
+        setTempValue("")
+        return
+      }
+      setTempValue("")
+      setTeamMateIds([...teamMateIds, +id])
+    }
+  }
+
+  function handleXClick(id: number) {
+    const newTeamMateIds = teamMateIds.filter((teamMateId) => teamMateId !== id)
+    setTeamMateIds(newTeamMateIds)
+  }
+
   return (
     <div className="create-tournament-page">
       <form
@@ -193,23 +215,47 @@ export default function CreateTournament() {
           )}
         />
 
-        <div className="input-container">
-          <TextField
-            label="Team Mate IDs"
-            {...register("teamMateIds")}
-            variant="outlined"
-            autoComplete="off"
-          />
-          <Tooltip
-            title={
-              <div>
-                Seperated by comma <br />
-                ex: 3191010, 12240324
+        <div>
+          <div className="flex items-center w-full gap-3">
+            <TextField
+              className="w-full"
+              label="Team Mate Ids (comma seperated)"
+              variant="outlined"
+              autoComplete="off"
+              value={tempValue}
+              onChange={(e) => handleTeamMateChange(e)}
+              onKeyUp={(e) => handleTeamMatePress(e)}
+            />
+            <div className="flex flex-col">
+              <Tooltip
+                title={
+                  <div>
+                    {/* Select from list <br /> */}
+                    Write Osu user Id <br />
+                    Then press , (Comma) <br />
+                  </div>
+                }
+              >
+                <InfoIcon />
+              </Tooltip>
+              {/* // TODO Maybe add quick add button */}
+              {/* <Button>Quick Add</Button> */}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {teamMateIds.map((id) => (
+              <div
+                key={id}
+                className="flex items-center bg-[#7f4b62] rounded-md py-1 px-2"
+              >
+                <p>{id}</p>
+                <TbX
+                  onClick={() => handleXClick(id)}
+                  className="ml-2 hover:bg-red-500 hover:text-white rounded-full bg-white text-red-500 hover:cursor-pointer"
+                />
               </div>
-            }
-          >
-            <InfoIcon />
-          </Tooltip>
+            ))}
+          </div>
         </div>
 
         <TextField

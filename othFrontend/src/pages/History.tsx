@@ -49,7 +49,7 @@ export default function History() {
                 {logdinId === t.addedById ? (
                   <Link
                     className="absolute right-4 top-2 text-white/75 rounded-lg p-1 hover:bg-[#6c585e]"
-                    to="/"
+                    to={`/tournament/edit/${t.id}`}
                   >
                     <TbEdit size={20} />
                   </Link>
