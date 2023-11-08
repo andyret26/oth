@@ -86,13 +86,13 @@ namespace othApi.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        [Authorize]
-        public ActionResult DeleteTournament(int id)
-        {
-            _tournamentService.Delete(id);
-            return NoContent();
-        }
+        // [HttpDelete("{id}")]
+        // [Authorize]
+        // public ActionResult DeleteTournament(int id)
+        // {
+        //     _tournamentService.Delete(id);
+        //     return NoContent();
+        // }
         
         [HttpGet("player/{id}")]
         // Get tournaments where player id is {id}
