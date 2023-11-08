@@ -78,7 +78,7 @@ export default function CreateTournament() {
       addedById: +osuId,
     }
     console.log(allData)
-    AddTournamentAsync(allData)
+    AddTournamentAsync(allData, claims!.__raw)
   }
   return (
     <div className="create-tournament-page">
