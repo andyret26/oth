@@ -52,7 +52,7 @@ export default function NavBar() {
         <Toolbar disableGutters>
           <Link to="/" className="nav-logo-text">
             <img
-              src="src/assets/othLogo.png"
+              src="/Images/othLogo.png"
               width={50}
               alt="Logo"
               className="mr-3"

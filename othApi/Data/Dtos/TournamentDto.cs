@@ -17,5 +17,7 @@ public class TournamentDto
     public string? Placement { get; set; }
     public string? Notes { get; set; }
     public List<PlayerWithoutTournamentsDto>? TeamMates { get; set; }
+    public int AddedById { get; set; }
+
 
 }

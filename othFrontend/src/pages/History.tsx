@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import axios from "axios"
 import CircularProgress from "@mui/material/CircularProgress"
-import { TbTournament } from "react-icons/tb"
+import { TbTournament, TbEdit } from "react-icons/tb"
+import { Link } from "react-router-dom"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
@@ -13,12 +14,14 @@ import { FadeInOnScroll } from "../components/FadeInOnScroll"
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
   const [tournaments, setTournaments] = useState<Tournament[]>([])
+  const [logdinId, setLogdinId] = useState<number>(0)
   // TODO: Add loading state and fix page when reload page
   useEffect(() => {
     if (!isAuthenticated) return
     const setTourney = async () => {
       const claims = await getIdTokenClaims()
       const osuId: string = claims!.sub.split("|")[2]
+      setLogdinId(+osuId)
       setTournaments(await GetTournamentsByPlayerIdAsync(+osuId))
     }
     setTourney()
@@ -40,9 +43,17 @@ export default function History() {
       ) : (
         <div className="tourney-card-container">
           {tournaments.map((t) => (
-            <FadeInOnScroll>
-              <div className="tourney-card" key={t.id}>
+            <FadeInOnScroll key={t.id}>
+              <div className="tourney-card">
                 <p className="t-name">{t.name}</p>
+                {logdinId === t.addedById ? (
+                  <Link
+                    className="absolute right-4 top-2 text-white/75 rounded-lg p-1 hover:bg-[#6c585e]"
+                    to="/"
+                  >
+                    <TbEdit size={20} />
+                  </Link>
+                ) : null}
                 <div className="w-full flex justify-between mt-2">
                   <div className="flex flex-col items-center">
                     <p className={`t-placement ${t.placement.substring(1, 3)}`}>
@@ -60,23 +71,23 @@ export default function History() {
                   <p className="">{t.format}</p>
                 </div>
                 <div className="flex gap-2 absolute bottom-2 left-3 text-sm font-medium">
-                  {/* {t.forumPostLink ?? ( */}
-                  <a
-                    href={t.forumPostLink}
-                    className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
-                  >
-                    Forum Post
-                  </a>
-                  {/*  )} */}
-                  {/* {t.bracketLink ?? ( */}
-                  <a
-                    href={t.bracketLink}
-                    className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
-                  >
-                    <TbTournament size={20} className="inline mr-1" />
-                    <p className="inline">Bracket</p>
-                  </a>
-                  {/*  )} */}
+                  {t.forumPostLink ? (
+                    <a
+                      href={t.forumPostLink}
+                      className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
+                    >
+                      Forum Post
+                    </a>
+                  ) : null}
+                  {t.bracketLink ? (
+                    <a
+                      href={t.bracketLink}
+                      className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+                    >
+                      <TbTournament size={20} className="inline mr-1" />
+                      <p className="inline">Bracket</p>
+                    </a>
+                  ) : null}
                 </div>
               </div>
             </FadeInOnScroll>

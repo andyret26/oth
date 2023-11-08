@@ -54,6 +54,7 @@ export interface Tournament {
   placement: string
   notes: string
   teamMates: Player[]
+  addedById: number
 }
 
 export interface Player {

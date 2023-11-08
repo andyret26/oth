@@ -14,5 +14,7 @@ public class TournamentWithoutPlayersDto
     public string? TeamSize { get; set; }
     public string? Placement { get; set; }
     public string? Notes { get; set; }
+    public int AddedById { get; set; }
+
 
 }
