@@ -10,6 +10,7 @@ namespace othApi.Services.Mappers
         public PlayerMapper()
         {
             CreateMap<Player, PlayerDto>();
+            CreateMap<Player, PlayerMinimalDto>();
             CreateMap<Player, PlayerWithoutTournamentsDto>();
 
             CreateMap<PlayerResponseData, Player>()

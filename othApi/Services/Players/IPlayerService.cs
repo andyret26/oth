@@ -5,6 +5,7 @@ namespace othApi.Services.Players;
 public interface IPlayerService
 {
     List<Player> Get();
+    List<Player> GetMinimal();
     Player? GetById(int id);
     public List<Player>? GetMultipleById(List<int> ids);
     Player Post(Player player);

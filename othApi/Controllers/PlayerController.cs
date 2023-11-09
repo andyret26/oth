@@ -27,11 +27,14 @@ namespace othApi.Controllers
         }
 
         // GET: api/Player
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
-        // {
+        [HttpGet("min")]
+        public ActionResult<IEnumerable<PlayerMinimalDto>> GetPlayersMinimal()
+        {
+            var players = _playerService.GetMinimal();
+            var playerDtos = _mapper.Map<IEnumerable<PlayerMinimalDto>>(players);
+            return Ok(playerDtos);
 
-        // }
+        }
 
         // GET: api/Player/5
         [HttpGet("{id}")]

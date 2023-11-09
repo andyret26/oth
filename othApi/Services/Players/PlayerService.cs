@@ -122,4 +122,23 @@ public class PlayerService : IPlayerService
             throw;
         }
     }
+
+    public List<Player> GetMinimal()
+    {
+        try
+        {
+            var players = _db.Players.Select(p => new Player
+            {
+                Id = p.Id,
+                Username = p.Username,
+
+            }).ToList();
+            return players;
+        }
+        catch (SqlException err)
+        {
+            Console.WriteLine(err.Message);
+            throw;
+        }
+    }
 }
