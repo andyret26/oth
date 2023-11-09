@@ -3,6 +3,7 @@
 import { TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { TbSearch } from "react-icons/tb"
 import { PlayerMin } from "../helpers/interfaces"
 import { GetPlayersMinAsync } from "../services/othApiService"
 
@@ -48,12 +49,16 @@ const Search = () => {
   }
 
   return (
-    <div className="">
+    <div className="w-48">
       <TextField
         type="text"
         value={query}
         size="small"
         onChange={handleChange}
+        placeholder="Search Player"
+        InputProps={{
+          startAdornment: <TbSearch size={20} className="mr-3" />,
+        }}
       />
 
       {searchPlayers ? (
