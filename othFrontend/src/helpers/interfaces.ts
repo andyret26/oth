@@ -65,3 +65,8 @@ export interface Player {
   country_code: string
   tournaments: Tournament[]
 }
+
+export interface PlayerMin {
+  id: number
+  username: string
+}

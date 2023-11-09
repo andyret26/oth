@@ -1,5 +1,5 @@
 import axios from "axios"
-import { TournamentPost, Tournament } from "../helpers/interfaces"
+import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
 const OTH_API_URL = "http://localhost:5110/api/v1"
 
@@ -11,6 +11,12 @@ export async function AddPlayerAsync(id: number): Promise<void> {
     return
   }
   await axios.post(`${OTH_API_URL}/player/${id}`)
+}
+
+// Get players
+export async function GetPlayersMinAsync(): Promise<PlayerMin[]> {
+  const response = await axios.get(`${OTH_API_URL}/player/min`)
+  return response.data
 }
 
 export async function GetTournamentsByPlayerIdAsync(

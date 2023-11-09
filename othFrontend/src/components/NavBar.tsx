@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem"
 import Button from "@mui/material/Button"
 import { useAuth0 } from "@auth0/auth0-react"
 import { AddPlayerAsync } from "../services/othApiService"
+import Search from "./Search"
 
 export default function NavBar() {
   const navigate = useNavigate()
@@ -100,9 +101,12 @@ export default function NavBar() {
               </MenuItem>
             </Menu>
           </Box>
+          <div>
+            <Search />
+          </div>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link className="nav-link" to="/history">
+            <Link className="nav-link" to="/history/3191010">
               My History
             </Link>
             <Link className="nav-link" to="/tournament/create">
