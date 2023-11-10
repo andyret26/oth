@@ -17,7 +17,7 @@ const Search = () => {
       setPlayers(await GetPlayersMinAsync())
     }
     fetchPlayers()
-  }, [players])
+  }, [])
 
   function handleSearch(searchtest: string): void {
     if (!players) {
