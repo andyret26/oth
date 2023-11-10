@@ -90,11 +90,6 @@ export default function NavBar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link className="nav-link-menu" to="/history">
-                  My History
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
                 <Link className="nav-link-menu" to="/createTournament">
                   Add Tournament
                 </Link>
@@ -106,9 +101,6 @@ export default function NavBar() {
           </div>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link className="nav-link" to="/history/3191010">
-              My History
-            </Link>
             <Link className="nav-link" to="/tournament/create">
               Add Tournament
             </Link>
