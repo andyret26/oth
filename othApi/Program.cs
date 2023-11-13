@@ -91,17 +91,14 @@ builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 app.UseCors(builder =>
     {
-        builder.WithOrigins("http://localhost:5173") // Replace with the allowed origin(s)
+        builder.WithOrigins("http://localhost:5173", "https://osu-th.vercel.app") // Replace with the allowed origin(s)
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

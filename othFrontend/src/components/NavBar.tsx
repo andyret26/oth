@@ -5,7 +5,6 @@ import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
 import IconButton from "@mui/material/IconButton"
 import Menu from "@mui/material/Menu"
-import MenuIcon from "@mui/icons-material/Menu"
 import Container from "@mui/material/Container"
 import Avatar from "@mui/material/Avatar"
 import Tooltip from "@mui/material/Tooltip"
@@ -20,20 +19,12 @@ export default function NavBar() {
   const { loginWithPopup, isAuthenticated, logout, user, getIdTokenClaims } =
     useAuth0()
 
-  const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement | null>(null)
   const [anchorElUser, setAnchorElUser] = useState<HTMLButtonElement | null>(
     null
   )
 
-  const handleOpenNavMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
   const handleOpenUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
   }
 
   const handleCloseUserMenu = () => {
@@ -60,59 +51,13 @@ export default function NavBar() {
             />
           </Link>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={(e) => handleOpenNavMenu(e)}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link className="nav-link-menu" to="/history">
-                  My History
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link className="nav-link-menu" to="/createTournament">
-                  Add Tournament
-                </Link>
-              </MenuItem>
-            </Menu>
-          </Box>
-          <div>
+          <div className="mr-4">
             <Search />
           </div>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link className="nav-link" to="/history/3191010">
-              My History
-            </Link>
-            <Link className="nav-link" to="/tournament/create">
-              Add Tournament
-            </Link>
-          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }} />
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }} />
+
           {isAuthenticated ? (
             <Box sx={{ flexGrow: 0 }}>
               {}

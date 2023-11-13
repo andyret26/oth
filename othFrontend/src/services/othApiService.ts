@@ -1,7 +1,7 @@
 import axios from "axios"
 import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
-const OTH_API_URL = "http://localhost:5110/api/v1"
+const OTH_API_URL = "https://oth-api.azurewebsites.net/api/v1"
 
 export async function AddPlayerAsync(id: number): Promise<void> {
   const response1 = await axios.get(`${OTH_API_URL}/player/exists/${id}`)
