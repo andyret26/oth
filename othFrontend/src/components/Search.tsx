@@ -64,7 +64,7 @@ const Search = () => {
       {searchPlayers ? (
         <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md p-3">
           {searchPlayers?.map((p) => (
-            <div>
+            <div key={p.id}>
               <Link to={`/history/${p.id}`} onClick={() => handleSearchClick()}>
                 {p.username}
               </Link>
