@@ -3,76 +3,21 @@ import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import axios from "axios"
 import CircularProgress from "@mui/material/CircularProgress"
-import { TbTournament, TbEdit } from "react-icons/tb"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
 import "animate.css"
-import { FadeInOnScroll } from "../components/FadeInOnScroll"
-
-function tournamentsDiv(tournamentsList: Tournament[], logdinId: number) {
-  return (
-    <div className="tourney-card-container">
-      {tournamentsList.map((t) => (
-        <FadeInOnScroll key={t.id}>
-          <div className="tourney-card">
-            <p className="t-name">{t.name}</p>
-            {logdinId === t.addedById ? (
-              <Link
-                className="absolute right-4 top-2 text-white/75 rounded-lg p-1 hover:bg-[#6c585e]"
-                to={`/tournament/edit/${t.id}`}
-              >
-                <TbEdit size={20} />
-              </Link>
-            ) : null}
-            <div className="w-full flex justify-between mt-2">
-              <div className="flex flex-col items-center">
-                <p className={`t-placement ${t.placement.substring(1, 3)}`}>
-                  {t.placement.split("(")[0]}
-                </p>
-                <p className="t-seed">Seed: {t.seed}</p>
-              </div>
-              <p className="">{t.rankRange}</p>
-              <p className="text-white/75">
-                {dayjs(t.date).format("DD MMM YYYY")}
-              </p>
-            </div>
-            <div className="text-sm flex flex-col items-center absolute bottom-3 right-4">
-              <p className="">{t.teamSize}</p>
-              <p className="">{t.format}</p>
-            </div>
-            <div className="flex gap-2 absolute bottom-2 left-3 text-sm font-medium">
-              {t.forumPostLink ? (
-                <a
-                  href={t.forumPostLink}
-                  className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
-                >
-                  Forum Post
-                </a>
-              ) : null}
-              {t.bracketLink ? (
-                <a
-                  href={t.bracketLink}
-                  className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
-                >
-                  <TbTournament size={20} className="inline mr-1" />
-                  <p className="inline">Bracket</p>
-                </a>
-              ) : null}
-            </div>
-          </div>
-        </FadeInOnScroll>
-      ))}
-    </div>
-  )
-}
+import TournamentContainer from "../components/TournamentContainer"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
   const location = useLocation()
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
+  const [playerName, setPlayerName] = useState<string>("")
   const [logdinId, setLogdinId] = useState<number>(0)
+  const [sortOpt, setSortOpt] = useState<string>("Date")
+
   let content
 
   if (tournaments === null) {
@@ -80,25 +25,28 @@ export default function History() {
   } else if (tournaments.length === 0) {
     content = <p>No Tournaments</p>
   } else {
-    content = tournamentsDiv(tournaments, logdinId)
+    content = (
+      <TournamentContainer tournamentsList={tournaments} logdinId={logdinId} />
+    )
   }
-  // TODO: Add loading state and fix page when reload page
+
   useEffect(() => {
-    const setLoginId = async () => {
-      const claims = await getIdTokenClaims()
-      const osuId: string = claims!.sub.split("|")[2]
-      setLogdinId(+osuId)
+    const id = location.pathname.split("/")[2]
+    const getTournaments = () => {
+      GetTournamentsByPlayerIdAsync(+id).then((res) => {
+        setTournaments(res)
+        setPlayerName(res[0].teamMates.find((p) => p.id === +id)!.username)
+      })
     }
-    const fetchTournaments = async () => {
-      const playerId = location.pathname.split("/")[2]
-      setTournaments(await GetTournamentsByPlayerIdAsync(+playerId))
-    }
+    getTournaments()
 
     if (isAuthenticated) {
-      setLoginId()
+      getIdTokenClaims().then((res) => {
+        setLogdinId(+res!.sub.split("|")[2])
+      })
     }
-    fetchTournaments()
-  }, [isAuthenticated, getIdTokenClaims, location.pathname])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, isAuthenticated])
 
   async function handleClick() {
     console.log("click")
@@ -108,16 +56,48 @@ export default function History() {
     console.log(test.data)
   }
 
-  return (
-    <div className="history-page">
-      <h1 className="text-3xl pb-8">History</h1>
+  function handleSortChange(sortValue: string) {
+    setSortOpt(sortValue)
+    if (
+      tournaments === null ||
+      tournaments === undefined ||
+      tournaments.length === 0
+    )
+      return
 
+    let updatedTournaments
+    if (sortValue === "Date") {
+      updatedTournaments = tournaments.sort(
+        (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix()
+      )
+    } else if (sortValue === "Name") {
+      updatedTournaments = tournaments.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      )
+    }
+
+    setTournaments(updatedTournaments!)
+  }
+  return (
+    <div className="history-page gap-2">
+      <h1 className="text-3xl pb-4 font-extrabold">
+        {playerName}&#39;s History
+      </h1>
+      <div className="flex gap-2 w-full items-center justify-center">
+        <p className="text-white/90 text-center">Sort By: </p>
+        <select
+          name="sort"
+          id="sort"
+          placeholder="Sort By"
+          value={sortOpt}
+          onChange={(e) => handleSortChange(e.target.value)}
+          className="bg-[#4e3c44] p-1 rounded-md"
+        >
+          <option value="Date">Date</option>
+          <option value="Name">Name</option>
+        </select>
+      </div>
       {content}
-      {/* {tournaments.length === 0 ? (
-        <div>No tournaments</div>
-      ) : (
-        
-      )} */}
       <button
         type="button"
         onClick={() => {
