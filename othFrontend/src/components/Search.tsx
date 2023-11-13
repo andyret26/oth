@@ -46,6 +46,8 @@ const Search = () => {
 
   function handleSearchClick() {
     console.log("search click")
+    setSearchPlayers(null)
+    setQuery("")
   }
 
   return (
@@ -62,11 +64,11 @@ const Search = () => {
       />
 
       {searchPlayers ? (
-        <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md p-3">
+        <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md">
           {searchPlayers?.map((p) => (
-            <div key={p.id}>
+            <div key={p.id} className="hover:bg-[#6b535e]">
               <Link to={`/history/${p.id}`} onClick={() => handleSearchClick()}>
-                {p.username}
+                <p className="pl-3 py-1">{p.username}</p>
               </Link>
             </div>
           ))}
