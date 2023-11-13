@@ -7,6 +7,9 @@ import History from "./pages/History"
 import Landing from "./pages/Landing"
 import CreateTournament from "./pages/CreateTournament"
 import EditTournament from "./pages/EditTournament"
+import Unauthorized from "./pages/Unauthorized"
+import { PrivateRoute } from "./components/PrivateRoute"
+import NotFound from "./pages/NotFound"
 
 function App() {
   return (
@@ -17,8 +20,24 @@ function App() {
           <Routes>
             <Route path="/" Component={Landing} />
             <Route path="/history/:id" Component={History} />
-            <Route path="/tournament/create" Component={CreateTournament} />
-            <Route path="/tournament/edit/:id" Component={EditTournament} />
+            <Route
+              path="/tournament/create"
+              element={
+                <PrivateRoute>
+                  <CreateTournament />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/tournament/edit/:id"
+              element={
+                <PrivateRoute>
+                  <EditTournament />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/unauthorized" Component={Unauthorized} />
+            <Route path="*" Component={NotFound} />
           </Routes>
         </BrowserRouter>
       </LocalizationProvider>
