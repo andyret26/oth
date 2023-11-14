@@ -24,3 +24,5 @@
 LICENSE
 README.md
 *.env
+*.yaml
+*.yml
