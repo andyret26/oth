@@ -6,6 +6,7 @@ using othApi.Data.Dtos;
 using othApi.Services.Players;
 using AutoMapper;
 using othApi.Services.OsuApi;
+using Newtonsoft.Json;
 
 namespace othApi.Controllers
 {
@@ -74,6 +75,8 @@ namespace othApi.Controllers
 
             var addedPlayer = _playerService.Post(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+            SendNotify(id).Wait();
+
             return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
         }
 
@@ -95,6 +98,45 @@ namespace othApi.Controllers
         public ActionResult<bool> Exists(int id)
         {
             return _playerService.Exists(id);
+        }
+
+        public async Task SendNotify(int id){
+             using (HttpClient http = new HttpClient())
+            {
+                string url = "https://othbot.azurewebsites.net/notify";
+                 // Data to be sent in the request body (can be a JSON string, etc.)
+                var dataToSend = new Dictionary<string, string>
+                {
+                    { "id", id.ToString() },
+                    { "username", "username" }
+                };               
+                string requestBody = JsonConvert.SerializeObject(dataToSend); 
+
+                // Create a StringContent object with the request body
+                StringContent content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
+
+                // Create a HttpRequestMessage with the desired HTTP method and request content
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Content = content;
+
+                // Send the request using SendAsync
+                HttpResponseMessage response = await http.SendAsync(request);
+
+                // Check if the request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read and print the response content
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseContent);
+                }
+                else
+                {
+                    // Handle the error
+                    Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                }
+                return;
+
+            }
         }
     }
 }
