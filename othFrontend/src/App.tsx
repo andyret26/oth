@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { HashRouter, Route, Routes } from "react-router-dom"
 import "./App.css"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
@@ -26,7 +26,7 @@ function App() {
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <BrowserRouter>
+        <HashRouter>
           {isRunning === null ? (
             <>
               <CircularProgress />
@@ -60,7 +60,7 @@ function App() {
               </Routes>
             </>
           )}
-        </BrowserRouter>
+        </HashRouter>
       </LocalizationProvider>
     </div>
   )
