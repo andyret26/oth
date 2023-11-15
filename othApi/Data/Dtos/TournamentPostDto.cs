@@ -1,5 +1,3 @@
-using othApi.Data.Entities;
-
 namespace othApi.Data.Dtos;
 public class TournamentPostDto
 {

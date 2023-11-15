@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using othApi.Data.Entities;
-using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Services.Players;
 using AutoMapper;
 using othApi.Services.OsuApi;
+using Microsoft.AspNetCore.Authorization;
+using Discord.WebSocket;
 
 namespace othApi.Controllers
 {
@@ -18,12 +17,14 @@ namespace othApi.Controllers
         private readonly IPlayerService _playerService;
         private readonly IMapper _mapper;
         private readonly IOsuApiService _osuApiService;
+        private readonly DiscordSocketClient _discord;
 
-        public PlayerController(IPlayerService playerService, IMapper mapper, IOsuApiService osuApiService)
+        public PlayerController(IPlayerService playerService, IMapper mapper, IOsuApiService osuApiService, DiscordSocketClient discord)
         {
             _playerService = playerService;
             _mapper = mapper;
             _osuApiService = osuApiService;
+            _discord = discord;
         }
 
         // GET: api/Player
@@ -63,6 +64,7 @@ namespace othApi.Controllers
         [HttpPost("{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [Authorize]
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
 
@@ -74,6 +76,8 @@ namespace othApi.Controllers
 
             var addedPlayer = _playerService.Post(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+            Notify(playerDto.Id, playerDto.Username).Wait();
+
             return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
         }
 
@@ -95,6 +99,23 @@ namespace othApi.Controllers
         public ActionResult<bool> Exists(int id)
         {
             return _playerService.Exists(id);
+        }
+
+
+        private async Task Notify(int id, string username){
+            try
+            {
+            var guild = _discord.GetGuild(622429522154749992);
+            var channel = guild.GetTextChannel(1173892318244376596);
+            await channel.SendMessageAsync($"User registered with id: {id}, username: {username}");
+                
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error Notifying");
+                return;
+            }
+            return;
         }
     }
 }
