@@ -36,3 +36,8 @@ export async function AddTournamentAsync(
     headers: { Authorization: `Bearer ${token}` },
   })
 }
+
+export async function GetTournamentById(id: number): Promise<Tournament> {
+  const response = await axios.get(`${OTH_API_URL}/tournament/${id}`)
+  return response.data
+}

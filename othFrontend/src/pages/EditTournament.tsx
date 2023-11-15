@@ -5,19 +5,24 @@ import InfoIcon from "@mui/icons-material/Info"
 import EditCalendarRoundedIcon from "@mui/icons-material/EditCalendarRounded"
 import Tooltip from "@mui/material/Tooltip"
 import { Autocomplete } from "@mui/material"
+import dayjs, { Dayjs } from "dayjs"
 
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { TbX } from "react-icons/tb"
-import { TournamentPost } from "../helpers/interfaces"
+import { Tournament, TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
+import { GetTournamentById } from "../services/othApiService"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
-  const [date, setDate] = useState<string | null>(null)
+  const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
   const [tempValue, setTempValue] = useState<string>("")
+  const [currentTournament, setCurrentTournament] =
+    useState<Tournament | null>()
+
   const {
     register,
     handleSubmit,
@@ -26,8 +31,26 @@ export default function CreateTournament() {
   } = useForm<TournamentPost>()
 
   useEffect(() => {
-    setValue("teamMateIds", teamMateIds)
-    // TODO Get tournament id and set the values to form
+    const tourneyid = window.location.pathname.split("/")[3]
+    GetTournamentById(+tourneyid).then((res) => {
+      const playersTemp: number[] = []
+      setCurrentTournament(res)
+      setDate(dayjs(res.date))
+      setValue("name", res.name)
+      setValue("teamName", res.teamName)
+      setValue("rankRange", res.rankRange)
+      setValue("format", res.format)
+      setValue("teamSize", res.teamSize)
+      setValue("seed", res.seed)
+      setValue("placement", res.placement)
+      res.teamMates.forEach((player) => playersTemp.push(player.id))
+      setTeamMateIds(playersTemp.filter((p) => p !== res.addedById))
+      setValue("notes", res.notes)
+      setValue("forumPostLink", res.forumPostLink)
+      setValue("mainSheetLink", res.mainSheetLink)
+      setValue("bracketLink", res.bracketLink)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const formatOptions = [
@@ -68,16 +91,16 @@ export default function CreateTournament() {
   const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
-    const properDate = new Date(date as string)
 
     const allData = {
       ...data,
-      date: properDate.toISOString(),
+      date: date?.toISOString(),
       teamMateIds,
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
     }
     // TODO use othApiService to update db
+    console.log(allData)
   }
 
   function handleTeamMateChange(
@@ -108,6 +131,7 @@ export default function CreateTournament() {
 
   return (
     <div className="create-tournament-page">
+      <h1 className="text-4xl text-red-600">Work in progress</h1>
       <form
         className="create-tournament-form"
         onSubmit={handleSubmit(onSubmit)}
@@ -126,6 +150,9 @@ export default function CreateTournament() {
               textField: {
                 label: "Date (MM/DD/YYYY)",
                 variant: "outlined",
+                InputLabelProps: {
+                  shrink: true,
+                },
               },
             }}
           />
@@ -154,6 +181,9 @@ export default function CreateTournament() {
           variant="outlined"
           helperText={errors.name ? "Name is required" : ""}
           autoComplete="new-password"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <TextField
@@ -161,6 +191,9 @@ export default function CreateTournament() {
           {...register("teamName")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <TextField
@@ -168,18 +201,26 @@ export default function CreateTournament() {
           {...register("rankRange")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <Autocomplete
           disablePortal
           openOnFocus
           options={formatOptions}
+          value={currentTournament ? currentTournament.format : "1 vs 1"}
+          onChange={(_, value) => setValue("format", value)}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Format"
               variant="outlined"
               {...register("format")}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
           )}
         />
@@ -188,12 +229,17 @@ export default function CreateTournament() {
           disablePortal
           openOnFocus
           options={teamSizeOptions}
+          value={currentTournament ? currentTournament.teamSize : "Solo"}
+          onChange={(_, value) => setValue("format", value)}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Team Size"
               variant="outlined"
               {...register("teamSize")}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
           )}
         />
@@ -203,18 +249,26 @@ export default function CreateTournament() {
           {...register("seed")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <Autocomplete
           disablePortal
           openOnFocus
           options={placementOptions}
+          value={currentTournament ? currentTournament.placement : "1st"}
+          onChange={(_, value) => setValue("format", value)}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Placement"
               variant="outlined"
               {...register("placement")}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
           )}
         />
@@ -229,6 +283,9 @@ export default function CreateTournament() {
               value={tempValue}
               onChange={(e) => handleTeamMateChange(e)}
               onKeyUp={(e) => handleTeamMatePress(e)}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <div className="flex flex-col">
               <Tooltip
@@ -269,6 +326,9 @@ export default function CreateTournament() {
           {...register("notes")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <TextField
@@ -276,6 +336,9 @@ export default function CreateTournament() {
           {...register("forumPostLink")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <TextField
@@ -283,6 +346,9 @@ export default function CreateTournament() {
           {...register("mainSheetLink")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <TextField
@@ -290,6 +356,9 @@ export default function CreateTournament() {
           {...register("bracketLink")}
           variant="outlined"
           autoComplete="off"
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
 
         <Button variant="contained" type="submit" color="primary">

@@ -1,5 +1,5 @@
 import { MouseEvent, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
@@ -15,7 +15,6 @@ import { AddPlayerAsync } from "../services/othApiService"
 import Search from "./Search"
 
 export default function NavBar() {
-  const navigate = useNavigate()
   const { loginWithPopup, isAuthenticated, logout, user, getIdTokenClaims } =
     useAuth0()
 
@@ -89,12 +88,11 @@ export default function NavBar() {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Button onClick={() => navigate("/history")}>
-                    My Tournament
-                  </Button>
+                  {/* TODO Send to current logdin user history */}
+                  My Tournament
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Button>Profile</Button>
+                  <Link to="/tournament/create">Add Tournament</Link>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Button
