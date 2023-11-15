@@ -1,7 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { useEffect, useState } from "react"
 import dayjs from "dayjs"
-import axios from "axios"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useLocation } from "react-router-dom"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
