@@ -97,7 +97,14 @@ export default function NavBar() {
                   <Button>Profile</Button>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Button onClick={() => logout()} color="error">
+                  <Button
+                    onClick={() =>
+                      logout({
+                        logoutParams: { returnTo: window.location.origin },
+                      })
+                    }
+                    color="error"
+                  >
                     Logout
                   </Button>
                 </MenuItem>
