@@ -78,6 +78,7 @@ export default function CreateTournament() {
       addedById: +osuId,
     }
     // TODO use othApiService to update db
+    console.log(allData)
   }
 
   function handleTeamMateChange(
