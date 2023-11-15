@@ -45,7 +45,6 @@ const Search = () => {
   }
 
   function handleSearchClick() {
-    console.log("search click")
     setSearchPlayers(null)
     setQuery("")
   }

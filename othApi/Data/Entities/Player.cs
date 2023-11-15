@@ -1,5 +1,3 @@
-
-
 namespace othApi.Data.Entities;
 public class Player
 {

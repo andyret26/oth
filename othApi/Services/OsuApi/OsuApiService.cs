@@ -1,8 +1,5 @@
 
-using System.Net.Http.Headers;
 using AutoMapper;
-using Azure.Core;
-using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Entities;

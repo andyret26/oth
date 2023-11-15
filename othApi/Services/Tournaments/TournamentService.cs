@@ -1,5 +1,3 @@
-
-
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;
@@ -125,7 +123,11 @@ public class TournamentService : ITournamentService
 
     public List<Tournament> GetByPlayerId(int playerId)
     {
-        var tournaments = _db.Tournaments.Include((t) => t.TeamMates).Where((t) => t.TeamMates!.Any((p) => p.Id == playerId)).ToList();
+        var tournaments = _db.Tournaments
+            .Include((t) => t.TeamMates)
+            .Where((t) => t.TeamMates!.Any((p) => p.Id == playerId))
+            .OrderBy((t) => t.Date)
+            .ToList();
         return tournaments;
     }
 

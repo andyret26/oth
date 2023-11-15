@@ -36,7 +36,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
       </div>
 
       <div className="flex gap-2 absolute bottom-2 left-3 text-xs font-medium">
-        {!t.forumPostLink ? (
+        {t.forumPostLink ? (
           <a
             href={t.forumPostLink}
             className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
@@ -44,7 +44,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
             Forum Post
           </a>
         ) : null}
-        {!t.bracketLink ? (
+        {t.bracketLink ? (
           <a
             href={t.bracketLink}
             className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"

@@ -1,11 +1,7 @@
 ﻿
-using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 using othApi.Services.OsuApi;

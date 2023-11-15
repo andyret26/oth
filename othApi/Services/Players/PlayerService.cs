@@ -1,5 +1,3 @@
-
-
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;

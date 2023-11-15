@@ -26,7 +26,6 @@ export default function CreateTournament() {
   } = useForm<TournamentPost>()
 
   useEffect(() => {
-    console.log("useEffect")
     setValue("teamMateIds", teamMateIds)
     // TODO Get tournament id and set the values to form
   }, [])
@@ -78,7 +77,6 @@ export default function CreateTournament() {
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
     }
-    console.log(allData)
     // TODO use othApiService to update db
   }
 

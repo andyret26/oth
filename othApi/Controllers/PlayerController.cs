@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using othApi.Data.Entities;
-using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Services.Players;
 using AutoMapper;
 using othApi.Services.OsuApi;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using Discord.WebSocket;
 
 namespace othApi.Controllers
 {
@@ -19,12 +17,14 @@ namespace othApi.Controllers
         private readonly IPlayerService _playerService;
         private readonly IMapper _mapper;
         private readonly IOsuApiService _osuApiService;
+        private readonly DiscordSocketClient _discord;
 
-        public PlayerController(IPlayerService playerService, IMapper mapper, IOsuApiService osuApiService)
+        public PlayerController(IPlayerService playerService, IMapper mapper, IOsuApiService osuApiService, DiscordSocketClient discord)
         {
             _playerService = playerService;
             _mapper = mapper;
             _osuApiService = osuApiService;
+            _discord = discord;
         }
 
         // GET: api/Player
@@ -64,6 +64,7 @@ namespace othApi.Controllers
         [HttpPost("{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [Authorize]
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
 
@@ -75,7 +76,7 @@ namespace othApi.Controllers
 
             var addedPlayer = _playerService.Post(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
-            SendNotify(id).Wait();
+            Notify(playerDto.Id, playerDto.Username).Wait();
 
             return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
         }
@@ -100,43 +101,21 @@ namespace othApi.Controllers
             return _playerService.Exists(id);
         }
 
-        public async Task SendNotify(int id){
-             using (HttpClient http = new HttpClient())
+
+        private async Task Notify(int id, string username){
+            try
             {
-                string url = "https://othbot.azurewebsites.net/notify";
-                 // Data to be sent in the request body (can be a JSON string, etc.)
-                var dataToSend = new Dictionary<string, string>
-                {
-                    { "id", id.ToString() },
-                    { "username", "username" }
-                };               
-                string requestBody = JsonConvert.SerializeObject(dataToSend); 
-
-                // Create a StringContent object with the request body
-                StringContent content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
-
-                // Create a HttpRequestMessage with the desired HTTP method and request content
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-                request.Content = content;
-
-                // Send the request using SendAsync
-                HttpResponseMessage response = await http.SendAsync(request);
-
-                // Check if the request was successful
-                if (response.IsSuccessStatusCode)
-                {
-                    // Read and print the response content
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseContent);
-                }
-                else
-                {
-                    // Handle the error
-                    Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
-                }
-                return;
-
+            var guild = _discord.GetGuild(622429522154749992);
+            var channel = guild.GetTextChannel(1173892318244376596);
+            await channel.SendMessageAsync($"User registered with id: {id}, username: {username}");
+                
             }
+            catch (Exception)
+            {
+                Console.WriteLine("Error Notifying");
+                return;
+            }
+            return;
         }
     }
 }

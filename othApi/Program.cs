@@ -1,15 +1,15 @@
-using System.Text;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Data.SqlClient;
 using Microsoft.OpenApi.Models;
 using othApi.Services.Tournaments;
 using othApi.Services.Players;
 using othApi.Data;
 using System.Reflection;
 using othApi.Services.OsuApi;
+using Discord;
+using Discord.WebSocket;
 // TODO UPDATE SUPABASED DB TABELS WITH MIGRATE
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IOsuApiService, OsuApiService>();
+builder.Services.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
+{
+    LogLevel = LogSeverity.Error
+}));
+
 builder.Services.AddCors();
 
 var test = await FetchJwksAsync(Environment.GetEnvironmentVariable("JWKS_URI")!);
@@ -89,6 +94,9 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 
 var app = builder.Build();
+var discordClient = app.Services.GetService<DiscordSocketClient>();
+discordClient!.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DISCORD_BOT_TOKEN")).GetAwaiter().GetResult();
+discordClient.StartAsync().GetAwaiter().GetResult();
 app.UseCors(builder =>
     {
         builder.WithOrigins("http://localhost:5173", "https://osu-th.vercel.app") // Replace with the allowed origin(s)
