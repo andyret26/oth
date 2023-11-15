@@ -13,7 +13,7 @@ import { TbX } from "react-icons/tb"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
-// TODO convert teamMateIds to a list of numbers , in iterfaces have one form interface and one Tournament interface
+
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<string | null>(null)
