@@ -35,7 +35,7 @@ export default function NavBar() {
     await loginWithPopup()
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
-    AddPlayerAsync(osuId)
+    AddPlayerAsync(osuId, claims!.__raw)
   }
 
   return (

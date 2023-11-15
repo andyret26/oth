@@ -7,6 +7,7 @@ using othApi.Services.Players;
 using AutoMapper;
 using othApi.Services.OsuApi;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace othApi.Controllers
 {
@@ -64,6 +65,7 @@ namespace othApi.Controllers
         [HttpPost("{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [Authorize]
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
 
