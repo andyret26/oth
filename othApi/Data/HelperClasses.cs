@@ -1,6 +1,5 @@
 namespace othApi.Data;
 
-
 public class ManyPlayersResponseData
 {
     public PlayerResponseData[] Users { get; set; }  = null!;

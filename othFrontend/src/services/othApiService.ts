@@ -32,8 +32,7 @@ export async function AddTournamentAsync(
   tournament: TournamentPost,
   token: string
 ): Promise<void> {
-  const response = await axios.post(`${OTH_API_URL}/tournament`, tournament, {
+  await axios.post(`${OTH_API_URL}/tournament`, tournament, {
     headers: { Authorization: `Bearer ${token}` },
   })
-  console.log(response.data)
 }

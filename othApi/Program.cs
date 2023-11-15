@@ -1,9 +1,7 @@
-using System.Text;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Data.SqlClient;
 using Microsoft.OpenApi.Models;
 using othApi.Services.Tournaments;
 using othApi.Services.Players;

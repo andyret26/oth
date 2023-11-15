@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using othApi.Data.Entities;
-using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Services.Players;
 using AutoMapper;
 using othApi.Services.OsuApi;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using Discord.WebSocket;
-using System.Threading.Channels;
 
 namespace othApi.Controllers
 {

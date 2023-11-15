@@ -48,14 +48,6 @@ export default function History() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, isAuthenticated])
 
-  async function handleClick() {
-    console.log("click")
-    const test = await axios.get(
-      "https://docs.google.com/spreadsheets/d/1SqfP_nMKGlZwmcac4YSmt4Q_RaS5imYo3785GZ05eIw/edit?usp=sharing"
-    )
-    console.log(test.data)
-  }
-
   function handleSortChange(sortValue: string) {
     setSortOpt(sortValue)
     if (
@@ -98,14 +90,6 @@ export default function History() {
         </select>
       </div>
       {content}
-      <button
-        type="button"
-        onClick={() => {
-          handleClick()
-        }}
-      >
-        Click
-      </button>
     </div>
   )
 }
