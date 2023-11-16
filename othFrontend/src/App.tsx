@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { useEffect, useState } from "react"
 import { CircularProgress } from "@mui/material"
+import { useAuth0 } from "@auth0/auth0-react"
 import NavBar from "./components/NavBar"
 import History from "./pages/History"
 import Landing from "./pages/Landing"
@@ -17,6 +18,7 @@ import { GetPlayersMinAsync } from "./services/othApiService"
 
 function App() {
   const [isRunning, setIsRunnning] = useState<PlayerMin[] | null>(null)
+  const { isAuthenticated } = useAuth0()
   useEffect(() => {
     GetPlayersMinAsync().then((res: PlayerMin[]) => {
       setIsRunnning(res)
@@ -39,22 +41,26 @@ function App() {
               <Routes>
                 <Route path="/" Component={Landing} />
                 <Route path="/history/:id" Component={History} />
-                <Route
-                  path="/tournament/create"
-                  element={
-                    <PrivateRoute>
-                      <CreateTournament />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/tournament/edit/:id"
-                  element={
-                    <PrivateRoute>
-                      <EditTournament />
-                    </PrivateRoute>
-                  }
-                />
+                {isAuthenticated ? (
+                  <>
+                    <Route
+                      path="/tournament/create"
+                      element={
+                        <PrivateRoute>
+                          <CreateTournament />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/tournament/edit/:id"
+                      element={
+                        <PrivateRoute>
+                          <EditTournament />
+                        </PrivateRoute>
+                      }
+                    />
+                  </>
+                ) : null}
                 <Route path="/unauthorized" Component={Unauthorized} />
                 <Route path="*" Component={NotFound} />
               </Routes>
