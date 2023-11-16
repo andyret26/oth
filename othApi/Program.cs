@@ -36,11 +36,11 @@ builder.Services.AddAuthentication(options =>
     // Configure the token validation parameters
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = "https://andy26.eu.auth0.com/", // iss in token
+        ValidIssuer = "https://oth.eu.auth0.com/", // iss in token
         ValidAudience = "fclaVlxV6QmTBFmBKHaOeewlH6rTT7ZV", // aud in token
         IssuerSigningKey = test[0], // singing key set (some/url/certs)
         ValidateIssuer = true, // Validate the token's issuer
-        ValidateAudience = true, // Validate the token's audience
+        ValidateAudience = false, // Validate the token's audience
         ValidateLifetime = true, // Check if the token is expired
         ValidateIssuerSigningKey = true
     };

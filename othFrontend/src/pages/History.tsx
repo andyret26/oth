@@ -70,7 +70,7 @@ export default function History() {
     setTournaments(updatedTournaments!)
   }
   return (
-    <div className="history-page gap-2">
+    <div className="history-page gap-2 page">
       <h1 className="text-3xl pb-4 font-extrabold">
         {playerName}&#39;s History
       </h1>

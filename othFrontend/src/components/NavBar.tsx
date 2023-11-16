@@ -38,7 +38,7 @@ export default function NavBar() {
   }
 
   return (
-    <AppBar position="static" className="nav-bar">
+    <AppBar position="sticky" className="nav-bar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link to="/" className="nav-logo-text">
@@ -54,8 +54,8 @@ export default function NavBar() {
             <Search />
           </div>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }} />
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }} />
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }} />
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }} />
 
           {isAuthenticated ? (
             <Box sx={{ flexGrow: 0 }}>
