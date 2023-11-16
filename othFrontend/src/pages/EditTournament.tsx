@@ -130,7 +130,7 @@ export default function CreateTournament() {
   }
 
   return (
-    <div className="create-tournament-page">
+    <div className="create-tournament-page page">
       <h1 className="text-4xl text-red-600">Work in progress</h1>
       <form
         className="create-tournament-form"

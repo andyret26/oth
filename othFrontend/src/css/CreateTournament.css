@@ -1,6 +1,5 @@
 
 .create-tournament-page {
-    width: 100%;
     padding: 20px;
 }
 
@@ -44,9 +43,8 @@
 
 
 @media screen and (min-width: 768px) {
-    .create-tournament-page {
+    .create-tournament-form {
         width: 100%;
-        padding: 20px;
         max-width: 80vh;
     }
 }
