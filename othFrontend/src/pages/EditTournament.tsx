@@ -11,17 +11,18 @@ import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { TbX } from "react-icons/tb"
-import { Tournament, TournamentPost } from "../helpers/interfaces"
+import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
-import { GetTournamentById } from "../services/othApiService"
+import { GetTournamentById, UpdateTournament } from "../services/othApiService"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
   const [tempValue, setTempValue] = useState<string>("")
-  const [currentTournament, setCurrentTournament] =
-    useState<Tournament | null>()
+  const [selectedFormat, setSelectedFormat] = useState<string | null>("")
+  const [selectedTeamSize, setSelectedTeamSize] = useState<string | null>("")
+  const [selectedPlacement, setSelectedPlacement] = useState<string | null>("")
 
   const {
     register,
@@ -34,15 +35,17 @@ export default function CreateTournament() {
     const tourneyid = window.location.pathname.split("/")[3]
     GetTournamentById(+tourneyid).then((res) => {
       const playersTemp: number[] = []
-      setCurrentTournament(res)
-      setDate(dayjs(res.date))
+      setDate(res.date ? dayjs(res.date) : null)
       setValue("name", res.name)
       setValue("teamName", res.teamName)
       setValue("rankRange", res.rankRange)
       setValue("format", res.format)
+      setSelectedFormat(res.format)
       setValue("teamSize", res.teamSize)
+      setSelectedTeamSize(res.teamSize)
       setValue("seed", res.seed)
       setValue("placement", res.placement)
+      setSelectedPlacement(res.placement)
       res.teamMates.forEach((player) => playersTemp.push(player.id))
       setTeamMateIds(playersTemp.filter((p) => p !== res.addedById))
       setValue("notes", res.notes)
@@ -54,6 +57,7 @@ export default function CreateTournament() {
   }, [])
 
   const formatOptions = [
+    "",
     "1 vs 1",
     "2 vs 2",
     "3 vs 3",
@@ -63,6 +67,7 @@ export default function CreateTournament() {
   ]
 
   const teamSizeOptions = [
+    "",
     "Solo",
     "Teams of 2",
     "Teams of 3",
@@ -74,6 +79,7 @@ export default function CreateTournament() {
   ]
 
   const placementOptions = [
+    "",
     "1st",
     "2nd",
     "3rd",
@@ -95,12 +101,14 @@ export default function CreateTournament() {
     const allData = {
       ...data,
       date: date?.toISOString(),
-      teamMateIds,
+      teamMateIds: [...teamMateIds, +osuId],
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
+      id: window.location.pathname.split("/")[3],
     }
     // TODO use othApiService to update db
     console.log(allData)
+    UpdateTournament(allData, claims!.__raw)
   }
 
   function handleTeamMateChange(
@@ -131,7 +139,7 @@ export default function CreateTournament() {
 
   return (
     <div className="create-tournament-page page">
-      <h1 className="text-4xl text-red-600">Work in progress</h1>
+      <h1 className="text-4xl pb-2">Edit</h1>
       <form
         className="create-tournament-form"
         onSubmit={handleSubmit(onSubmit)}
@@ -210,8 +218,11 @@ export default function CreateTournament() {
           disablePortal
           openOnFocus
           options={formatOptions}
-          value={currentTournament ? currentTournament.format : "1 vs 1"}
-          onChange={(_, value) => setValue("format", value)}
+          value={selectedFormat}
+          onChange={(_, value) => {
+            setSelectedFormat(value)
+            setValue("format", value)
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -229,8 +240,11 @@ export default function CreateTournament() {
           disablePortal
           openOnFocus
           options={teamSizeOptions}
-          value={currentTournament ? currentTournament.teamSize : "Solo"}
-          onChange={(_, value) => setValue("format", value)}
+          value={selectedTeamSize}
+          onChange={(_, value) => {
+            setValue("teamSize", value)
+            setSelectedTeamSize(value)
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -258,8 +272,11 @@ export default function CreateTournament() {
           disablePortal
           openOnFocus
           options={placementOptions}
-          value={currentTournament ? currentTournament.placement : "1st"}
-          onChange={(_, value) => setValue("format", value)}
+          value={selectedPlacement}
+          onChange={(_, value) => {
+            setSelectedPlacement(value)
+            setValue("placement", value)
+          }}
           renderInput={(params) => (
             <TextField
               {...params}

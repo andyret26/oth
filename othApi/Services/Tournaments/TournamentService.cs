@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Entities;
@@ -9,12 +10,12 @@ namespace othApi.Services.Tournaments;
 public class TournamentService : ITournamentService
 {
     private readonly DataContext _db;
-    private readonly IOsuApiService _osuApiService;
+    private readonly IMapper _mapper;
 
-    public TournamentService(DataContext db, IOsuApiService osuApiService)
+    public TournamentService(DataContext db, IMapper mapper)
     {
         _db = db;
-        _osuApiService = osuApiService;
+        _mapper = mapper;
     }
 
     public Tournament? Delete(int id)
@@ -72,37 +73,27 @@ public class TournamentService : ITournamentService
 
     public Tournament? Update(Tournament tournament)
     {
-        throw new NotImplementedException();
-        // TODO use automapper to update
-        // try
-        // {
-        //     var tournamentToUpdate = _db.Tournaments.SingleOrDefault((t) => t.Id == tournament.Id);
-        //     if (tournamentToUpdate != null)
-        //     {
-        //         tournamentToUpdate.Name = tournament.Name;
-        //         tournamentToUpdate.TeamName = tournament.TeamName;
-        //         tournamentToUpdate.Start = tournament.Start;
-        //         tournamentToUpdate.RankRange = tournament.RankRange;
-        //         tournamentToUpdate.Format = tournament.Format;
-        //         tournamentToUpdate.Seed = tournament.Seed;
-        //         tournamentToUpdate.Placement = tournament.Placement;
-        //         tournamentToUpdate.Notes = tournament.Notes;
-        //         tournamentToUpdate.TeamMates = tournament.TeamMates;
+        try
+        {
+            var tournamentToUpdate = _db.Tournaments.SingleOrDefault((t) => t.Id == tournament.Id);
 
-        //         _db.SaveChanges();
-        //         return tournamentToUpdate;
-        //     }
-        //     else
-        //     {
-        //         return null;
-        //     }
+            if (tournamentToUpdate != null)
+            {
+                _mapper.Map(tournament, tournamentToUpdate);
+                _db.SaveChanges();
+                return tournamentToUpdate;
+            }
+            else
+            {
+                return null;
+            }
 
-        // }
-        // catch (SqlException err)
-        // {
-        //     Console.WriteLine(err.Message);
-        //     throw;
-        // }
+        }
+        catch (SqlException err)
+        {
+            Console.WriteLine(err.Message);
+            throw;
+        }
 
     }
 

@@ -23,7 +23,8 @@ export interface OsuUserData {
 }
 
 export interface TournamentPost {
-  date: string | null
+  id: string | null | undefined
+  date: string | null | undefined
   name: string
   teamName: string | null
   forumPostLink: string | null

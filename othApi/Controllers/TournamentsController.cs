@@ -1,4 +1,5 @@
 ﻿
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,6 +82,19 @@ namespace othApi.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        [Authorize]
+        public ActionResult PutTournament(int id, [FromBody] TournamentDto tournamentDto) {
+            var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            if(authSub.Split("|")[2] != tournamentDto.AddedById.ToString()) {
+                return Unauthorized(new { message = "Faild to authorize Update"});
+            }
+
+            
+            _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+
+            return NoContent();
+        }
 
         // [HttpDelete("{id}")]
         // [Authorize]
