@@ -41,3 +41,14 @@ export async function GetTournamentById(id: number): Promise<Tournament> {
   const response = await axios.get(`${OTH_API_URL}/tournament/${id}`)
   return response.data
 }
+
+export async function UpdateTournament(
+  tournament: TournamentPost,
+  token: string
+): Promise<void> {
+  axios.put(`${OTH_API_URL}/tournament/${tournament.id}`, tournament, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
