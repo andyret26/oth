@@ -95,7 +95,7 @@ export default function CreateTournament() {
     const allData = {
       ...data,
       date: date?.toISOString(),
-      teamMateIds,
+      teamMateIds: [...teamMateIds, +osuId],
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
     }
