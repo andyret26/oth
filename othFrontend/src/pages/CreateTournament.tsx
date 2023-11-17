@@ -100,7 +100,7 @@ export default function CreateTournament() {
     const newTeamMateIds = teamMateIds.filter((teamMateId) => teamMateId !== id)
     setTeamMateIds(newTeamMateIds)
   }
-  // TODO add max width when screen is large
+
   return (
     <div className="page create-tournament-page">
       <form
