@@ -10,13 +10,14 @@ import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { TbX } from "react-icons/tb"
+import { Dayjs } from "dayjs"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
-  const [date, setDate] = useState<string | null>(null)
+  const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
   const [tempValue, setTempValue] = useState<string>("")
   const {
@@ -63,11 +64,10 @@ export default function CreateTournament() {
   const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
-    const properDate = new Date(date as string)
 
     const allData = {
       ...data,
-      date: properDate.toISOString(),
+      date: date?.toISOString(),
       teamMateIds: [...teamMateIds, +osuId],
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
