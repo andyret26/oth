@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
@@ -21,6 +21,16 @@ export default function NavBar() {
   const [anchorElUser, setAnchorElUser] = useState<HTMLButtonElement | null>(
     null
   )
+  const [logdinId, setLogdinId] = useState<string>("")
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getIdTokenClaims().then((token) => {
+        setLogdinId(token!.sub.split("|")[2])
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -34,6 +44,7 @@ export default function NavBar() {
     await loginWithPopup()
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
+    setLogdinId(osuId)
     AddPlayerAsync(osuId, claims!.__raw)
   }
 
@@ -87,24 +98,24 @@ export default function NavBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  {/* TODO Send to current logdin user history */}
-                  My Tournament
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link to="/tournament/create">Add Tournament</Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Button
-                    onClick={() =>
-                      logout({
-                        logoutParams: { returnTo: window.location.origin },
-                      })
-                    }
-                    color="error"
-                  >
-                    Logout
-                  </Button>
+                <Link to={`/history/${logdinId}`}>
+                  <MenuItem onClick={handleCloseUserMenu}>My History</MenuItem>
+                </Link>
+                <Link to="/tournament/create">
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    Add Tournament
+                  </MenuItem>
+                </Link>
+
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }}
+                >
+                  <p className="text-red-500">Logout</p>
                 </MenuItem>
               </Menu>
             </Box>
