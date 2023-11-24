@@ -13,7 +13,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
   const [showTeam, setShowTeam] = useState<boolean>(false)
   const t = tournament
   return (
-    <div id="tourney-card" className="tourney-card z-0">
+    <div id="tourney-card" className="tourney-card">
       <p className="t-name">{t.name}</p>
       {logdinId === t.addedById ? (
         <Link
@@ -58,7 +58,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
       </div>
 
       {t.teamMates.length > 1 ? (
-        <div className="absolute top-20 z-30">
+        <div className="absolute top-20">
           <div
             id="team"
             onMouseEnter={() => {
@@ -70,7 +70,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
             onBlur={() => {
               setShowTeam(false)
             }}
-            className="text-sm p-1 border-2 border-red-300 text-red-300 rounded-md hover:bg-red-300 hover:text-white hover:cursor-default z-40"
+            className="text-sm p-1 border-2 border-red-300 text-red-300 rounded-md hover:bg-red-300 hover:text-white hover:cursor-default"
           >
             {t.teamName}
           </div>
