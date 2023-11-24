@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField/TextField"
 import InfoIcon from "@mui/icons-material/Info"
 import EditCalendarRoundedIcon from "@mui/icons-material/EditCalendarRounded"
 import Tooltip from "@mui/material/Tooltip"
-import { Autocomplete } from "@mui/material"
+import { Alert, Autocomplete, Snackbar } from "@mui/material"
 
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
@@ -20,6 +20,12 @@ export default function CreateTournament() {
   const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
   const [tempValue, setTempValue] = useState<string>("")
+  const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false)
+  const [snackSeverity, setSnackSeverity] = useState<
+    "success" | "error" | "info"
+  >()
+  const [snackMessage, setSnackMessage] = useState<string>("")
+
   const {
     register,
     handleSubmit,
@@ -62,6 +68,10 @@ export default function CreateTournament() {
     "Did Not Qualify",
   ]
   const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
+    setSnackSeverity("info")
+    setSnackMessage("Loading...")
+    setSnackBarOpen(true)
+
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
 
@@ -72,7 +82,17 @@ export default function CreateTournament() {
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
     }
-    AddTournamentAsync(allData, claims!.__raw)
+    const res = await AddTournamentAsync(allData, claims!.__raw)
+    if (res !== undefined) {
+      console.log(res.data.detail)
+      setSnackSeverity("error")
+      setSnackMessage(res.data.detail)
+      setSnackBarOpen(true)
+    } else {
+      setSnackSeverity("success")
+      setSnackMessage("Tournament Added")
+      setSnackBarOpen(true)
+    }
   }
 
   function handleTeamMateChange(
@@ -101,8 +121,33 @@ export default function CreateTournament() {
     setTeamMateIds(newTeamMateIds)
   }
 
+  const handleClose = (reason?: string) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setSnackBarOpen(false)
+  }
+
   return (
     <div className="page create-tournament-page">
+      {/* ---------- SNACK BAR ---------- */}
+      <Snackbar
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        open={snackBarOpen}
+        autoHideDuration={4000}
+        onClose={() => handleClose()}
+      >
+        <Alert
+          onClose={() => handleClose()}
+          severity={snackSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackMessage}
+        </Alert>
+      </Snackbar>
+      {/* ---------- SNACK BAR END ---------- */}
+
       <form
         className="create-tournament-form"
         onSubmit={handleSubmit(onSubmit)}

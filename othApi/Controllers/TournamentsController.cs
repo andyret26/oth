@@ -50,6 +50,10 @@ namespace othApi.Controllers
         [Authorize]
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
+            if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name)) {
+                return Conflict(new { title = "Conflict", status = "409", detail = "The Tournament with this team name already exists",});
+            }
+
             var tournamentToPost = _mapper.Map<Tournament>(tournament);
             var addedTournament = _tournamentService.Post(tournamentToPost);
 

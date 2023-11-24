@@ -9,4 +9,6 @@ public interface ITournamentService
     Tournament? Delete(int id);
     Tournament? AddTeamMates(List<Player> TeamMates, int tournamentId);
     List<Tournament> GetByPlayerId(int playerId);
+
+    bool TournamentWithTeamNameExists(string? teamName, string tournamentName);
 }

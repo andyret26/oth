@@ -122,4 +122,17 @@ public class TournamentService : ITournamentService
         return tournaments;
     }
 
+    public bool TournamentWithTeamNameExists(string? teamName, string tournamentName)
+    {
+        if (teamName == null || teamName.Length <= 0) return false;
+        var tournament = _db.Tournaments.SingleOrDefault((t) => t.TeamName == teamName && t.Name == tournamentName);
+        if (tournament != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

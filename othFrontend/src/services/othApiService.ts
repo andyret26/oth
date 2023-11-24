@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosResponse, isAxiosError } from "axios"
 import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
 const OTH_API_URL = "http://localhost:5110/api/v1"
@@ -31,10 +31,16 @@ export async function GetTournamentsByPlayerIdAsync(
 export async function AddTournamentAsync(
   tournament: TournamentPost,
   token: string
-): Promise<void> {
-  await axios.post(`${OTH_API_URL}/tournament`, tournament, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+): Promise<void | AxiosResponse> {
+  try {
+    await axios.post(`${OTH_API_URL}/tournament`, tournament, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return error.response
+    }
+  }
 }
 
 export async function GetTournamentById(id: number): Promise<Tournament> {
