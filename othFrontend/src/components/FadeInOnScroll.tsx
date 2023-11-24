@@ -2,9 +2,15 @@ import { useEffect, useState, useRef } from "react"
 
 interface FadeInOnScrollProps {
   children: React.ReactNode
+  index: number
+  length: number
 }
 
-export const FadeInOnScroll: React.FC<FadeInOnScrollProps> = ({ children }) => {
+export const FadeInOnScroll: React.FC<FadeInOnScrollProps> = ({
+  children,
+  index,
+  length,
+}) => {
   const [isVisible, setVisible] = useState(false)
   const domRef = useRef<HTMLDivElement | null>(null)
 
@@ -30,6 +36,7 @@ export const FadeInOnScroll: React.FC<FadeInOnScrollProps> = ({ children }) => {
     <div
       className={`fade-in-section ${isVisible ? "is-visible" : ""}`}
       ref={domRef}
+      style={{ zIndex: length - index }}
     >
       {children}
     </div>

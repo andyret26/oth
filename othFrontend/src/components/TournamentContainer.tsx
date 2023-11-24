@@ -13,8 +13,8 @@ export default function TournamentContainer({
 }: CompProps) {
   return (
     <div className="tourney-card-container">
-      {tournamentsList.map((t) => (
-        <FadeInOnScroll key={t.id}>
+      {tournamentsList.map((t, i) => (
+        <FadeInOnScroll key={t.id} index={i} length={tournamentsList.length}>
           <TourneyCard tournament={t} logdinId={logdinId} />
         </FadeInOnScroll>
       ))}
