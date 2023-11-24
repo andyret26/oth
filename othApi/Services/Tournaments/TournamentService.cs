@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Entities;
+using othApi.Data.Exceptions;
 using othApi.Services.OsuApi;
 
 namespace othApi.Services.Tournaments;
@@ -73,27 +74,33 @@ public class TournamentService : ITournamentService
 
     public Tournament? Update(Tournament tournament)
     {
-        try
-        {
-            var tournamentToUpdate = _db.Tournaments.SingleOrDefault((t) => t.Id == tournament.Id);
 
-            if (tournamentToUpdate != null)
-            {
+        var tournamentToUpdate = _db.Tournaments.SingleOrDefault((t) => t.Id == tournament.Id);
+
+
+        if (tournamentToUpdate != null)
+        {
+            if(tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName) {
                 _mapper.Map(tournament, tournamentToUpdate);
                 _db.SaveChanges();
                 return tournamentToUpdate;
             }
-            else
-            {
-                return null;
+            else {
+                if (TournamentWithTeamNameExists(tournament.TeamName, tournament.Name)) {
+                    throw new ConflitctException();
+                } else {
+                    _mapper.Map(tournament, tournamentToUpdate);
+                    _db.SaveChanges();
+                    return tournamentToUpdate;
+                }
             }
 
         }
-        catch (SqlException err)
-        {
-            Console.WriteLine(err.Message);
-            throw;
+        else {
+            return null;
         }
+
+
 
     }
 

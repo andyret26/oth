@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
+using othApi.Data.Exceptions;
 using othApi.Services.OsuApi;
 using othApi.Services.Players;
 using othApi.Services.Tournaments;
@@ -51,7 +52,7 @@ namespace othApi.Controllers
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
             if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name)) {
-                return Conflict(new { title = "Conflict", status = "409", detail = "The Tournament with this team name already exists",});
+                return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name",});
             }
 
             var tournamentToPost = _mapper.Map<Tournament>(tournament);
@@ -94,8 +95,22 @@ namespace othApi.Controllers
                 return Unauthorized(new { message = "Faild to authorize Update"});
             }
 
-            
-            _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+
+            try
+            {
+                _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+                
+            }
+            catch (ConflitctException)
+            {
+                return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name", });
+            }
+
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                throw;
+            }
 
             return NoContent();
         }

@@ -51,10 +51,17 @@ export async function GetTournamentById(id: number): Promise<Tournament> {
 export async function UpdateTournament(
   tournament: TournamentPost,
   token: string
-): Promise<void> {
-  axios.put(`${OTH_API_URL}/tournament/${tournament.id}`, tournament, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+): Promise<void | AxiosResponse> {
+  try {
+    await axios.put(`${OTH_API_URL}/tournament/${tournament.id}`, tournament, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  } catch (error) {
+    console.log("Update error")
+    if (isAxiosError(error)) {
+      return error.response
+    }
+  }
 }
