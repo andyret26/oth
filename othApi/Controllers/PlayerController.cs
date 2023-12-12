@@ -87,6 +87,7 @@ namespace othApi.Controllers
         [ProducesResponseType(409)]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [Authorize]
         public async Task<ActionResult> PostByUsername(string username)
         {
             try
