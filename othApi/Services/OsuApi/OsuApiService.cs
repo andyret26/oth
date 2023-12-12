@@ -3,6 +3,7 @@ using AutoMapper;
 using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Entities;
+using othApi.Data.Exceptions;
 using othApi.Services.Players;
 
 namespace othApi.Services.OsuApi;
@@ -109,6 +110,45 @@ class OsuApiService : IOsuApiService
                 throw new Exception($"Request failed with status code {response.StatusCode}");
             }
         }
+    }
+
+    public async Task<Player> GetPlayerByUsername(string username)
+    {
+        string bearerToken = await GetToken();
+
+        var url = new Uri($"https://osu.ppy.sh/api/v2/users/{username}/osu?key=username");
+        using (HttpClient http = new HttpClient())
+        {
+            http.DefaultRequestHeaders.Add("Accept", "application/json");
+            http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+            HttpResponseMessage response = await http.GetAsync(url);
+            if(response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var respObj = JsonConvert.DeserializeObject<PlayerResponseData>(responseBody)!;
+                if(_playerService.Exists(respObj.Id))
+                {
+                    Console.WriteLine("Player already exists in DB");
+                    throw new AlreadyExistException();
+                }
+                else
+                {
+                    var players = await GetPlayers(new List<int> { respObj.Id });
+                    if(players == null)
+                    {
+                        Console.WriteLine("Player not found");
+                        throw new NotFoundException();
+                    }
+                    return players[0];
+                }
+            }
+            else
+            {
+                throw new Exception($"Request failed with status code {response.StatusCode}");
+            }
+        }
+
+        throw new NotImplementedException();
     }
 }
 
