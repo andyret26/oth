@@ -15,6 +15,7 @@ import { PrivateRoute } from "./components/PrivateRoute"
 import NotFound from "./pages/NotFound"
 import { PlayerMin } from "./helpers/interfaces"
 import { GetPlayersMinAsync } from "./services/othApiService"
+import AddPlayer from "./pages/AddPlayer"
 
 function App() {
   const [isRunning, setIsRunnning] = useState<PlayerMin[] | null>(null)
@@ -56,6 +57,14 @@ function App() {
                       element={
                         <PrivateRoute>
                           <EditTournament />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/player/add"
+                      element={
+                        <PrivateRoute>
+                          <AddPlayer />
                         </PrivateRoute>
                       }
                     />
