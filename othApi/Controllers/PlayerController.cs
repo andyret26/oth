@@ -5,6 +5,8 @@ using AutoMapper;
 using othApi.Services.OsuApi;
 using Microsoft.AspNetCore.Authorization;
 using Discord.WebSocket;
+using Newtonsoft.Json;
+using othApi.Data.Exceptions;
 
 namespace othApi.Controllers
 {
@@ -79,6 +81,31 @@ namespace othApi.Controllers
             Notify(playerDto.Id, playerDto.Username).Wait();
 
             return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
+        }
+
+        [HttpPost("postByUsername/{username}")]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [Authorize]
+        public async Task<ActionResult> PostByUsername(string username)
+        {
+            try
+            {
+                var player =  await  _osuApiService.GetPlayerByUsername(username);
+                var addedPlayer = _playerService.Post(player);
+                var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
+                return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
+            }
+            catch (AlreadyExistException)
+            {
+                return Conflict($"Player with username {username} already exists in DB");
+            }
+            catch (NotFoundException)
+            {
+                return NotFound($"Player with username {username} not found");
+            }
+
         }
 
         // DELETE: api/Player/5

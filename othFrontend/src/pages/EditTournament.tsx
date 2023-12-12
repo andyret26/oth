@@ -11,12 +11,14 @@ import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { TbX } from "react-icons/tb"
+import { useLocation } from "react-router-dom"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { GetTournamentById, UpdateTournament } from "../services/othApiService"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
+  const { pathname } = useLocation()
   const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
   const [tempValue, setTempValue] = useState<string>("")
@@ -37,7 +39,7 @@ export default function CreateTournament() {
   } = useForm<TournamentPost>()
 
   useEffect(() => {
-    const tourneyid = window.location.pathname.split("/")[3]
+    const tourneyid = pathname.split("/")[3]
     GetTournamentById(+tourneyid).then((res) => {
       const playersTemp: number[] = []
       setDate(res.date ? dayjs(res.date) : null)
@@ -113,11 +115,10 @@ export default function CreateTournament() {
       teamMateIds: [...teamMateIds, +osuId],
       seed: data.seed ? +data.seed : null,
       addedById: +osuId,
-      id: window.location.pathname.split("/")[3],
+      id: pathname.split("/")[3],
     }
     // TODO use othApiService to update db
     const res = await UpdateTournament(allData, claims!.__raw)
-    console.log(res)
     if (res !== undefined) {
       setSnackSeverity("error")
       setSnackMessage(res.data.detail)

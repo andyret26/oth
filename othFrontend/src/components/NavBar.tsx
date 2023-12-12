@@ -101,6 +101,11 @@ export default function NavBar() {
                 <Link to={`/history/${logdinId}`}>
                   <MenuItem onClick={handleCloseUserMenu}>My History</MenuItem>
                 </Link>
+
+                <Link to="/player/add">
+                  <MenuItem onClick={handleCloseUserMenu}>Add Player</MenuItem>
+                </Link>
+
                 <Link to="/tournament/create">
                   <MenuItem onClick={handleCloseUserMenu}>
                     Add Tournament

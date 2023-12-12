@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { HashRouter, Route, Routes } from "react-router-dom"
 import "./App.css"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
@@ -15,6 +15,7 @@ import { PrivateRoute } from "./components/PrivateRoute"
 import NotFound from "./pages/NotFound"
 import { PlayerMin } from "./helpers/interfaces"
 import { GetPlayersMinAsync } from "./services/othApiService"
+import AddPlayer from "./pages/AddPlayer"
 
 function App() {
   const [isRunning, setIsRunnning] = useState<PlayerMin[] | null>(null)
@@ -28,7 +29,7 @@ function App() {
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <BrowserRouter>
+        <HashRouter>
           {isRunning === null ? (
             <>
               <CircularProgress />
@@ -59,6 +60,14 @@ function App() {
                         </PrivateRoute>
                       }
                     />
+                    <Route
+                      path="/player/add"
+                      element={
+                        <PrivateRoute>
+                          <AddPlayer />
+                        </PrivateRoute>
+                      }
+                    />
                   </>
                 ) : null}
                 <Route path="/unauthorized" Component={Unauthorized} />
@@ -66,7 +75,7 @@ function App() {
               </Routes>
             </>
           )}
-        </BrowserRouter>
+        </HashRouter>
       </LocalizationProvider>
     </div>
   )

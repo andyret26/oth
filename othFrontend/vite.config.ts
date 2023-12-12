@@ -14,5 +14,16 @@ export default defineConfig({
       });
     },
   },],
+  build: {
+    // ...
+    assetsDir: 'assets',
+    sourcemap: true,
+    rollupOptions: {
+      // Make sure to include the hash option
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 
 })
