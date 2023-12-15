@@ -9,6 +9,8 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
+import { AxiosError } from "axios"
+import toast from "react-hot-toast"
 import {
   AddPlayerAsync,
   AddPlayerByUsernameAsync,
@@ -20,20 +22,32 @@ export default function AddPlayer() {
   const [addBy, setAddBy] = useState<"id" | "username">("id")
   const [userToAdd, setUserToAdd] = useState<string>("")
   const [error, setError] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true)
     e.preventDefault()
     const claims = await getIdTokenClaims()
-    if (addBy === "id") {
-      if (/^\d+$/.test(userToAdd)) {
-        await AddPlayerAsync(parseInt(userToAdd, 10), claims!.__raw)
+    try {
+      if (addBy === "id") {
+        if (/^\d+$/.test(userToAdd)) {
+          await AddPlayerAsync(parseInt(userToAdd, 10), claims!.__raw)
+        } else {
+          setError("Id must be a number")
+        }
+      } else if (addBy === "username") {
+        await AddPlayerByUsernameAsync(userToAdd, claims!.__raw)
       } else {
-        setError("Id must be a number")
+        console.log("nothing error ??")
       }
-    } else if (addBy === "username") {
-      await AddPlayerByUsernameAsync(userToAdd, claims!.__raw)
-    } else {
-      console.log("nothing error ??")
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 409) {
+          toast.error("Player already in tournament")
+        }
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -70,8 +84,8 @@ export default function AddPlayer() {
           error={error !== ""}
           helperText={error}
         />
-        <Button variant="contained" type="submit">
-          Add
+        <Button variant="contained" type="submit" disabled={loading}>
+          <div>{loading ? "Adding..." : "Add"}</div>
         </Button>
       </form>
     </div>
