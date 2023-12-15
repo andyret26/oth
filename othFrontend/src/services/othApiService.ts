@@ -12,6 +12,7 @@ export async function AddPlayerAsync(id: number, token: string): Promise<void> {
       headers: { Authorization: `Bearer ${token}` },
     }
   )
+  toast.success("Player added")
 }
 
 export async function AddPlayerByUsernameAsync(
@@ -54,6 +55,7 @@ export async function AddTournamentAsync(
       return error.response
     }
   }
+  toast.success("Tournament added")
 }
 
 export async function GetTournamentById(id: number): Promise<Tournament> {
@@ -77,4 +79,5 @@ export async function UpdateTournament(
       return error.response
     }
   }
+  toast.success("Tournament updated")
 }
