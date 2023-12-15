@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div>
-      <Toaster />
+      <Toaster position="bottom-center" />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <HashRouter>
           {isRunning === null ? (
