@@ -14,8 +14,10 @@ import { Dayjs } from "dayjs"
 import { TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
+import { SimpleDialog } from "../components/SimpleDialog"
 
 export default function CreateTournament() {
+  const [open, setOpen] = useState(false)
   const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<Dayjs | null>(null)
   const [teamMateIds, setTeamMateIds] = useState<number[]>([])
@@ -127,6 +129,14 @@ export default function CreateTournament() {
     }
 
     setSnackBarOpen(false)
+  }
+
+  const openDialog = () => {
+    setOpen(true)
+  }
+
+  const handleClosedialog = () => {
+    setOpen(false)
   }
 
   return (
@@ -258,6 +268,10 @@ export default function CreateTournament() {
             />
           )}
         />
+
+        <Button onClick={() => openDialog()}>Add TeamMates</Button>
+
+        <SimpleDialog open={open} onClose={handleClosedialog} />
 
         <div>
           <div className="flex items-center w-full gap-3">
