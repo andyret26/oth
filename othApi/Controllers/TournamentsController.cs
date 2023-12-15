@@ -18,13 +18,15 @@ namespace othApi.Controllers
     [Consumes("application/Json")]
     public class TournamentsController : ControllerBase
     {
+        private readonly ILogger<TournamentsController> _logger;
         private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
         private readonly IOsuApiService _osuApiService;
         private readonly IPlayerService _playerService;
 
-        public TournamentsController(ITournamentService tournamentService, IMapper mapper, IOsuApiService osuApiService, IPlayerService playerService)
+        public TournamentsController(ILogger<TournamentsController> logger, ITournamentService tournamentService, IMapper mapper, IOsuApiService osuApiService, IPlayerService playerService)
         {
+            _logger = logger;
             _tournamentService = tournamentService;
             _mapper = mapper;
             _osuApiService = osuApiService;
@@ -91,6 +93,7 @@ namespace othApi.Controllers
         [Authorize]
         public ActionResult PutTournament(int id, [FromBody] TournamentDto tournamentDto) {
             var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            _logger.LogInformation("User with id {id} is trying to update tournament with id {tournamentId}", authSub.Split("|")[2], id);
             if(authSub.Split("|")[2] != tournamentDto.AddedById.ToString()) {
                 return Unauthorized(new { message = "Faild to authorize Update"});
             }

@@ -66,9 +66,13 @@ namespace othApi.Controllers
         [HttpPost("{id}")]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
+        [ProducesResponseType(409)]
         [Authorize]
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
+            if(_playerService.Exists(id)){
+                return Conflict($"Player with id {id} already exists in DB");
+            }
 
             var players = await _osuApiService.GetPlayers(new List<int> { id });
             if (players == null)
@@ -84,10 +88,10 @@ namespace othApi.Controllers
         }
 
         [HttpPost("postByUsername/{username}")]
+        [Authorize]
         [ProducesResponseType(409)]
         [ProducesResponseType(404)]
         [ProducesResponseType(201, Type = typeof(PlayerDto))]
-        [Authorize]
         public async Task<ActionResult> PostByUsername(string username)
         {
             try

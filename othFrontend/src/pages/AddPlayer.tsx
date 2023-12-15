@@ -8,23 +8,30 @@ import {
   TextField,
 } from "@mui/material"
 import { useState } from "react"
+import { useAuth0 } from "@auth0/auth0-react"
+import {
+  AddPlayerAsync,
+  AddPlayerByUsernameAsync,
+} from "../services/othApiService"
 
 export default function AddPlayer() {
+  const { getIdTokenClaims } = useAuth0()
+
   const [addBy, setAddBy] = useState<"id" | "username">("id")
   const [userToAdd, setUserToAdd] = useState<string>("")
   const [error, setError] = useState<string>("")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const claims = await getIdTokenClaims()
     if (addBy === "id") {
-      console.log("add by id")
       if (/^\d+$/.test(userToAdd)) {
-        console.log("is number")
+        await AddPlayerAsync(parseInt(userToAdd, 10), claims!.__raw)
       } else {
         setError("Id must be a number")
       }
     } else if (addBy === "username") {
-      console.log("add by username")
+      await AddPlayerByUsernameAsync(userToAdd, claims!.__raw)
     } else {
       console.log("nothing error ??")
     }

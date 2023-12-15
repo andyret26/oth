@@ -37,7 +37,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = "https://oth.eu.auth0.com/", // iss in token
-        ValidAudience = "fclaVlxV6QmTBFmBKHaOeewlH6rTT7ZV", // aud in token
+        ValidAudience = "3pZ5jlt7hfCvxjxT06tSYtxRIVm8aZdj", // aud in token
         IssuerSigningKey = test[0], // singing key set (some/url/certs)
         ValidateIssuer = true, // Validate the token's issuer
         ValidateAudience = false, // Validate the token's audience

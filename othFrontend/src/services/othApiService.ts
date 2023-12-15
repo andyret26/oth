@@ -1,18 +1,30 @@
 import axios, { AxiosResponse, isAxiosError } from "axios"
 import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
-const OTH_API_URL = "https://oth-api.azurewebsites.net/api/v1"
+const OTH_API_URL = "http://localhost:5110/api/v1"
 
 export async function AddPlayerAsync(id: number, token: string): Promise<void> {
-  const response1 = await axios.get(`${OTH_API_URL}/player/exists/${id}`)
+  await axios.post(
+    `${OTH_API_URL}/player/${id}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  )
+}
 
-  if (response1.data) {
-    console.log("Player already exists")
-    return
-  }
-  await axios.post(`${OTH_API_URL}/player/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+export async function AddPlayerByUsernameAsync(
+  username: string,
+  token: string
+): Promise<void> {
+  console.log(token)
+  await axios.post(
+    `${OTH_API_URL}/player/postByUsername/${username}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  )
 }
 
 // Get players
