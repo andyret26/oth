@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
 import Button from "@mui/material/Button"
 import { useAuth0 } from "@auth0/auth0-react"
+import { AxiosError } from "axios"
 import { AddPlayerAsync } from "../services/othApiService"
 import Search from "./Search"
 
@@ -45,7 +46,18 @@ export default function NavBar() {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
     setLogdinId(osuId)
-    AddPlayerAsync(osuId, claims!.__raw)
+    try {
+      await AddPlayerAsync(osuId, claims!.__raw)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          // User already exists
+          // Do nothing
+        } else {
+          console.error(error)
+        }
+      }
+    }
   }
 
   return (
