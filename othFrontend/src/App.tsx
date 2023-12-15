@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { useEffect, useState } from "react"
 import { CircularProgress } from "@mui/material"
 import { useAuth0 } from "@auth0/auth0-react"
+import { Toaster } from "react-hot-toast"
 import NavBar from "./components/NavBar"
 import History from "./pages/History"
 import Landing from "./pages/Landing"
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <div>
+      <Toaster />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <HashRouter>
           {isRunning === null ? (

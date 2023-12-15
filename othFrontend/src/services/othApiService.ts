@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, isAxiosError } from "axios"
+import toast from "react-hot-toast"
 import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
 const OTH_API_URL = "http://localhost:5110/api/v1"
@@ -17,7 +18,6 @@ export async function AddPlayerByUsernameAsync(
   username: string,
   token: string
 ): Promise<void> {
-  console.log(token)
   await axios.post(
     `${OTH_API_URL}/player/postByUsername/${username}`,
     {},
@@ -25,6 +25,7 @@ export async function AddPlayerByUsernameAsync(
       headers: { Authorization: `Bearer ${token}` },
     }
   )
+  toast.success("Player added")
 }
 
 // Get players
