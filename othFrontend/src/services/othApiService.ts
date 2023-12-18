@@ -55,7 +55,6 @@ export async function AddTournamentAsync(
       return error.response
     }
   }
-  toast.success("Tournament added")
 }
 
 export async function GetTournamentById(id: number): Promise<Tournament> {
