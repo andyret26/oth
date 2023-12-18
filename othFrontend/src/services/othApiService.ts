@@ -2,7 +2,7 @@ import axios, { AxiosResponse, isAxiosError } from "axios"
 import toast from "react-hot-toast"
 import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
 
-const OTH_API_URL = "http://localhost:5110/api/v1"
+const OTH_API_URL = "https://oth-api.azurewebsites.net/api/v1"
 
 export async function AddPlayerAsync(id: number, token: string): Promise<void> {
   await axios.post(
