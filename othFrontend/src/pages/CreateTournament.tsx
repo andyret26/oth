@@ -135,7 +135,8 @@ export default function CreateTournament() {
     setOpen(true)
   }
 
-  const handleClosedialog = () => {
+  const handleClosedialog = (value: string) => {
+    console.log(value)
     setOpen(false)
   }
 

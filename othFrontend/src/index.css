@@ -95,3 +95,8 @@ p {
 .MuiToolbar-root {
     height: 64px;
 }
+
+.css-14p6ir1-MuiPaper-root-MuiDialog-paper {
+    background-color: var(--bg1) !important;
+    background-image: none !important;
+}

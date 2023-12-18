@@ -1,4 +1,5 @@
 import { Dialog, DialogTitle } from "@mui/material"
+import ChooseTeamSearch from "./ChooseTeamSearch"
 
 export interface SimpleDialogProps {
   open: boolean
@@ -9,13 +10,16 @@ export function SimpleDialog(props: SimpleDialogProps) {
   const { onClose, open } = props
 
   const handleClose = () => {
-    onClose("hello")
+    const test = [1, 2, 3]
+    onClose(JSON.stringify(test))
   }
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Set backup account</DialogTitle>
-      <p>Hello</p>
+    <Dialog onClose={handleClose} open={open} fullWidth maxWidth="md">
+      <DialogTitle>Choose team members</DialogTitle>
+      <div className="w-full max-h-96 p-6">
+        <ChooseTeamSearch />
+      </div>
     </Dialog>
   )
 }
