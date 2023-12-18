@@ -9,19 +9,20 @@ import { Alert, Autocomplete, Snackbar } from "@mui/material"
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
-import { TbX } from "react-icons/tb"
 import { Dayjs } from "dayjs"
-import { TournamentPost } from "../helpers/interfaces"
+import { PlayerMin, TournamentPost } from "../helpers/interfaces"
 import "../css/CreateTournament.css"
 import { AddTournamentAsync } from "../services/othApiService"
 import { SimpleDialog } from "../components/SimpleDialog"
+import NameCard from "../components/NameCard"
+import { listOfPlayersToIdArray } from "../helpers/functions"
 
 export default function CreateTournament() {
   const [open, setOpen] = useState(false)
   const { getIdTokenClaims } = useAuth0()
   const [date, setDate] = useState<Dayjs | null>(null)
-  const [teamMateIds, setTeamMateIds] = useState<number[]>([])
-  const [tempValue, setTempValue] = useState<string>("")
+  const [selectedPlayers, setSelectedPlayers] = useState<PlayerMin[]>([])
+
   const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false)
   const [snackSeverity, setSnackSeverity] = useState<
     "success" | "error" | "info"
@@ -70,12 +71,14 @@ export default function CreateTournament() {
     "Did Not Qualify",
   ]
   const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
+    console.log(selectedPlayers)
     setSnackSeverity("info")
     setSnackMessage("Loading...")
     setSnackBarOpen(true)
 
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
+    const teamMateIds = listOfPlayersToIdArray(selectedPlayers)
 
     const allData = {
       ...data,
@@ -95,32 +98,6 @@ export default function CreateTournament() {
       setSnackMessage("Tournament Added")
       setSnackBarOpen(true)
     }
-  }
-
-  function handleTeamMateChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    const { value } = e.target
-    setTempValue(value)
-  }
-
-  function handleTeamMatePress(e: React.KeyboardEvent<HTMLDivElement>) {
-    if (e.key === ",") {
-      const target = e.target as HTMLInputElement
-      const { value } = target
-      const id = +value.substring(0, value.length - 1)
-      if (Number.isNaN(id)) {
-        setTempValue("")
-        return
-      }
-      setTempValue("")
-      setTeamMateIds([...teamMateIds, +id])
-    }
-  }
-
-  function handleXClick(id: number) {
-    const newTeamMateIds = teamMateIds.filter((teamMateId) => teamMateId !== id)
-    setTeamMateIds(newTeamMateIds)
   }
 
   const handleClose = (reason?: string) => {
@@ -270,50 +247,30 @@ export default function CreateTournament() {
           )}
         />
 
-        <Button onClick={() => openDialog()}>Add TeamMates</Button>
-
-        <SimpleDialog open={open} onClose={handleClosedialog} />
+        <SimpleDialog
+          open={open}
+          onClose={handleClosedialog}
+          selectedPlayers={selectedPlayers}
+          setSelectedPlayers={setSelectedPlayers}
+        />
 
         <div>
-          <div className="flex items-center w-full gap-3">
-            <TextField
-              className="w-full"
-              label="Team Mate Ids (comma seperated)"
-              variant="outlined"
-              autoComplete="off"
-              value={tempValue}
-              onChange={(e) => handleTeamMateChange(e)}
-              onKeyUp={(e) => handleTeamMatePress(e)}
-            />
-            <div className="flex flex-col">
-              <Tooltip
-                title={
-                  <div>
-                    {/* Select from list <br /> */}
-                    Write Osu user Id <br />
-                    Then press , (Comma) <br />
-                  </div>
-                }
-              >
-                <InfoIcon />
-              </Tooltip>
-              {/* // TODO Maybe add quick add button */}
-              {/* <Button>Quick Add</Button> */}
-            </div>
-          </div>
+          <Button onClick={() => openDialog()}>Add TeamMates</Button>
           <div className="flex flex-wrap gap-2 mt-2">
-            {teamMateIds.map((id) => (
-              <div
-                key={id}
-                className="flex items-center bg-[#7f4b62] rounded-md py-1 px-2"
-              >
-                <p>{id}</p>
-                <TbX
-                  onClick={() => handleXClick(id)}
-                  className="ml-2 hover:bg-red-500 hover:text-white rounded-full bg-white text-red-500 hover:cursor-pointer"
-                />
-              </div>
-            ))}
+            {selectedPlayers.length ? (
+              <>
+                {selectedPlayers.map((p) => (
+                  <NameCard
+                    key={p.id}
+                    selectedPlayers={selectedPlayers}
+                    setSelectedPlayers={setSelectedPlayers}
+                    player={p}
+                  />
+                ))}
+              </>
+            ) : (
+              <p className="pl-2">No team mates added</p>
+            )}
           </div>
         </div>
 
