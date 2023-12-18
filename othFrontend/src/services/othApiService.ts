@@ -6,7 +6,7 @@ let OTH_API_URL: string
 if (process.env.NODE_ENV === "production") {
   OTH_API_URL = "https://oth-api.azurewebsites.net/api/v1"
 } else if (process.env.NODE_ENV === "development") {
-  OTH_API_URL = "https://localhost:5110/api/v1"
+  OTH_API_URL = "http://localhost:5110/api/v1"
 }
 
 export async function AddPlayerAsync(id: number, token: string): Promise<void> {
