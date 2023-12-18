@@ -153,6 +153,30 @@ export default function CreateTournament() {
           autoComplete="off"
         />
 
+        <div>
+          <Button onClick={() => openDialog()} variant="outlined">
+            Add TeamMates
+          </Button>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {selectedPlayers.length ? (
+              <>
+                {selectedPlayers.map((p) => (
+                  <NameCard
+                    key={p.id}
+                    selectedPlayers={selectedPlayers}
+                    setSelectedPlayers={setSelectedPlayers}
+                    player={p}
+                  />
+                ))}
+              </>
+            ) : (
+              <p className="pl-2">
+                No team mates added (don&#39;t add if solo)
+              </p>
+            )}
+          </div>
+        </div>
+
         <TextField
           label="Rank Range"
           {...register("rankRange")}
@@ -215,26 +239,6 @@ export default function CreateTournament() {
           selectedPlayers={selectedPlayers}
           setSelectedPlayers={setSelectedPlayers}
         />
-
-        <div>
-          <Button onClick={() => openDialog()}>Add TeamMates</Button>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {selectedPlayers.length ? (
-              <>
-                {selectedPlayers.map((p) => (
-                  <NameCard
-                    key={p.id}
-                    selectedPlayers={selectedPlayers}
-                    setSelectedPlayers={setSelectedPlayers}
-                    player={p}
-                  />
-                ))}
-              </>
-            ) : (
-              <p className="pl-2">No team mates added</p>
-            )}
-          </div>
-        </div>
 
         <TextField
           multiline
