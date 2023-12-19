@@ -32,12 +32,6 @@ jobs:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8198a1dcfc0643c4b757442dde1ce34f }}/oth-api:${{ github.sha }}
         file: ./othApi/Dockerfile
-        build-args:  |
-          SUBABASE_CONNECTION=${{secrets.SUBABASE_CONNECTION}}
-          JWKS_URI=${{secrets.JWKS_URI}}
-          OSU_CLIENT_ID=${{secrets.OSU_CLIENT_ID}}
-          OSU_CLIENT_SECRET=${{secrets.OSU_CLIENT_SECRET}}
-          DISCORD_BOT_TOKEN=${{secrets.DISCORD_BOT_TOKEN}}
 
   deploy:
     runs-on: ubuntu-latest
