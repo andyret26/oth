@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_a11d917d36b84d4ab5ba2ca252e300fa }}/oth-api:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./othApi/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
