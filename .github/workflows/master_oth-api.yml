@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8198a1dcfc0643c4b757442dde1ce34f }}/oth-api:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8198a1dcfc0643c4b757442dde1ce34f }}/oth-api:latest
         file: ./othApi/Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'oth-api'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e9fde39d95b441d79ff961f09d418dd6 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8198a1dcfc0643c4b757442dde1ce34f }}/andy26/oth-api:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8198a1dcfc0643c4b757442dde1ce34f }}/oth-api:latest'
