@@ -75,10 +75,9 @@ namespace othApi.Controllers
             }
 
             var players = await _osuApiService.GetPlayers(new List<int> { id });
-            if (players == null)
-            {
-                return NotFound($"Player with id {id} not found");
-            }
+            if (players == null) return NotFound($"Player with id {id} not found");
+            if (players.Length == 0) return NotFound($"Player with id {id} not found");
+
 
             var addedPlayer = _playerService.Post(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);

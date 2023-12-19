@@ -10,7 +10,6 @@ namespace othApi.Services.OsuApi;
 
 class OsuApiService : IOsuApiService
 {
-    private readonly string BaseUrl = "https://osu.ppy.sh/api/v2";
     private readonly IMapper _mapper;
     private readonly IPlayerService _playerService;
 
