@@ -48,4 +48,4 @@ jobs:
         app-name: 'oth-api'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_f4b1664435e5412d9774e0e6654d0ba1 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_a11d917d36b84d4ab5ba2ca252e300fa }}/oth-api:${{ github.sha }}'
+        images: 'index.docker.io/andy26/oth-api:${{ github.sha }}'
