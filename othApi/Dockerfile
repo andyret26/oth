@@ -5,6 +5,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+
 ARG SUBABASE_CONNECTION
 ARG JWKS_URI
 ARG OSU_CLIENT_ID
@@ -16,8 +19,6 @@ ENV OSU_CLIENT_ID=${OSU_CLIENT_ID}
 ENV OSU_CLIENT_SECRET=${OSU_CLIENT_SECRET}
 ENV DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
 COPY ["othApi/othApi.csproj", "."]
 RUN dotnet restore "./othApi.csproj"
 COPY . .
