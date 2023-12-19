@@ -80,5 +80,3 @@ Thumbs.db
 # Webpack cache
 node_modules/.cache/
 */google-service-account.json
-*.yaml
-*.yml

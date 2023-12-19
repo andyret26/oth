@@ -1,0 +1,59 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - oth-api
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to container registry
+        uses: docker/login-action@v2
+        with:
+          registry: https://index.docker.io/v1/
+          username: ${{ secrets.AzureAppService_ContainerUsername_ac5481fef2dc43eaa21e6c45247b8662 }}
+          password: ${{ secrets.AzureAppService_ContainerPassword_6b671e6483204ff49dbea5389ba2cfc9 }}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ac5481fef2dc43eaa21e6c45247b8662 }}/andy26 / oth-api:${{ github.sha }}
+          file: ./othApi/Dockerfile
+          env:
+          SUBABASE_CONNECTION: ${{secrets.SUBABASE_CONNECTION}}
+          JWKS_URI: ${{secrets.JWKS_URI}}
+          OSU_CLIENT_ID: ${{secrets.OSU_CLIENT_ID}}
+          OSU_CLIENT_SECRET: ${{secrets.OSU_CLIENT_SECRET}}
+          DISCORD_BOT_TOKEN: ${{secrets.DISCORD_BOT_TOKEN}}
+          
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+        name: 'production'
+        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'oth-api'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8a125e2363904f66a4e3553c969e03e9 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ac5481fef2dc43eaa21e6c45247b8662 }}/andy26 / oth-api:${{ github.sha }}'
