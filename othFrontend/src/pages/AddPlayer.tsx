@@ -43,7 +43,10 @@ export default function AddPlayer() {
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
-          toast.error("Player already in tournament")
+          toast.error(err.response.data)
+        }
+        if (err.response?.status === 404) {
+          toast.error(err.response.data)
         }
       }
     } finally {
