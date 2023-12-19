@@ -71,7 +71,7 @@ namespace othApi.Controllers
         public async Task<ActionResult<PlayerDto>> PostPlayer(int id)
         {
             if(_playerService.Exists(id)){
-                return Conflict($"Player with id {id} already exists in DB");
+                return Conflict($"Player with id {id} already exists");
             }
 
             var players = await _osuApiService.GetPlayers(new List<int> { id });
@@ -102,7 +102,7 @@ namespace othApi.Controllers
             }
             catch (AlreadyExistException)
             {
-                return Conflict($"Player with username {username} already exists in DB");
+                return Conflict($"Player '{username}' already exists");
             }
             catch (NotFoundException)
             {
