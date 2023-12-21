@@ -91,7 +91,9 @@ namespace othApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public ActionResult PutTournament(int id, [FromBody] TournamentDto tournamentDto) {
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult PutTournament(int id, [FromBody] TournamentPutDto tournamentDto) {
             var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             _logger.LogInformation("User with id {id} is trying to update tournament with id {tournamentId}", authSub.Split("|")[2], id);
             if(authSub.Split("|")[2] != tournamentDto.AddedById.ToString()) {
@@ -101,7 +103,15 @@ namespace othApi.Controllers
 
             try
             {
-                _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+                var updatedTourney1 =  _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+                var updatedTourney2 = _tournamentService.UpdateTeamMates(id, tournamentDto.TeamMateIds);
+                if(updatedTourney1 == null || updatedTourney2 == null) {
+                    return NotFound(new { 
+                        detail = "One or more players do not exist in the database",
+                        type = "NotFound",
+                        status = "404",
+                     });
+                }
                 
             }
             catch (ConflitctException)

@@ -142,4 +142,16 @@ public class TournamentService : ITournamentService
             return false;
         }
     }
+
+    public Tournament? UpdateTeamMates(int tournamentId, int[] TeamIds)
+    {
+        var teamMates = _db.Players.Where((p) => TeamIds.Contains(p.Id)).ToList();
+
+        var tournament = _db.Tournaments.Include(t => t.TeamMates).SingleOrDefault((t) => t.Id == tournamentId);
+        if (tournament == null) return null;
+
+        tournament.TeamMates = teamMates;
+        _db.SaveChanges();
+        return tournament;
+    }
 }

@@ -13,6 +13,7 @@ namespace othApi.Services.Mappers
             CreateMap<TournamentDto, Tournament>();
             CreateMap<Tournament, Tournament>();
             CreateMap<Tournament, TournamentWithoutPlayersDto>();
+            CreateMap<TournamentPutDto, Tournament>();
         }
     }
 }
