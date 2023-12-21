@@ -23,19 +23,21 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           <TbEdit size={20} />
         </Link>
       ) : null}
-      <div className="w-full flex justify-between mt-2">
-        <div className="flex flex-col items-center">
-          <p className={`t-placement ${t.placement.substring(1, 3)}`}>
-            {t.placement === "Did Not Qualify"
-              ? "DNQ"
-              : t.placement.split("(")[0]}
-          </p>
-          <p className="t-seed">Seed: {t.seed}</p>
-        </div>
-        <p className="pl-3">{t.rankRange}</p>
+      {t.seed ? (
+        <div className="w-full flex justify-between mt-2">
+          <div className="flex flex-col items-center">
+            <p className={`t-placement ${t.placement.substring(1, 3)}`}>
+              {t.placement === "Did Not Qualify"
+                ? "DNQ"
+                : t.placement.split("(")[0]}
+            </p>
+            <p className="t-seed">Seed: {t.seed}</p>
+          </div>
+          <p className="pl-3">{t.rankRange}</p>
 
-        <p className="text-white/75">{dayjs(t.date).format("DD MMM YYYY")}</p>
-      </div>
+          <p className="text-white/75">{dayjs(t.date).format("DD MMM YYYY")}</p>
+        </div>
+      ) : null}
 
       <div className="flex gap-2 absolute bottom-2 left-3 text-xs font-medium">
         {t.forumPostLink ? (
