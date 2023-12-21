@@ -19,7 +19,7 @@ const ChooseTeamSearch = (props: CompProps) => {
   }
 
   const onPlayerClick = (player: PlayerMin) => {
-    if (selectedPlayers.includes(player)) return
+    if (selectedPlayers.some((p) => p.id === player.id)) return
     setSelectedPlayers([...selectedPlayers, player])
   }
 
@@ -62,7 +62,7 @@ const ChooseTeamSearch = (props: CompProps) => {
                 <p className="text-xs">{p.id}</p>
               </div>
               <div className="bg-[var(--bg2)] w-5 h-5 flex items-center justify-center rounded-full hover:bg-[var(--bg1)]">
-                {selectedPlayers.includes(p) ? (
+                {selectedPlayers.some((pl) => pl.id === p.id) ? (
                   <TbCheck className="rounded-full bg-white text-green-500 " />
                 ) : null}
               </div>
