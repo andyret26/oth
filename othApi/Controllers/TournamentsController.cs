@@ -3,6 +3,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 using othApi.Data.Exceptions;
@@ -16,6 +17,7 @@ namespace othApi.Controllers
     [ApiController]
     [Produces("application/Json")]
     [Consumes("application/Json")]
+    [EnableRateLimiting("fixed")]
     public class TournamentsController : ControllerBase
     {
         private readonly ILogger<TournamentsController> _logger;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Discord.WebSocket;
 using Newtonsoft.Json;
 using othApi.Data.Exceptions;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace othApi.Controllers
 {
@@ -14,6 +15,7 @@ namespace othApi.Controllers
     [ApiController]
     [Produces("application/Json")]
     [Consumes("application/Json")]
+    [EnableRateLimiting("fixed")]
     public class PlayerController : ControllerBase
     {
         private readonly IPlayerService _playerService;

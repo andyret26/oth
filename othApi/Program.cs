@@ -10,6 +10,8 @@ using System.Reflection;
 using othApi.Services.OsuApi;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -91,6 +93,14 @@ builder.Services.AddSwaggerGen(c =>
 // Add AutoMapper service
 builder.Services.AddAutoMapper(typeof(Program));
 
+// Add rateLimiter
+builder.Services.AddRateLimiter(_ => _
+    .AddFixedWindowLimiter(policyName: "fixed", options =>
+    {
+        options.PermitLimit = 30;
+        options.Window = TimeSpan.FromSeconds(60);
+    }));
+
 
 var app = builder.Build();
 var discordClient = app.Services.GetService<DiscordSocketClient>();
@@ -113,6 +123,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseRateLimiter();
 app.Run();
 
 
