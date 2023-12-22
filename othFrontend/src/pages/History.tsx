@@ -57,13 +57,17 @@ export default function History() {
       return
 
     let updatedTournaments
-    if (sortValue === "Date") {
+    if (sortValue === "Date (Old First)") {
       updatedTournaments = tournaments.sort(
         (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix()
       )
     } else if (sortValue === "Name") {
       updatedTournaments = tournaments.sort((a, b) =>
         a.name.localeCompare(b.name)
+      )
+    } else if (sortValue === "Date (New First)") {
+      updatedTournaments = tournaments.sort(
+        (a, b) => dayjs(b.date).unix() - dayjs(a.date).unix()
       )
     }
 
@@ -84,8 +88,9 @@ export default function History() {
           onChange={(e) => handleSortChange(e.target.value)}
           className="bg-[#4e3c44] p-1 rounded-md"
         >
-          <option value="Date">Date</option>
+          <option value="Date (Old First)">Date (Old First)</option>
           <option value="Name">Name</option>
+          <option value="Date (New First)">Date (New First)</option>
         </select>
       </div>
       {content}
