@@ -80,6 +80,7 @@ public class TournamentService : ITournamentService
 
         if (tournamentToUpdate != null)
         {
+            if (tournamentToUpdate.AddedBy != tournament.AddedBy) throw new UnauthorizedAccessException();
             if(tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName) {
                 _mapper.Map(tournament, tournamentToUpdate);
                 _db.SaveChanges();

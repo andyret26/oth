@@ -120,7 +120,10 @@ namespace othApi.Controllers
             {
                 return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name", });
             }
-
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized(new { message = "Faild to authorize Update"});
+            }
             catch (Exception err)
             {
                 Console.WriteLine(err);
