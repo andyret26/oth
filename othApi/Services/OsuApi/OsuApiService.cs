@@ -1,4 +1,5 @@
 
+using System.Net;
 using AutoMapper;
 using Newtonsoft.Json;
 using othApi.Data;
@@ -140,6 +141,9 @@ class OsuApiService : IOsuApiService
                     }
                     return players[0];
                 }
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound){
+                throw new NotFoundException();
             }
             else
             {
