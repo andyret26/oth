@@ -133,6 +133,13 @@ namespace othApi.Controllers
             return _playerService.Exists(id);
         }
 
+        [HttpGet("stats/{id}")]
+        public async Task<ActionResult> PlayerStats(int id)
+        {
+            await _playerService.GetStats(id);
+            return Ok();
+        }
+
 
         private async Task Notify(int id, string username){
             try

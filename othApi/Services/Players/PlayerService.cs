@@ -1,6 +1,10 @@
 using System.Data.SqlClient;
+using System.Reflection;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using othApi.Data;
+using othApi.Data.Dtos;
 using othApi.Data.Entities;
 
 namespace othApi.Services.Players;
@@ -8,9 +12,12 @@ namespace othApi.Services.Players;
 public class PlayerService : IPlayerService
 {
     private readonly DataContext _db;
-    public PlayerService(DataContext db)
+    private readonly IMapper _mapper;
+
+    public PlayerService(DataContext db, IMapper mapper)
     {
         _db = db;
+        _mapper = mapper;
     }
 
     public Player? Delete(int id)
@@ -138,5 +145,26 @@ public class PlayerService : IPlayerService
             Console.WriteLine(err.Message);
             throw;
         }
+    }
+
+    public async Task<bool> GetStats(int id)
+    {
+        // Unique TeamMates count
+        var tournaments = await _db.Tournaments.Where(t => t.TeamMates!.Any(p => p.Id == id)).Include(t => t.TeamMates).ToListAsync();
+        var idList = new List<int>();
+        foreach (var t in tournaments)
+        {
+            foreach(var p in t.TeamMates!)
+            {
+                if(!idList.Contains(p.Id))
+                {
+                    idList.Add(p.Id);
+                }
+            }   
+        }
+
+        
+        Console.WriteLine(idList.Count);
+        return true;
     }
 }

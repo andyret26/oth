@@ -12,5 +12,6 @@ public interface IPlayerService
     Player? Update(Player player);
     Player? Delete(int id);
     bool Exists(int id);
+    Task<bool> GetStats(int id);
 
 }
