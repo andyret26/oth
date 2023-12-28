@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using System.IO.Compression;
 using System.Reflection;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -147,24 +148,74 @@ public class PlayerService : IPlayerService
         }
     }
 
-    public async Task<bool> GetStats(int id)
+    public PlayerStats GetStats(int id)
     {
-        // Unique TeamMates count
-        var tournaments = await _db.Tournaments.Where(t => t.TeamMates!.Any(p => p.Id == id)).Include(t => t.TeamMates).ToListAsync();
-        var idList = new List<int>();
-        foreach (var t in tournaments)
+
+        var totalTournaments = _db.Players
+            .Where(p => p.Id == id)
+            .Select(p => p.Tournaments!.Count)
+            .FirstOrDefault();
+
+        var uniqueTeamMatesCount = _db.Tournaments
+            .Where(t => t.TeamMates!.Any(p => p.Id == id))
+            .SelectMany(t => t.TeamMates!)
+            .Select(p => p.Id)
+            .Distinct()
+            .ToList().Count;
+
+        var uniqueFlagCount = _db.Tournaments
+            .Where(t => t.TeamMates!.Any(p => p.Id == id))
+            .SelectMany(t => t.TeamMates!)
+            .Select(p => p.Country_code)
+            .Distinct()
+            .ToList().Count;
+
+        var wins = _db.Players
+            .Where(p => p.Id == id)
+            .Select(p => new {
+                firsts = p.Tournaments!.Count(t => t.Placement == "1st"),
+                seconds = p.Tournaments!.Count(t => t.Placement == "2nd"),
+                thirds = p.Tournaments!.Count(t => t.Placement == "3rd")
+            })
+            .FirstOrDefault();
+
+        var firstRate = wins!.firsts/(decimal)totalTournaments*100;
+        var top3Rate = (wins!.firsts + wins.seconds + wins.thirds)/(decimal)totalTournaments*100;
+
+
+
+        var allplace = _db.Tournaments
+            .Where(t => t.TeamMates!.Any(p => p.Id == id))
+            .Select(t => ParsePlacement(t.Placement!))
+            .ToList();
+
+        var avgPlace = Convert.ToDecimal(allplace.Average());
+        
+        return new PlayerStats{
+            AvgPlacement=Math.Round(avgPlace, 1),
+            FirstPlaces=wins.firsts,
+            FirstRate=Math.Round(firstRate, 1),
+            SecondPlaces=wins.seconds,
+            ThirdPlaces=wins.thirds,
+            Top3Rate=Math.Round(top3Rate, 1),
+            TotalTournaments=totalTournaments,
+            UniqueFlagCount=uniqueFlagCount,
+            UniqueTeamMatesCount=uniqueTeamMatesCount
+        };
+    }
+
+    private static int? ParsePlacement(string placement)
+    {
+        if (placement == "1st" || placement == "2nd" || placement == "3rd")
         {
-            foreach(var p in t.TeamMates!)
-            {
-                if(!idList.Contains(p.Id))
-                {
-                    idList.Add(p.Id);
-                }
-            }   
+            return int.Parse(placement[..1]);
+        }
+        else if (placement != "Did Not Qualify")
+        {
+            return int.Parse(placement.Split(" ")[1]);
         }
 
-        
-        Console.WriteLine(idList.Count);
-        return true;
+        // Handle other cases or return a default value if needed
+        return null;
     }
 }

@@ -26,3 +26,16 @@ public class Osu
     public int? Global_rank { get; set; }
 
 }
+
+
+public class PlayerStats {
+    public int TotalTournaments { get; set; }
+    public int UniqueTeamMatesCount { get; set; }
+    public int UniqueFlagCount { get; set; }
+    public int FirstPlaces { get; set; }
+    public int SecondPlaces { get; set; }
+    public int ThirdPlaces { get; set; }
+    public decimal FirstRate { get; set; }
+    public decimal Top3Rate { get; set; }
+    public decimal? AvgPlacement { get; set; }
+}

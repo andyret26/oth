@@ -134,10 +134,10 @@ namespace othApi.Controllers
         }
 
         [HttpGet("stats/{id}")]
-        public async Task<ActionResult> PlayerStats(int id)
+        public ActionResult PlayerStats(int id)
         {
-            await _playerService.GetStats(id);
-            return Ok();
+            var playerStats = _playerService.GetStats(id);
+            return Ok(playerStats);
         }
 
 

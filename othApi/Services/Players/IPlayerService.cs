@@ -1,3 +1,4 @@
+using othApi.Data;
 using othApi.Data.Entities;
 
 namespace othApi.Services.Players;
@@ -12,6 +13,6 @@ public interface IPlayerService
     Player? Update(Player player);
     Player? Delete(int id);
     bool Exists(int id);
-    Task<bool> GetStats(int id);
+    PlayerStats GetStats(int id);
 
 }
