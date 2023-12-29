@@ -8,11 +8,13 @@ import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
 import "animate.css"
 import TournamentContainer from "../components/TournamentContainer"
+import HistorySearch from "../components/HistorySearch"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
   const location = useLocation()
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
+  const [tourneyNames, setTourneyNames] = useState<string[]>([])
   const [playerName, setPlayerName] = useState<string>("")
   const [logdinId, setLogdinId] = useState<number>(0)
   const [sortOpt, setSortOpt] = useState<string>("Date")
@@ -35,6 +37,7 @@ export default function History() {
       GetTournamentsByPlayerIdAsync(+id).then((res) => {
         setTournaments(res)
         setPlayerName(res[0].teamMates.find((p) => p.id === +id)!.username)
+        setTourneyNames(res.map((t) => t.name))
       })
     }
     getTournaments()
@@ -79,6 +82,7 @@ export default function History() {
         {playerName}&#39;s History
       </h1>
       <div className="flex gap-2 w-full items-center justify-center">
+        <HistorySearch listToSearch={tourneyNames} />
         <p className="text-white/90 text-center">Sort By: </p>
         <select
           name="sort"

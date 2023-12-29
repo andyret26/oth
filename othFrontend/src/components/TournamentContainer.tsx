@@ -1,4 +1,5 @@
 import { Tournament } from "../helpers/interfaces"
+import { FadeInOnScroll } from "./FadeInOnScroll"
 import TourneyCard from "./TourneyCard"
 
 interface CompProps {
@@ -12,8 +13,10 @@ export default function TournamentContainer({
 }: CompProps) {
   return (
     <div className="tourney-card-container">
-      {tournamentsList.map((t) => (
-        <TourneyCard tournament={t} logdinId={logdinId} />
+      {tournamentsList.map((t, i) => (
+        <FadeInOnScroll key={t.id} index={i} length={tournamentsList.length}>
+          <TourneyCard tournament={t} logdinId={logdinId} />
+        </FadeInOnScroll>
       ))}
     </div>
   )
