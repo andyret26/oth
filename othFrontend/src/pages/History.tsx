@@ -75,7 +75,7 @@ export default function History() {
   }
   return (
     <div className="history-page gap-2 page">
-      <h1 className="text-3xl pb-4 font-extrabold">
+      <h1 className="text-2xl  pb-4 font-extrabold sm:text-3xl">
         {playerName}&#39;s History
       </h1>
       <div className="flex gap-2 w-full items-center justify-center">
