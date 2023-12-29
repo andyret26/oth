@@ -1,20 +1,21 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { useEffect, useState } from "react"
+import { TbSearch, TbArrowsSort } from "react-icons/tb"
 import dayjs from "dayjs"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useLocation } from "react-router-dom"
+import { TextField } from "@mui/material"
 import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
 import { Tournament } from "../helpers/interfaces"
 import "../css/HistoryPage.css"
 import "animate.css"
 import TournamentContainer from "../components/TournamentContainer"
-import HistorySearch from "../components/HistorySearch"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
   const location = useLocation()
+  const [query, setQuery] = useState<string>("")
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
-  const [tourneyNames, setTourneyNames] = useState<string[]>([])
   const [playerName, setPlayerName] = useState<string>("")
   const [logdinId, setLogdinId] = useState<number>(0)
   const [sortOpt, setSortOpt] = useState<string>("Date")
@@ -27,7 +28,12 @@ export default function History() {
     content = <p>No Tournaments</p>
   } else {
     content = (
-      <TournamentContainer tournamentsList={tournaments} logdinId={logdinId} />
+      <TournamentContainer
+        tournamentsList={tournaments.filter((t) =>
+          t.name.toLowerCase().includes(query.toLowerCase())
+        )}
+        logdinId={logdinId}
+      />
     )
   }
 
@@ -37,7 +43,6 @@ export default function History() {
       GetTournamentsByPlayerIdAsync(+id).then((res) => {
         setTournaments(res)
         setPlayerName(res[0].teamMates.find((p) => p.id === +id)!.username)
-        setTourneyNames(res.map((t) => t.name))
       })
     }
     getTournaments()
@@ -81,21 +86,33 @@ export default function History() {
       <h1 className="text-2xl  pb-4 font-extrabold sm:text-3xl">
         {playerName}&#39;s History
       </h1>
-      <div className="flex gap-2 w-full items-center justify-center">
-        <HistorySearch listToSearch={tourneyNames} />
-        <p className="text-white/90 text-center">Sort By: </p>
-        <select
-          name="sort"
-          id="sort"
-          placeholder="Sort By"
-          value={sortOpt}
-          onChange={(e) => handleSortChange(e.target.value)}
-          className="bg-[#4e3c44] p-1 rounded-md"
-        >
-          <option value="Date (Old First)">Date (Old First)</option>
-          <option value="Name">Name</option>
-          <option value="Date (New First)">Date (New First)</option>
-        </select>
+      <div className="flex gap-14 w-full items-center justify-center">
+        <TextField
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search..."
+          InputProps={{
+            startAdornment: <TbSearch size={20} className="mr-3" />,
+          }}
+          size="small"
+          sx={{ width: "160px" }}
+        />
+
+        <div className="flex items-center gap-1">
+          <TbArrowsSort className="text-2xl" />
+          <select
+            name="sort"
+            id="sort"
+            placeholder="Sort By"
+            value={sortOpt}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="bg-[#4e3c44] p-1 rounded-md"
+          >
+            <option value="Date (Old First)">Date (Old First)</option>
+            <option value="Name">Name</option>
+            <option value="Date (New First)">Date (New First)</option>
+          </select>
+        </div>
       </div>
       {content}
     </div>
