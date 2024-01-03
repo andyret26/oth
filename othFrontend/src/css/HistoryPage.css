@@ -47,13 +47,11 @@
 .t-name {
     font-weight: bold;
     width: 100%;
-    max-width: 270px;
+    max-width: 320px;
     text-wrap: nowrap;
     overflow: hidden;
     font-size: large;
     text-overflow: ellipsis;
-    border-bottom: 5px solid #ff66ab;
-    border-radius: 5px;
     text-align: center;
 }
 

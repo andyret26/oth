@@ -22,7 +22,9 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
         }}
       />
       <div id="tourney-card" className="tourney-card">
-        <p className="t-name z-10">{t.name}</p>
+        <div className="border-b-[5px] rounded-md w-full flex justify-center border-[#ff66ab]">
+          <p className="t-name z-10">{t.name}</p>
+        </div>
         {logdinId === t.addedById ? (
           <Link
             className="absolute right-4 top-2 text-white/75 rounded-lg p-1 hover:bg-[#6c585e]"
