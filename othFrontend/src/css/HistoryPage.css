@@ -17,12 +17,22 @@
 
 }
 
+.bg-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    filter: blur(2px); /* Adjust the blur intensity as needed */
+    z-index: -1;
+}
+
 .tourney-card {
-    background-color: var(--bg2);
     width: 25rem;
     height: 175px;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
