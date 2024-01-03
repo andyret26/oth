@@ -34,11 +34,10 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <HashRouter>
           {isRunning === null ? (
-            <>
+            <div className="mt-20 flex flex-col justify-center items-center">
               <CircularProgress />
-              <p>Starting up server pls wait...</p>
-              <p>If it takes to long, refresh page</p>
-            </>
+              <p>Starting up server please wait...</p>
+            </div>
           ) : (
             <>
               <NavBar />
