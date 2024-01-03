@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { TbEdit, TbTournament } from "react-icons/tb"
 import dayjs from "dayjs"
 import { Tournament } from "../helpers/interfaces"
+import ShowTeamBox from "./ShowTeamBox"
 
 interface CompProps {
   tournament: Tournament
@@ -87,18 +88,7 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           </div>
         ) : null}
 
-        {showTeam ? (
-          <div
-            id="team-mates"
-            className="bg-[#4e3c44]/90 flex flex-wrap gap-x-3 gap-y-1 justify-center w-48 absolute top-[7.5rem] rounded-md p-2 animate__animated animate__fadeIn animate__faster"
-          >
-            {t.teamMates.map((tm) => (
-              <div key={tm.id} className="">
-                {tm.username}
-              </div>
-            ))}
-          </div>
-        ) : null}
+        {showTeam ? <ShowTeamBox t={t} /> : null}
         <div className="text-sm flex flex-col items-center absolute bottom-3 right-4">
           <p>{t.teamSize}</p>
           <p>{t.format}</p>
