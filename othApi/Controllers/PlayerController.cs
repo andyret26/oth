@@ -136,6 +136,7 @@ namespace othApi.Controllers
         [HttpGet("stats/{id}")]
         public ActionResult PlayerStats(int id)
         {
+            if(!_playerService.Exists(id)) return NotFound($"Player with id {id} not found");
             var playerStats = _playerService.GetStats(id);
             return Ok(playerStats);
         }
