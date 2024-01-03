@@ -63,7 +63,7 @@ const Search = () => {
       />
 
       {searchPlayers ? (
-        <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md">
+        <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md max-h-56 overflow-y-scroll">
           {searchPlayers?.map((p) => (
             <div key={p.id} className="hover:bg-[#6b535e]">
               <Link to={`/history/${p.id}`} onClick={() => handleSearchClick()}>
