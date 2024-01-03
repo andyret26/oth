@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound"
 import { PlayerMin } from "./helpers/interfaces"
 import { GetPlayersMinAsync } from "./services/othApiService"
 import AddPlayer from "./pages/AddPlayer"
+import Stats from "./pages/Stats"
 
 function App() {
   const [isRunning, setIsRunnning] = useState<PlayerMin[] | null>(null)
@@ -67,6 +68,14 @@ function App() {
                       element={
                         <PrivateRoute>
                           <AddPlayer />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/player/:id/stats"
+                      element={
+                        <PrivateRoute>
+                          <Stats />
                         </PrivateRoute>
                       }
                     />

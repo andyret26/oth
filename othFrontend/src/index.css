@@ -102,6 +102,10 @@ p {
     height: 80vh;
 }
 
+.s {
+    margin-left: 0.5rem;
+}
+
 @media (min-widt: 640px){
     .page {
         padding: 10px 20px
