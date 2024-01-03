@@ -1,6 +1,11 @@
 import axios, { AxiosResponse, isAxiosError } from "axios"
 import toast from "react-hot-toast"
-import { TournamentPost, Tournament, PlayerMin } from "../helpers/interfaces"
+import {
+  TournamentPost,
+  Tournament,
+  PlayerMin,
+  PlayerStats,
+} from "../helpers/interfaces"
 
 let OTH_API_URL: string
 if (process.env.NODE_ENV === "production") {
@@ -44,6 +49,11 @@ export async function GetTournamentsByPlayerIdAsync(
   id: number
 ): Promise<Tournament[]> {
   const response = await axios.get(`${OTH_API_URL}/tournament/player/${id}`)
+  return response.data
+}
+
+export async function GetPlayerStatsAsync(id: number): Promise<PlayerStats> {
+  const response = await axios.get(`${OTH_API_URL}/player/stats/${id}`)
   return response.data
 }
 

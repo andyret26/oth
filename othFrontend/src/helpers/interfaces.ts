@@ -71,3 +71,15 @@ export interface PlayerMin {
   id: number
   username: string
 }
+
+export interface PlayerStats {
+  totalTournaments: number
+  uniqueTeamMatesCount: number
+  uniqueFlagCount: number
+  firstPlaces: number
+  secondPlaces: number
+  thirdPlaces: number
+  firstRate: number
+  top3Rate: number
+  avgPlacement: number
+}
