@@ -57,6 +57,7 @@ const Search = () => {
         size="small"
         onChange={handleChange}
         placeholder="Search Player"
+        data-cy="nav-search"
         InputProps={{
           startAdornment: <TbSearch size={20} className="mr-3" />,
         }}
@@ -66,7 +67,11 @@ const Search = () => {
         <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md max-h-56 overflow-y-scroll">
           {searchPlayers?.map((p) => (
             <div key={p.id} className="hover:bg-[#6b535e]">
-              <Link to={`/history/${p.id}`} onClick={() => handleSearchClick()}>
+              <Link
+                to={`/history/${p.id}`}
+                onClick={() => handleSearchClick()}
+                data-cy={`player-${p.id}`}
+              >
                 <p className="pl-3 py-1">{p.username}</p>
               </Link>
             </div>
