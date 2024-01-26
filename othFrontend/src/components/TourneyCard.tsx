@@ -60,10 +60,18 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           {t.bracketLink ? (
             <a
               href={t.bracketLink}
-              className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+              className="border-solid border-2 border-[#02b6c3] p-1 text-[#02b6c3] rounded-md hover:bg-[#02b6c3] hover:text-white"
             >
               <TbTournament size={17} className="inline mr-1" />
               <p className="inline">Bracket</p>
+            </a>
+          ) : null}
+          {t.mainSheetLink ? (
+            <a
+              href={t.mainSheetLink}
+              className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+            >
+              <p>Sheet</p>
             </a>
           ) : null}
         </div>
