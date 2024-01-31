@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { TbEdit, TbTournament } from "react-icons/tb"
+import { TbEdit, TbTournament, TbFileSpreadsheet } from "react-icons/tb"
 import dayjs from "dayjs"
 import { Tournament } from "../helpers/interfaces"
 import ShowTeamBox from "./ShowTeamBox"
@@ -71,7 +71,8 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
               href={t.mainSheetLink}
               className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
             >
-              <p>Sheet</p>
+              <TbFileSpreadsheet size={17} className="inline mr-1" />
+              <p className="inline">Sheet</p>
             </a>
           ) : null}
         </div>
