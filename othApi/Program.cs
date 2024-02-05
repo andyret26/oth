@@ -12,16 +12,15 @@ using Discord;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using othApi.Services.Discord;
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IOsuApiService, OsuApiService>();
-builder.Services.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
-{
-    LogLevel = LogSeverity.Error
-}));
+builder.Services.AddScoped<IDiscordService, DiscordService>();
+builder.Services.AddSingleton(new DiscordSocketClient());
 
 builder.Services.AddCors();
 
@@ -51,9 +50,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddDbContext<DataContext>(options => {
-        // connect to postgres with env
-        options.UseNpgsql(Environment.GetEnvironmentVariable("SUPABASE_CONNECTION"));
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    // connect to postgres with env
+    options.UseNpgsql(Environment.GetEnvironmentVariable("SUPABASE_CONNECTION"));
 });
 
 builder.Services.AddControllers();
@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Oth!", Version = "v1" });
 
-    
+
     // Add JWT Authentication support in Swagger
     var securityScheme = new OpenApiSecurityScheme
     {
@@ -128,13 +128,13 @@ app.Run();
 
 
 static async Task<SecurityKey[]> FetchJwksAsync(string jwksUri)
+{
+    using (var httpClient = new HttpClient())
     {
-        using (var httpClient = new HttpClient())
-        {
-            var jwksJson = await httpClient.GetStringAsync(jwksUri);
+        var jwksJson = await httpClient.GetStringAsync(jwksUri);
 
-            // Parse the JWKS JSON and build the SecurityKey array
-            var jwks = JsonWebKeySet.Create(jwksJson);
-            return jwks.Keys.ToArray();
-        }
+        // Parse the JWKS JSON and build the SecurityKey array
+        var jwks = JsonWebKeySet.Create(jwksJson);
+        return jwks.Keys.ToArray();
     }
+}

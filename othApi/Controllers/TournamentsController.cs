@@ -55,18 +55,21 @@ namespace othApi.Controllers
         [Authorize]
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
-            if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name)) {
-                return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name",});
+            if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name))
+            {
+                return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name", });
             }
 
             var tournamentToPost = _mapper.Map<Tournament>(tournament);
             var addedTournament = _tournamentService.Post(tournamentToPost);
 
 
-            if (tournament.TeamMateIds != null) {
+            if (tournament.TeamMateIds != null)
+            {
                 // Check if players exists in db if not add them
                 var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMateIds);
-                if (playersDoNotExists != null) {
+                if (playersDoNotExists != null)
+                {
                     foreach (var player in playersDoNotExists)
                     {
                         _playerService.Post(player);
@@ -75,16 +78,18 @@ namespace othApi.Controllers
 
                 //  Get Players from db
                 var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMateIds);
-                if(teamMatesToAdd == null) {
+                if (teamMatesToAdd == null)
+                {
                     return NotFound("One or more players do not exist in the database");
                 }
                 var resTournament = _tournamentService.AddTeamMates(teamMatesToAdd, addedTournament.Id);
-                
+
                 var tDto = _mapper.Map<TournamentDto>(resTournament);
 
                 return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
             }
-            else {
+            else
+            {
                 var tDto = _mapper.Map<TournamentDto>(addedTournament);
 
                 return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
@@ -95,26 +100,30 @@ namespace othApi.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult PutTournament(int id, [FromBody] TournamentPutDto tournamentDto) {
+        public ActionResult PutTournament(int id, [FromBody] TournamentPutDto tournamentDto)
+        {
             var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             _logger.LogInformation("User with id {id} is trying to update tournament with id {tournamentId}", authSub.Split("|")[2], id);
-            if(authSub.Split("|")[2] != tournamentDto.AddedById.ToString()) {
-                return Unauthorized(new { message = "Faild to authorize Update"});
+            if (authSub.Split("|")[2] != tournamentDto.AddedById.ToString())
+            {
+                return Unauthorized(new { message = "Faild to authorize Update" });
             }
 
 
             try
             {
-                var updatedTourney1 =  _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
+                var updatedTourney1 = _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
                 var updatedTourney2 = _tournamentService.UpdateTeamMates(id, tournamentDto.TeamMateIds);
-                if(updatedTourney1 == null || updatedTourney2 == null) {
-                    return NotFound(new { 
+                if (updatedTourney1 == null || updatedTourney2 == null)
+                {
+                    return NotFound(new
+                    {
                         detail = "One or more players do not exist in the database",
                         type = "NotFound",
                         status = "404",
-                     });
+                    });
                 }
-                
+
             }
             catch (ConflitctException)
             {
@@ -122,7 +131,7 @@ namespace othApi.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized(new { message = "Faild to authorize Update"});
+                return Unauthorized(new { message = "Faild to authorize Update" });
             }
             catch (Exception err)
             {
@@ -140,10 +149,11 @@ namespace othApi.Controllers
         //     _tournamentService.Delete(id);
         //     return NoContent();
         // }
-        
+
         [HttpGet("player/{id}")]
         // Get tournaments where player id is {id}
-        public ActionResult<List<TournamentDto>> GetTournamentsByPlayerId(int id) {
+        public ActionResult<List<TournamentDto>> GetTournamentsByPlayerId(int id)
+        {
             var tournaments = _tournamentService.GetByPlayerId(id);
             var tournamentDtos = _mapper.Map<List<TournamentDto>>(tournaments);
             return tournamentDtos;
