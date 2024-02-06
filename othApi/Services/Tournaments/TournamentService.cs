@@ -81,15 +81,20 @@ public class TournamentService : ITournamentService
         if (tournamentToUpdate != null)
         {
             if (tournamentToUpdate.AddedBy != tournament.AddedBy) throw new UnauthorizedAccessException();
-            if(tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName) {
+            if (tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName)
+            {
                 _mapper.Map(tournament, tournamentToUpdate);
                 _db.SaveChanges();
                 return tournamentToUpdate;
             }
-            else {
-                if (TournamentWithTeamNameExists(tournament.TeamName, tournament.Name)) {
+            else
+            {
+                if (TournamentWithTeamNameExists(tournament.TeamName, tournament.Name))
+                {
                     throw new ConflitctException();
-                } else {
+                }
+                else
+                {
                     _mapper.Map(tournament, tournamentToUpdate);
                     _db.SaveChanges();
                     return tournamentToUpdate;
@@ -97,7 +102,8 @@ public class TournamentService : ITournamentService
             }
 
         }
-        else {
+        else
+        {
             return null;
         }
 

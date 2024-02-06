@@ -59,7 +59,8 @@ class OsuApiService : IOsuApiService
     }
 
 
-    public async Task<Player[]?> GetPlayers(List<int> ids) {
+    public async Task<Player[]?> GetPlayers(List<int> ids)
+    {
         string bearerToken = await GetToken();
 
         // Check if players already exist in DB
@@ -71,8 +72,9 @@ class OsuApiService : IOsuApiService
                 playerIdsToAdd.Add(id);
             }
         }
-        
-        if (playerIdsToAdd.Count == 0) {
+
+        if (playerIdsToAdd.Count == 0)
+        {
             Console.WriteLine("All players already exist in DB");
             return null;
         }
@@ -122,11 +124,11 @@ class OsuApiService : IOsuApiService
             http.DefaultRequestHeaders.Add("Accept", "application/json");
             http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
             HttpResponseMessage response = await http.GetAsync(url);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var respObj = JsonConvert.DeserializeObject<PlayerResponseData>(responseBody)!;
-                if(_playerService.Exists(respObj.Id))
+                if (_playerService.Exists(respObj.Id))
                 {
                     Console.WriteLine("Player already exists in DB");
                     throw new AlreadyExistException();
@@ -134,7 +136,7 @@ class OsuApiService : IOsuApiService
                 else
                 {
                     var players = await GetPlayers(new List<int> { respObj.Id });
-                    if(players == null)
+                    if (players == null)
                     {
                         Console.WriteLine("Player not found");
                         throw new NotFoundException();
@@ -142,7 +144,8 @@ class OsuApiService : IOsuApiService
                     return players[0];
                 }
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound){
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new NotFoundException();
             }
             else
@@ -150,8 +153,46 @@ class OsuApiService : IOsuApiService
                 throw new Exception($"Request failed with status code {response.StatusCode}");
             }
         }
+    }
 
-        throw new NotImplementedException();
+    public async Task<string> GetForumPostCover(string forumPostId)
+    {
+        string bearerToken = await GetToken();
+
+        var url = new Uri($"https://osu.ppy.sh/api/v2/forums/topics/{forumPostId}");
+        using (HttpClient http = new HttpClient())
+        {
+            http.DefaultRequestHeaders.Add("Accept", "application/json");
+            http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+            HttpResponseMessage response = await http.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var respObj = JsonConvert.DeserializeObject<TopicResponseObj>(responseBody)!;
+                var subStrings = respObj.Posts[0].Body.Raw.Split("img]");
+                var stringsWithImg = new List<string>();
+                foreach (var s in subStrings)
+                {
+                    if (s.Contains(".png") || s.Contains(".jpg") || s.Contains(".jpeg"))
+                    {
+                        stringsWithImg.Add(s.TrimEnd("/[".ToCharArray()));
+                    }
+                }
+
+                // System.Console.WriteLine("\n\n###SOMTHIG HAPPENING###\n\n");
+                // System.Console.WriteLine(JsonConvert.SerializeObject(stringsWithImg));
+                // System.Console.WriteLine("\n\n###SOMTHIG DONE###\n\n");
+                return stringsWithImg[0];
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new NotFoundException();
+            }
+            else
+            {
+                throw new Exception($"Request failed with status code {response.StatusCode}");
+            }
+        }
     }
 }
 
