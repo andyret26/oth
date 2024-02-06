@@ -53,6 +53,9 @@ namespace othApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
             if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name))
@@ -142,16 +145,10 @@ namespace othApi.Controllers
             return NoContent();
         }
 
-        // [HttpDelete("{id}")]
-        // [Authorize]
-        // public ActionResult DeleteTournament(int id)
-        // {
-        //     _tournamentService.Delete(id);
-        //     return NoContent();
-        // }
-
+        /**
+         * Get Tournaments by player id
+         */
         [HttpGet("player/{id}")]
-        // Get tournaments where player id is {id}
         public ActionResult<List<TournamentDto>> GetTournamentsByPlayerId(int id)
         {
             var tournaments = _tournamentService.GetByPlayerId(id);
