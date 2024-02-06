@@ -14,6 +14,7 @@ public class Tournament
     public string? TeamSize { get; set; }
     public string? Placement { get; set; }
     public string? Notes { get; set; }
+    public string? ImageLink { get; set; }
     public List<Player>? TeamMates { get; set; }
 
     public Player AddedBy { get; set; } = null!; // Add this property
