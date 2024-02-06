@@ -53,6 +53,8 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
             <a
               href={t.forumPostLink}
               className="border-solid border-2 border-[#ff66ab] p-1 text-[#ff66ab] rounded-md hover:bg-[#ff66ab] hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Forum Post
             </a>
@@ -61,6 +63,8 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
             <a
               href={t.bracketLink}
               className="border-solid border-2 border-[#02b6c3] p-1 text-[#02b6c3] rounded-md hover:bg-[#02b6c3] hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <TbTournament size={17} className="inline mr-1" />
               <p className="inline">Bracket</p>
@@ -70,6 +74,8 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
             <a
               href={t.mainSheetLink}
               className="border-solid border-2 border-[#88da20] p-1 text-[#88da20] rounded-md hover:bg-[#88da20] hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <TbFileSpreadsheet size={17} className="inline mr-1" />
               <p className="inline">Sheet</p>
