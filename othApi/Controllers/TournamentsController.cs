@@ -54,6 +54,7 @@ namespace othApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [EnableRateLimiting("fixed")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -110,6 +111,7 @@ namespace othApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
+        [EnableRateLimiting("fixed")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> PutTournament(int id, [FromBody] TournamentPutDto tournamentDto)
