@@ -36,6 +36,7 @@ export interface TournamentPost {
   teamSize: string | null
   placement: string | null
   notes: string | null
+  imageLink: string | null
   teamMateIds: number[] | string | null
   addedById: number
 }

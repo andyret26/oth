@@ -58,6 +58,7 @@ export default function CreateTournament() {
       setValue("forumPostLink", res.forumPostLink)
       setValue("mainSheetLink", res.mainSheetLink)
       setValue("bracketLink", res.bracketLink)
+      setValue("imageLink", res.imageLink)
       setSelectedFormat(res.format)
       setSelectedTeamSize(res.teamSize)
       setSelectedPlacement(res.placement)
@@ -127,7 +128,7 @@ export default function CreateTournament() {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
     const playersIdsToAdd = listOfPlayersToIdArray(selectedPlayers)
-    console.log(playersIdsToAdd)
+
     const allData = {
       ...data,
       date: date?.toISOString(),
@@ -136,8 +137,9 @@ export default function CreateTournament() {
       addedById: +osuId,
       id: pathname.split("/")[3],
     }
-    // TODO use othApiService to update db
+
     const res = await UpdateTournament(allData, claims!.__raw)
+
     if (res !== undefined) {
       setSnackSeverity("error")
       setSnackMessage(res.data.detail)

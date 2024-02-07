@@ -124,6 +124,12 @@ namespace othApi.Controllers
 
             try
             {
+                if (tournamentDto.ImageLink == null && !tournamentDto.ForumPostLink.IsNullOrEmpty())
+                {
+                    var img = await _osuApiService.GetForumPostCover(tournamentDto.ForumPostLink!.Split("/")[6]);
+                    tournamentDto.ImageLink = img;
+                }
+
                 var updatedTourney1 = await _tournamentService.UpdateAsync(_mapper.Map<Tournament>(tournamentDto));
                 var updatedTourney2 = await _tournamentService.UpdateTeamMatesAsync(id, tournamentDto.TeamMateIds);
                 if (updatedTourney1 == null || updatedTourney2 == null)

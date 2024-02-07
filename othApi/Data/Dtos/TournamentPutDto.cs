@@ -14,7 +14,7 @@ public class TournamentPutDto
     public string? TeamSize { get; set; }
     public string? Placement { get; set; }
     public string? Notes { get; set; }
-    
+    public string? ImageLink { get; set; }
     public int AddedById { get; set; }
     public int[] TeamMateIds { get; set; } = null!;
 
