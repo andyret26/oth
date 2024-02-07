@@ -1,6 +1,7 @@
 using System.Data.SqlClient;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using othApi.Data;
 using othApi.Data.Entities;
 using othApi.Data.Exceptions;
@@ -88,7 +89,14 @@ public class TournamentService : ITournamentService
 
         if (tournamentToUpdate != null)
         {
+            if (!tournament.ForumPostLink.IsNullOrEmpty() && tournament.ForumPostLink != tournamentToUpdate.ForumPostLink)
+            {
+                var img = await _osuApiService.GetForumPostCover(tournament.ForumPostLink!.Split("/")[6]);
+                tournament.ImageLink = img;
+            }
+
             if (tournamentToUpdate.AddedBy != tournament.AddedBy) throw new UnauthorizedAccessException();
+
             if (tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName)
             {
                 _mapper.Map(tournament, tournamentToUpdate);
