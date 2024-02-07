@@ -173,7 +173,7 @@ class OsuApiService : IOsuApiService
                 var stringsWithImg = new List<string>();
                 foreach (var s in subStrings)
                 {
-                    if (s.Contains(".png") || s.Contains(".jpg") || s.Contains(".jpeg"))
+                    if ((s.Contains(".png") || s.Contains(".jpg") || s.Contains(".jpeg")) && !s.Contains("osuflags"))
                     {
                         stringsWithImg.Add(s.TrimEnd("/[".ToCharArray()));
                     }
