@@ -15,14 +15,17 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
   const t = tournament
   return (
     <div className="rounded-lg">
-      <div
-        className="bg-image rounded-lg opacity-40 z-[-1]"
-        style={{
-          backgroundImage: t.imageLink
-            ? `url(${t.imageLink})`
-            : "url(https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg)",
-        }}
-      />
+      <div className="bg-image">
+        <img
+          style={{ height: "100%", width: "100%" }}
+          src={
+            t.imageLink
+              ? t.imageLink
+              : "https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg"
+          }
+          alt="img"
+        />
+      </div>
       <div id="tourney-card" className="tourney-card">
         <div className="border-b-[5px] rounded-md w-full flex justify-center border-[#ff66ab]">
           <p className="t-name z-10">{t.name}</p>
