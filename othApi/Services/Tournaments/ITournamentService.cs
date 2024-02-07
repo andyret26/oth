@@ -5,11 +5,11 @@ public interface ITournamentService
     List<Tournament> Get();
     Tournament? GetById(int id);
     Task<Tournament> PostAsync(Tournament tournament);
-    Tournament? Update(Tournament tournament);
+    Task<Tournament?> UpdateAsync(Tournament tournament);
     Tournament? Delete(int id);
     Tournament? AddTeamMates(List<Player> TeamMates, int tournamentId);
     List<Tournament> GetByPlayerId(int playerId);
-    Tournament? UpdateTeamMates(int tournamentId, int[] TeamIds);
+    Task<Tournament?> UpdateTeamMatesAsync(int tournamentId, int[] TeamIds);
 
     bool TournamentWithTeamNameExists(string? teamName, string tournamentName);
 }

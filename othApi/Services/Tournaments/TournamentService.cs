@@ -80,10 +80,10 @@ public class TournamentService : ITournamentService
 
     }
 
-    public Tournament? Update(Tournament tournament)
+    public async Task<Tournament?> UpdateAsync(Tournament tournament)
     {
 
-        var tournamentToUpdate = _db.Tournaments.SingleOrDefault((t) => t.Id == tournament.Id);
+        var tournamentToUpdate = await _db.Tournaments.SingleOrDefaultAsync((t) => t.Id == tournament.Id);
 
 
         if (tournamentToUpdate != null)
@@ -92,7 +92,7 @@ public class TournamentService : ITournamentService
             if (tournamentToUpdate.Name == tournament.Name && tournamentToUpdate.TeamName == tournament.TeamName)
             {
                 _mapper.Map(tournament, tournamentToUpdate);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return tournamentToUpdate;
             }
             else
@@ -104,7 +104,7 @@ public class TournamentService : ITournamentService
                 else
                 {
                     _mapper.Map(tournament, tournamentToUpdate);
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                     return tournamentToUpdate;
                 }
             }
@@ -158,15 +158,15 @@ public class TournamentService : ITournamentService
         }
     }
 
-    public Tournament? UpdateTeamMates(int tournamentId, int[] TeamIds)
+    public async Task<Tournament?> UpdateTeamMatesAsync(int tournamentId, int[] TeamIds)
     {
-        var teamMates = _db.Players.Where((p) => TeamIds.Contains(p.Id)).ToList();
+        var teamMates = await _db.Players.Where((p) => TeamIds.Contains(p.Id)).ToListAsync();
 
-        var tournament = _db.Tournaments.Include(t => t.TeamMates).SingleOrDefault((t) => t.Id == tournamentId);
+        var tournament = await _db.Tournaments.Include(t => t.TeamMates).SingleOrDefaultAsync((t) => t.Id == tournamentId);
         if (tournament == null) return null;
 
         tournament.TeamMates = teamMates;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return tournament;
     }
 }

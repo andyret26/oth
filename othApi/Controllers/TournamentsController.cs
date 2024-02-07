@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.IdentityModel.Tokens;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 using othApi.Data.Exceptions;
@@ -111,7 +112,7 @@ namespace othApi.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult PutTournament(int id, [FromBody] TournamentPutDto tournamentDto)
+        public async Task<ActionResult> PutTournament(int id, [FromBody] TournamentPutDto tournamentDto)
         {
             var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             _logger.LogInformation("User with id {id} is trying to update tournament with id {tournamentId}", authSub.Split("|")[2], id);
@@ -123,8 +124,8 @@ namespace othApi.Controllers
 
             try
             {
-                var updatedTourney1 = _tournamentService.Update(_mapper.Map<Tournament>(tournamentDto));
-                var updatedTourney2 = _tournamentService.UpdateTeamMates(id, tournamentDto.TeamMateIds);
+                var updatedTourney1 = await _tournamentService.UpdateAsync(_mapper.Map<Tournament>(tournamentDto));
+                var updatedTourney2 = await _tournamentService.UpdateTeamMatesAsync(id, tournamentDto.TeamMateIds);
                 if (updatedTourney1 == null || updatedTourney2 == null)
                 {
                     return NotFound(new
@@ -164,6 +165,34 @@ namespace othApi.Controllers
             return tournamentDtos;
 
         }
+
+        // [HttpGet("update_tournament_to_include_img")]
+        // public async Task<ActionResult> UpdateTournamentToIncludeImg()
+        // {
+        //     var tournaments = _tournamentService.Get();
+        //     foreach (var t in tournaments)
+        //     {
+        //         if (!t.ForumPostLink.IsNullOrEmpty() && t.ImageLink == null)
+        //         {
+        //             System.Console.WriteLine("\n\n ######### \n\n");
+        //             System.Console.WriteLine(t.Name);
+        //             System.Console.WriteLine("\n\n ######### \n\n");
+        //             var mateIds = new List<int>();
+        //             foreach (var mate in t.TeamMates!)
+        //             {
+        //                 mateIds.Add(mate.Id);
+        //             }
+        //             System.Console.WriteLine(t.ForumPostLink);
+        //             var i = await _osuApiService.GetForumPostCover(t.ForumPostLink.Split("/")[6]);
+        //             t.ImageLink = i;
+        //             await _tournamentService.UpdateAsync(t);
+        //             await _tournamentService.UpdateTeamMatesAsync(t.Id, mateIds.ToArray());
+        //             mateIds.Clear();
+        //         }
+        //     }
+
+        //     return Ok();
+        // }
 
     }
 }
