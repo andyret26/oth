@@ -24,6 +24,10 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
               : "https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg"
           }
           alt="img"
+          onError={(e) => {
+            e.currentTarget.src =
+              "https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg"
+          }}
         />
       </div>
       <div id="tourney-card" className="tourney-card">
