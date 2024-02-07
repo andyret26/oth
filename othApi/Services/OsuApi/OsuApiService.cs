@@ -179,9 +179,11 @@ class OsuApiService : IOsuApiService
                     }
                 }
 
-                // System.Console.WriteLine("\n\n###SOMTHIG HAPPENING###\n\n");
-                // System.Console.WriteLine(JsonConvert.SerializeObject(stringsWithImg));
-                // System.Console.WriteLine("\n\n###SOMTHIG DONE###\n\n");
+                if (stringsWithImg.Count == 0)
+                {
+                    return null!;
+                }
+
                 return stringsWithImg[0];
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
