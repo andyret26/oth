@@ -186,6 +186,7 @@ class OsuApiService : IOsuApiService
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
+                Console.Error.WriteLine("Forum post not found");
                 throw new NotFoundException();
             }
             else

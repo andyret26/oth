@@ -58,45 +58,53 @@ namespace othApi.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<TournamentDto>> PostTournament([FromBody] TournamentPostDto tournament)
         {
-            if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name))
+            try
             {
-                return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name", });
-            }
-
-            var tournamentToPost = _mapper.Map<Tournament>(tournament);
-            var addedTournament = _tournamentService.Post(tournamentToPost);
-
-
-            if (tournament.TeamMateIds != null)
-            {
-                // Check if players exists in db if not add them
-                var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMateIds);
-                if (playersDoNotExists != null)
+                if (_tournamentService.TournamentWithTeamNameExists(tournament.TeamName, tournament.Name))
                 {
-                    foreach (var player in playersDoNotExists)
+                    return Conflict(new { title = "Conflict", status = "409", detail = "This Tournament already have a team with this Team Name", });
+                }
+
+                var tournamentToPost = _mapper.Map<Tournament>(tournament);
+                var addedTournament = await _tournamentService.PostAsync(tournamentToPost);
+
+
+                if (tournament.TeamMateIds != null)
+                {
+                    // Check if players exists in db if not add them
+                    var playersDoNotExists = await _osuApiService.GetPlayers(tournament.TeamMateIds);
+                    if (playersDoNotExists != null)
                     {
-                        _playerService.Post(player);
+                        foreach (var player in playersDoNotExists)
+                        {
+                            _playerService.Post(player);
+                        }
                     }
-                }
 
-                //  Get Players from db
-                var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMateIds);
-                if (teamMatesToAdd == null)
+                    //  Get Players from db
+                    var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMateIds);
+                    if (teamMatesToAdd == null)
+                    {
+                        return NotFound("One or more players do not exist in the database");
+                    }
+                    var resTournament = _tournamentService.AddTeamMates(teamMatesToAdd, addedTournament.Id);
+
+                    var tDto = _mapper.Map<TournamentDto>(resTournament);
+
+                    return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
+                }
+                else
                 {
-                    return NotFound("One or more players do not exist in the database");
+                    var tDto = _mapper.Map<TournamentDto>(addedTournament);
+
+                    return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
                 }
-                var resTournament = _tournamentService.AddTeamMates(teamMatesToAdd, addedTournament.Id);
-
-                var tDto = _mapper.Map<TournamentDto>(resTournament);
-
-                return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
             }
-            else
+            catch (NotFoundException)
             {
-                var tDto = _mapper.Map<TournamentDto>(addedTournament);
-
-                return CreatedAtAction("GetTournament", new { id = tDto.Id }, tDto);
+                return NotFound(new { title = "NotFound", status = "404", detail = "Forum post not found.", });
             }
+
         }
 
         [HttpPut("{id}")]

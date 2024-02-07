@@ -4,7 +4,7 @@ public interface ITournamentService
 {
     List<Tournament> Get();
     Tournament? GetById(int id);
-    Tournament Post(Tournament tournament);
+    Task<Tournament> PostAsync(Tournament tournament);
     Tournament? Update(Tournament tournament);
     Tournament? Delete(int id);
     Tournament? AddTeamMates(List<Player> TeamMates, int tournamentId);

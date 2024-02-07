@@ -12,11 +12,13 @@ public class TournamentService : ITournamentService
 {
     private readonly DataContext _db;
     private readonly IMapper _mapper;
+    private readonly IOsuApiService _osuApiService;
 
-    public TournamentService(DataContext db, IMapper mapper)
+    public TournamentService(DataContext db, IMapper mapper, IOsuApiService osuApiService)
     {
         _db = db;
         _mapper = mapper;
+        _osuApiService = osuApiService;
     }
 
     public Tournament? Delete(int id)
@@ -55,12 +57,18 @@ public class TournamentService : ITournamentService
         };
     }
 
-    public Tournament Post(Tournament tournament)
+    public async Task<Tournament> PostAsync(Tournament tournament)
     {
         try
         {
-            var addedTournament = _db.Tournaments.Add(tournament);
-            _db.SaveChanges();
+            if (tournament.ForumPostLink != null)
+            {
+                var img = await _osuApiService.GetForumPostCover(tournament.ForumPostLink.Split("/")[6]);
+                tournament.ImageLink = img;
+            }
+
+            var addedTournament = await _db.Tournaments.AddAsync(tournament);
+            await _db.SaveChangesAsync();
 
             return addedTournament.Entity;
         }
