@@ -18,8 +18,9 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
       <div
         className="bg-image rounded-lg opacity-40 z-[-1]"
         style={{
-          backgroundImage:
-            "url(https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg)",
+          backgroundImage: t.imageLink
+            ? `url(${t.imageLink})`
+            : "url(https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg)",
         }}
       />
       <div id="tourney-card" className="tourney-card">

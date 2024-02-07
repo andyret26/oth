@@ -54,6 +54,7 @@ export interface Tournament {
   teamSize: string
   placement: string
   notes: string
+  imageLink: string
   teamMates: Player[]
   addedById: number
 }
