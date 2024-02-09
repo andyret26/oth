@@ -21,7 +21,6 @@
     align-items: center;
 }
 
-
 a {
     text-decoration: none;
     color: inherit;
@@ -30,6 +29,19 @@ a {
 
 p {
     margin: 0px;
+}
+
+.link {
+    color: #f5f5f5;
+    font-size: 18px;
+    margin: 0px;
+    padding: 9px 10px;
+    border-radius: 5px;
+    background-color: var(--bg2);
+}
+
+.link:hover {
+    background-color: #2e2629;
 }
 
 .nav-bar {
@@ -47,14 +59,8 @@ p {
     background-color: #6c585e;
 }
 
-.nav-logo-text {
-    margin: 1px;
-    font-family: monospace;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: .3rem;
-    text-decoration: none;
-    color: inherit;
+.nav__logo-link {
+    margin-right: 10px;
 }
 
 .page {

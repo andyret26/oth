@@ -64,7 +64,7 @@ export default function NavBar() {
     <AppBar position="sticky" className="nav-bar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to="/" className="nav-logo-text">
+          <Link to="/" className="nav__logo-link">
             <img
               src="/Images/othLogo.png"
               width={50}
@@ -77,73 +77,82 @@ export default function NavBar() {
             <Search />
           </div>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }} />
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }} />
+          <div className="">
+            <Link className="link" to="/match-compare">
+              Match Compare
+            </Link>
+          </div>
 
-          {isAuthenticated ? (
-            <Box sx={{ flexGrow: 0 }}>
-              {}
-              <Tooltip title="Open settings">
-                <IconButton
-                  onClick={(e) => handleOpenUserMenu(e)}
-                  sx={{ p: 0 }}
-                >
-                  <Avatar
-                    alt="Picture"
-                    src={user ? user.picture : "/Images/profileImg"}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <Link to={`/history/${logdinId}`}>
-                  <MenuItem onClick={handleCloseUserMenu}>My History</MenuItem>
-                </Link>
-                <Link to={`/player/${logdinId}/stats`}>
-                  <MenuItem onClick={handleCloseUserMenu}>My Stats</MenuItem>
-                </Link>
-
-                <Link to="/player/add">
-                  <MenuItem onClick={handleCloseUserMenu}>Add Player</MenuItem>
-                </Link>
-
-                <Link to="/tournament/create">
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    Add Tournament
-                  </MenuItem>
-                </Link>
-
-                <MenuItem
-                  onClick={() => {
-                    handleCloseUserMenu()
-                    logout({
-                      logoutParams: { returnTo: window.location.origin },
-                    })
+          <div className="ml-auto">
+            {isAuthenticated ? (
+              <Box>
+                {}
+                <Tooltip title="Open settings">
+                  <IconButton
+                    onClick={(e) => handleOpenUserMenu(e)}
+                    sx={{ p: 0 }}
+                  >
+                    <Avatar
+                      alt="Picture"
+                      src={user ? user.picture : "/Images/profileImg"}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
                   }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <p className="text-red-500">Logout</p>
-                </MenuItem>
-              </Menu>
-            </Box>
-          ) : (
-            <Box>
-              <Button onClick={() => handleLogin()}>Login</Button>
-            </Box>
-          )}
+                  <Link to={`/history/${logdinId}`}>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      My History
+                    </MenuItem>
+                  </Link>
+                  <Link to={`/player/${logdinId}/stats`}>
+                    <MenuItem onClick={handleCloseUserMenu}>My Stats</MenuItem>
+                  </Link>
+
+                  <Link to="/player/add">
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      Add Player
+                    </MenuItem>
+                  </Link>
+
+                  <Link to="/tournament/create">
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      Add Tournament
+                    </MenuItem>
+                  </Link>
+
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseUserMenu()
+                      logout({
+                        logoutParams: { returnTo: window.location.origin },
+                      })
+                    }}
+                  >
+                    <p className="text-red-500">Logout</p>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : (
+              <Box>
+                <Button onClick={() => handleLogin()}>Login</Button>
+              </Box>
+            )}
+          </div>
         </Toolbar>
       </Container>
     </AppBar>
