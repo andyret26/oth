@@ -57,3 +57,63 @@ public class Body
     public string Html { get; set; } = null!;
     public string Raw { get; set; } = null!;
 }
+
+
+//match classes
+
+public class MatchResponseObj
+{
+    public Event[] Events { get; set; } = null!;
+}
+
+public class Event
+{
+    public Game? Game { get; set; } = null!;
+}
+
+public class Game
+{
+    public long Beatmap_id { get; set; }
+    public string Team_type { get; set; } = null!;
+    public string[] Mods { get; set; } = null!;
+    public Beatmap? Beatmap { get; set; }
+    public ScoreObj[] Scores { get; set; } = null!;
+
+}
+
+public class Beatmap
+{
+    public long Id { get; set; }
+    public long Beatmapset_id { get; set; }
+    public Beatmapset Beatmapset { get; set; } = null!;
+}
+
+public class Beatmapset
+{
+    public string Artist { get; set; } = null!;
+    public string Title { get; set; } = null!;
+
+}
+
+public class ScoreObj
+{
+    public double Accuracy { get; set; }
+    public int Score { get; set; }
+    public Match Match { get; set; } = null!;
+}
+
+public class Match
+{
+    public string Team { get; set; } = null!;
+}
+
+
+public class Map
+{
+    public string Title { get; set; } = null!;
+    public string Artist { get; set; } = null!;
+    public List<string> Mods { get; set; } = null!;
+    public int Score1 { get; set; }
+    public int Score2 { get; set; }
+    public int Diff { get; set; }
+}

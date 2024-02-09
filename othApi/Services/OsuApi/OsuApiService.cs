@@ -207,6 +207,36 @@ class OsuApiService : IOsuApiService
             }
         }
     }
+
+    public async Task<List<Game>> GetMatchGamesAsync(long MatchId)
+    {
+        using HttpClient http = new();
+
+        string bearerToken = await GetToken();
+
+        var url = new Uri($"https://osu.ppy.sh/api/v2/matches/{MatchId}");
+        http.DefaultRequestHeaders.Add("Accept", "application/json");
+        http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+
+        HttpResponseMessage response = await http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var matchInfo = JsonConvert.DeserializeObject<MatchResponseObj>(responseBody);
+            List<Game> games = matchInfo!.Events.Where(e => e.Game != null).Select(e => e.Game).ToList()!;
+            return games!;
+        }
+        else if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            Console.Error.WriteLine("Match not found");
+            throw new NotFoundException();
+        }
+        else
+        {
+            throw new Exception($"Request failed with status code {response.StatusCode}");
+        }
+    }
 }
 
 
