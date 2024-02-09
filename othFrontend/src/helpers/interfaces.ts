@@ -85,3 +85,26 @@ export interface PlayerStats {
   top3Rate: number
   avgPlacement: number
 }
+
+export interface MatchCompareRequest {
+  matchId1: number
+  matchId2: number
+  ignoreStart1: number
+  ignoreStart2: number
+  ignoreEnd1: number
+  ignoreEnd2: number
+  teamType: string
+  team1Color: string
+  team2Color: string
+  team1Name: string
+  team2Name: string
+}
+
+export interface Map {
+  title: string
+  artist: string
+  mods: string[]
+  score1: number
+  score2: number
+  diff: string
+}
