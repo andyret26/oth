@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Services.OsuApi;
+using othApi.Utils;
 
 namespace othApi.Controllers;
 
@@ -21,29 +22,17 @@ public class MiscController : ControllerBase
     [HttpPost("compare-matches")]
     [Consumes("application/Json")]
     [Produces("application/Json")]
-    [ProducesResponseType(200, Type = typeof(MiscCompareResponseDto))]
+    [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<MiscCompareResponseDto>> CompareMatches([FromBody] MiscCompareRequestDto matchInfo)
+    public async Task<ActionResult<List<Map>>> CompareMatches([FromBody] MiscCompareRequestDto matchInfo)
     {
-        var match1 = await _osuApiService.GetMatchInfo(matchInfo.MatchId1);
-        var events = match1.Events.Where(e => e.Game != null).ToList();
+        var games1 = await _osuApiService.GetMatchGamesAsync(matchInfo.MatchId1);
+        var games2 = await _osuApiService.GetMatchGamesAsync(matchInfo.MatchId2);
 
+        games1 = games1.Skip(matchInfo.IgnoreStart1).SkipLast(matchInfo.IgnoreEnd1).Where(e => e.Beatmap != null).ToList();
+        games2 = games2.Skip(matchInfo.IgnoreStart2).SkipLast(matchInfo.IgnoreEnd2).Where(e => e.Beatmap != null).ToList();
 
-        var maps = new List<Map>();
-
-        foreach (var e in events)
-        {
-            if (e.Game!.Beatmap == null) continue;
-            var map = new Map
-            {
-                Artist = e.Game!.Beatmap.Beatmapset.Artist,
-                Title = e.Game.Beatmap.Beatmapset.Title,
-                Mods = e.Game.Mods.ToList(),
-            };
-
-            maps.Add(map);
-
-        }
+        var maps = GamesToMapCompare.Compare(games1, games2, matchInfo);
 
 
         return Ok(maps);

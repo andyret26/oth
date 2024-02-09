@@ -208,7 +208,7 @@ class OsuApiService : IOsuApiService
         }
     }
 
-    public async Task<MatchResponseObj> GetMatchInfo(int MatchId)
+    public async Task<List<Game>> GetMatchGamesAsync(long MatchId)
     {
         using HttpClient http = new();
 
@@ -224,8 +224,8 @@ class OsuApiService : IOsuApiService
         {
             string responseBody = await response.Content.ReadAsStringAsync();
             var matchInfo = JsonConvert.DeserializeObject<MatchResponseObj>(responseBody);
-
-            return matchInfo!;
+            List<Game> games = matchInfo!.Events.Where(e => e.Game != null).Select(e => e.Game).ToList()!;
+            return games!;
         }
         else if (response.StatusCode == HttpStatusCode.NotFound)
         {

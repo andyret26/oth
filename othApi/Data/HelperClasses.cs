@@ -68,13 +68,12 @@ public class MatchResponseObj
 
 public class Event
 {
-    public int Id { get; set; }
     public Game? Game { get; set; } = null!;
 }
 
 public class Game
 {
-    public int Beatmap_id { get; set; }
+    public long Beatmap_id { get; set; }
     public string Team_type { get; set; } = null!;
     public string[] Mods { get; set; } = null!;
     public Beatmap? Beatmap { get; set; }
@@ -84,8 +83,8 @@ public class Game
 
 public class Beatmap
 {
-    public int Id { get; set; }
-    public int Beatmapset_id { get; set; }
+    public long Id { get; set; }
+    public long Beatmapset_id { get; set; }
     public Beatmapset Beatmapset { get; set; } = null!;
 }
 
@@ -114,4 +113,7 @@ public class Map
     public string Title { get; set; } = null!;
     public string Artist { get; set; } = null!;
     public List<string> Mods { get; set; } = null!;
+    public int Score1 { get; set; }
+    public int Score2 { get; set; }
+    public int Diff { get; set; }
 }
