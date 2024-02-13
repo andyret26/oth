@@ -5,6 +5,7 @@ import {
   Tournament,
   PlayerMin,
   PlayerStats,
+  MatchCompareRequest,
 } from "../helpers/interfaces"
 
 let OTH_API_URL: string
@@ -88,10 +89,17 @@ export async function UpdateTournament(
       },
     })
   } catch (error) {
-    console.log("Update error")
     if (isAxiosError(error)) {
       return error.response
     }
   }
   toast.success("Tournament updated")
+}
+
+export async function compareMatches(requestObj: MatchCompareRequest) {
+  const response = await axios.post(
+    `${OTH_API_URL}/misc/compare-matches`,
+    requestObj
+  )
+  return response.data
 }
