@@ -8,7 +8,7 @@ public class MiscCompareRequestDto
     public int IgnoreStart2 { get; set; }
     public int IgnoreEnd1 { get; set; }
     public int IgnoreEnd2 { get; set; }
-    public int TeamType { get; set; }
+    public string TeamType { get; set; } = null!;
 
     public string? Team1Color { get; set; }
     public string? Team2Color { get; set; }

@@ -229,7 +229,6 @@ class OsuApiService : IOsuApiService
         }
         else if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            Console.Error.WriteLine("Match not found");
             throw new NotFoundException();
         }
         else
