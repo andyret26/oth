@@ -8,4 +8,36 @@
         font-weight: 600;
         margin-bottom: 1rem;
     }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        min-width: 1000px;
+    }
+
+    &__lobby-inputs {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    &__ignore-inputs {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    &__names {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    &__team-color {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
 }
