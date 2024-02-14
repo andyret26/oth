@@ -10,6 +10,8 @@ import {
 } from "@mui/material"
 import "../../css/MatchCompare.scss"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { AxiosError } from "axios"
+import toast from "react-hot-toast"
 import { MatchCompareRequest } from "../../helpers/interfaces"
 import { compareMatches } from "../../services/othApiService"
 
@@ -21,15 +23,20 @@ export default function MatchCompareForm() {
   const [ignoreMaps, setIgnoreMaps] = useState(false)
 
   const onSubmit: SubmitHandler<MatchCompareRequest> = async (data) => {
-    const test = await compareMatches(data)
+    toast.loading("Comparing matches...")
+    const test = await compareMatches(data).catch((e) => {
+      toast.dismiss()
+      if (e instanceof AxiosError) {
+        console.log(e)
+        if (e.response?.status === 404) {
+          toast.error(e.response.data.detail)
+        }
+      }
+    })
     console.log(test)
   }
 
   useEffect(() => {
-    setValue("ignoreEnd1", 0)
-    setValue("ignoreEnd2", 0)
-    setValue("ignoreStart1", 0)
-    setValue("ignoreStart2", 0)
     if (!getValues("teamType")) {
       setValue("teamType", "teams")
     }
