@@ -6,6 +6,7 @@ import {
   PlayerMin,
   PlayerStats,
   MatchCompareRequest,
+  Map,
 } from "../helpers/interfaces"
 
 let OTH_API_URL: string
@@ -96,7 +97,9 @@ export async function UpdateTournament(
   toast.success("Tournament updated")
 }
 
-export async function compareMatches(requestObj: MatchCompareRequest) {
+export async function compareMatches(
+  requestObj: MatchCompareRequest
+): Promise<Map[]> {
   const response = await axios.post(
     `${OTH_API_URL}/misc/compare-matches`,
     requestObj

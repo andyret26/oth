@@ -12,10 +12,14 @@ import "../../css/MatchCompare.scss"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { AxiosError } from "axios"
 import toast from "react-hot-toast"
-import { MatchCompareRequest } from "../../helpers/interfaces"
+import { MatchCompareRequest, Map } from "../../helpers/interfaces"
 import { compareMatches } from "../../services/othApiService"
 
-export default function MatchCompareForm() {
+interface CompProps {
+  onCompare: (data: Map[]) => void
+}
+
+export default function MatchCompareForm({ onCompare }: CompProps) {
   const { register, handleSubmit, setValue, getValues } =
     useForm<MatchCompareRequest>()
 
@@ -24,16 +28,18 @@ export default function MatchCompareForm() {
 
   const onSubmit: SubmitHandler<MatchCompareRequest> = async (data) => {
     toast.loading("Comparing matches...")
-    const test = await compareMatches(data).catch((e) => {
+    try {
+      const res = await compareMatches(data)
+      toast.dismiss()
+      onCompare(res)
+    } catch (e: unknown) {
       toast.dismiss()
       if (e instanceof AxiosError) {
-        console.log(e)
-        if (e.response?.status === 404) {
-          toast.error(e.response.data.detail)
-        }
+        toast.error(e.response?.data.detail)
+      } else {
+        toast.error("An error occurred")
       }
-    })
-    console.log(test)
+    }
   }
 
   useEffect(() => {
@@ -147,9 +153,7 @@ export default function MatchCompareForm() {
           </div>
         </div>
       )}
-      <Button type="submit" onSubmit={(e) => console.log("da", e)}>
-        Compare
-      </Button>
+      <Button type="submit">Compare</Button>
     </form>
   )
 }

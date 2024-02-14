@@ -106,5 +106,5 @@ export interface Map {
   mods: string[]
   score1: number
   score2: number
-  diff: string
+  diff: number
 }
