@@ -38,9 +38,9 @@ public class MiscController : ControllerBase
             var maps = GamesToMapCompare.Compare(games1, games2, matchInfo);
             return Ok(maps);
         }
-        catch (NotFoundException)
+        catch (MatchNotFoundException e)
         {
-            return NotFound(new { title = "NotFound", status = "404", detail = "One of the matches was not found.", });
+            return NotFound(new { title = "NotFound", status = "404", detail = e.Message, });
         }
         catch (Exception e)
         {

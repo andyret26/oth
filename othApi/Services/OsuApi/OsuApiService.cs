@@ -208,13 +208,13 @@ class OsuApiService : IOsuApiService
         }
     }
 
-    public async Task<List<Game>> GetMatchGamesAsync(long MatchId)
+    public async Task<List<Game>> GetMatchGamesAsync(long matchId)
     {
         using HttpClient http = new();
 
         string bearerToken = await GetToken();
 
-        var url = new Uri($"https://osu.ppy.sh/api/v2/matches/{MatchId}");
+        var url = new Uri($"https://osu.ppy.sh/api/v2/matches/{matchId}");
         http.DefaultRequestHeaders.Add("Accept", "application/json");
         http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
 
@@ -229,7 +229,7 @@ class OsuApiService : IOsuApiService
         }
         else if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            throw new NotFoundException();
+            throw new MatchNotFoundException(int.Parse(matchId.ToString()));
         }
         else
         {
