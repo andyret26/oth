@@ -61,11 +61,13 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
           label="Lobby id 1"
           {...register("matchId1")}
           variant="filled"
+          autoComplete="off"
         />
         <TextField
           label="Lobby id 2"
           {...register("matchId2")}
           variant="filled"
+          autoComplete="off"
         />
       </div>
       <div>
@@ -79,12 +81,28 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
       {ignoreMaps ? (
         <div className="compare__ignore-inputs">
           <div className="flex gap-3">
-            <TextField label="Ignore start 1" {...register("ignoreStart1")} />
-            <TextField label="Ignore end 1" {...register("ignoreEnd1")} />
+            <TextField
+              label="Ignore start 1"
+              {...register("ignoreStart1")}
+              autoComplete="off"
+            />
+            <TextField
+              label="Ignore end 1"
+              {...register("ignoreEnd1")}
+              autoComplete="off"
+            />
           </div>
           <div className="flex gap-3">
-            <TextField label="Ignore start 2" {...register("ignoreStart2")} />
-            <TextField label="Ignore end 2" {...register("ignoreEnd2")} />
+            <TextField
+              label="Ignore start 2"
+              {...register("ignoreStart2")}
+              autoComplete="off"
+            />
+            <TextField
+              label="Ignore end 2"
+              {...register("ignoreEnd2")}
+              autoComplete="off"
+            />
           </div>
         </div>
       ) : null}
@@ -114,8 +132,16 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
 
       {teamType === "h2h" ? (
         <div className="compare__names">
-          <TextField label="Name1" {...register("team1Name")} />
-          <TextField label="Name2" {...register("team2Name")} />
+          <TextField
+            label="Name1"
+            {...register("team1Name")}
+            autoComplete="off"
+          />
+          <TextField
+            label="Name2"
+            {...register("team2Name")}
+            autoComplete="off"
+          />
         </div>
       ) : (
         <div className="compare__team-color">

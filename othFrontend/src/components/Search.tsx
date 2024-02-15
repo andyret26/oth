@@ -61,6 +61,7 @@ const Search = () => {
         InputProps={{
           startAdornment: <TbSearch size={20} className="mr-3" />,
         }}
+        autoComplete="off"
       />
 
       {searchPlayers ? (
