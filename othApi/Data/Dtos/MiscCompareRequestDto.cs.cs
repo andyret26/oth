@@ -13,6 +13,6 @@ public class MiscCompareRequestDto
     public string? Team1Color { get; set; }
     public string? Team2Color { get; set; }
 
-    public string? Team1Name { get; set; }
-    public string? Team2Name { get; set; }
+    public int User1Id { get; set; }
+    public int User2Id { get; set; }
 }

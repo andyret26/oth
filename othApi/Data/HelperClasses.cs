@@ -100,6 +100,7 @@ public class ScoreObj
     public double Accuracy { get; set; }
     public int Score { get; set; }
     public Match Match { get; set; } = null!;
+    public int User_id { get; set; }
 }
 
 public class Match

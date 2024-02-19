@@ -21,11 +21,18 @@ public class GamesToMapCompare
 
             foreach (var score in g2.Scores)
             {
-                if (score.Match.Team == matchInfo.Team2Color)
+                if (matchInfo.TeamType == "teams" && score.Match.Team == matchInfo.Team2Color)
+                {
                     map.Score2 += score.Score;
+                }
+                else if (matchInfo.TeamType == "h2h" && score.User_id == matchInfo.User2Id)
+                {
+                    map.Score2 += score.Score;
+                }
+
             }
 
-            var g1Map = games1.SingleOrDefault(g1 => g1.Beatmap!.Beatmapset.Title == g2.Beatmap!.Beatmapset.Title);
+            var g1Map = games1.FirstOrDefault(g1 => g1.Beatmap!.Beatmapset.Title == g2.Beatmap!.Beatmapset.Title);
             if (g1Map == null)
             {
                 map.Score1 = 0;
@@ -36,8 +43,15 @@ public class GamesToMapCompare
 
             foreach (var score in g1Map.Scores)
             {
-                if (score.Match.Team == matchInfo.Team1Color)
+                if (matchInfo.TeamType == "teams" && score.Match.Team == matchInfo.Team1Color)
+                {
                     map.Score1 += score.Score;
+                }
+                else if (matchInfo.TeamType == "h2h" && score.User_id == matchInfo.User1Id)
+                {
+                    map.Score1 += score.Score;
+                }
+
             }
 
             map.Diff = map.Score1 - map.Score2;

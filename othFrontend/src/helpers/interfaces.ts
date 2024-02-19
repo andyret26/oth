@@ -96,8 +96,8 @@ export interface MatchCompareRequest {
   teamType: string
   team1Color: string
   team2Color: string
-  team1Name: string
-  team2Name: string
+  user1Id: number
+  user2Id: number
 }
 
 export interface Map {

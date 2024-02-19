@@ -43,7 +43,7 @@
 }
 
 .results {
-    --title-padding-right: 40px;
+    --title-padding-right: 45px;
     height: 80%;
     width: 75%;
     min-width: 500px;
@@ -97,10 +97,7 @@
     }
 
     &__map {
-        height: 80px;
-        min-height: 80px;
         border-bottom: 1px solid white;
-
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -110,7 +107,6 @@
         position: absolute;
         right: 10px;
     }
-
 
     &__map-field {
         width: 100px;
@@ -127,6 +123,7 @@
         border-right: 1px solid white;
         padding-right: var(--title-padding-right);
         position: relative;
+        padding-bottom: 20px;
     }
 
     &__map-diff--green {

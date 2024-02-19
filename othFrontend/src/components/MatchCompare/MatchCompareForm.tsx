@@ -133,13 +133,13 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
       {teamType === "h2h" ? (
         <div className="compare__names">
           <TextField
-            label="Name1"
-            {...register("team1Name")}
+            label="User 1 Id"
+            {...register("user1Id")}
             autoComplete="off"
           />
           <TextField
-            label="Name2"
-            {...register("team2Name")}
+            label="User 2 Id"
+            {...register("user2Id")}
             autoComplete="off"
           />
         </div>
