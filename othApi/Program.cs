@@ -11,9 +11,10 @@ using othApi.Services.OsuApi;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.RateLimiting;
-using System.Threading.RateLimiting;
 using othApi.Services.Discord;
+
 DotEnv.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ITournamentService, TournamentService>();
@@ -55,6 +56,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     // connect to postgres with env
     options.UseNpgsql(Environment.GetEnvironmentVariable("SUPABASE_CONNECTION"));
 });
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

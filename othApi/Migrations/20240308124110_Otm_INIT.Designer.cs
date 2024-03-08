@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using othApi.Data;
@@ -12,9 +13,11 @@ using othApi.Data;
 namespace othApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240308124110_Otm_INIT")]
+    partial class Otm_INIT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,22 +38,22 @@ namespace othApi.Migrations
 
                     b.HasIndex("PlayersId");
 
-                    b.ToTable("OtmTournamentPlayer", (string)null);
+                    b.ToTable("TournamentPlayer", (string)null);
                 });
 
             modelBuilder.Entity("HostedTournamentStaff", b =>
                 {
+                    b.Property<int>("HostedTournamentsId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("StaffId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TournamentsId")
-                        .HasColumnType("integer");
+                    b.HasKey("HostedTournamentsId", "StaffId");
 
-                    b.HasKey("StaffId", "TournamentsId");
+                    b.HasIndex("StaffId");
 
-                    b.HasIndex("TournamentsId");
-
-                    b.ToTable("OtmTournamentStaff", (string)null);
+                    b.ToTable("TournamentStaff", (string)null);
                 });
 
             modelBuilder.Entity("PlayerTournament", b =>
@@ -234,15 +237,15 @@ namespace othApi.Migrations
 
             modelBuilder.Entity("HostedTournamentStaff", b =>
                 {
-                    b.HasOne("othApi.Data.Entities.Otm.Staff", null)
+                    b.HasOne("othApi.Data.Entities.Otm.HostedTournament", null)
                         .WithMany()
-                        .HasForeignKey("StaffId")
+                        .HasForeignKey("HostedTournamentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("othApi.Data.Entities.Otm.HostedTournament", null)
+                    b.HasOne("othApi.Data.Entities.Otm.Staff", null)
                         .WithMany()
-                        .HasForeignKey("TournamentsId")
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
