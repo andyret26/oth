@@ -81,6 +81,13 @@ export default function NavBar() {
             <Link className="link" to="/match-compare">
               Match Compare
             </Link>
+            <Link
+              className="link"
+              to="/qual-stats"
+              style={{ marginLeft: "10px" }}
+            >
+              Qualifier Stats
+            </Link>
           </div>
 
           <div className="ml-auto">

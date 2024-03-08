@@ -49,4 +49,15 @@ public class MiscController : ControllerBase
 
 
     }
+
+    [HttpPost("qual-stats")]
+    public async Task<ActionResult> GetQualStats()
+    {
+        // var titles = FetchData.FetchSheetData();
+        // var test = await _osuApiService.GetUrlData("https://osu.ppy.sh/community/matches/112765313");
+        // System.Console.WriteLine(test);
+
+        // await _osuApiService.GetMatchesAsync(new List<int> { 112765313, 112806192, 112815084, 112826811, 112827493, 112904147, 112908040, 112921293, 112924861, 112923123, 112924861 });
+        return Ok();
+    }
 }

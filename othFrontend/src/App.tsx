@@ -19,6 +19,7 @@ import { GetPlayersMinAsync } from "./services/othApiService"
 import AddPlayer from "./pages/AddPlayer"
 import Stats from "./pages/Stats"
 import MatchCompare from "./pages/MatchCompare"
+import QualStats from "./pages/QualStats"
 
 function App() {
   const [isRunning, setIsRunnning] = useState<PlayerMin[] | null>(null)
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/" Component={Landing} />
                 <Route path="/history/:id" Component={History} />
                 <Route path="/match-compare" Component={MatchCompare} />
+                <Route path="/qual-stats" Component={QualStats} />
                 {isAuthenticated ? (
                   <>
                     <Route

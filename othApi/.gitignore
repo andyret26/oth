@@ -25,3 +25,4 @@
 *.sln.docstates
 *.env
 out
+creds.json
