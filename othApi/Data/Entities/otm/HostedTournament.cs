@@ -12,10 +12,18 @@ public class HostedTournament
 
 
     public List<Player>? Players { get; set; }
+    public List<Team>? Teams { get; set; }
     public List<Staff>? Staff { get; set; }
 
     public int HostId { get; set; }
     public Host Host { get; set; } = null!;
+}
+
+public class Team
+{
+    public int Id { get; set; }
+    public string TeamName { get; set; } = null!;
+    public List<Player>? Players { get; set; }
 }
 
 public class Round
