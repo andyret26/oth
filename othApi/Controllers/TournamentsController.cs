@@ -16,6 +16,7 @@ namespace othApi.Controllers
 {
     [Route("api/v1/tournament")]
     [ApiController]
+    [Tags("OTH Tournament")]
     [Produces("application/Json")]
     [Consumes("application/Json")]
     [EnableRateLimiting("fixed")]

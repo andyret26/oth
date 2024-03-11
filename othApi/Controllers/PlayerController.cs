@@ -14,6 +14,7 @@ namespace othApi.Controllers
 {
     [Route("api/v1/player")]
     [ApiController]
+    [Tags("OTH Player")]
     [Produces("application/Json")]
     [Consumes("application/Json")]
     [EnableRateLimiting("fixed")]
