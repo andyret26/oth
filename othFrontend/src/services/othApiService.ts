@@ -94,7 +94,6 @@ export async function UpdateTournament(
       return error.response
     }
   }
-  toast.success("Tournament updated")
 }
 
 export async function compareMatches(

@@ -1,18 +1,19 @@
+import "../css/CreateTournament.css"
 import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import TextField from "@mui/material/TextField/TextField"
 import InfoIcon from "@mui/icons-material/Info"
 import EditCalendarRoundedIcon from "@mui/icons-material/EditCalendarRounded"
 import Tooltip from "@mui/material/Tooltip"
-import { Alert, Autocomplete, Snackbar } from "@mui/material"
+import { Autocomplete } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
 
 import Button from "@mui/material/Button/Button"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useLocation } from "react-router-dom"
+import toast from "react-hot-toast"
 import { PlayerMin, TournamentPost } from "../helpers/interfaces"
-import "../css/CreateTournament.css"
 import { GetTournamentById, UpdateTournament } from "../services/othApiService"
 import NameCard from "../components/NameCard"
 import { SimpleDialog } from "../components/SimpleDialog"
@@ -28,12 +29,6 @@ export default function CreateTournament() {
   const [selectedPlacement, setSelectedPlacement] = useState<string | null>("")
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerMin[]>([])
   const [open, setOpen] = useState<boolean>(false)
-
-  const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false)
-  const [snackMessage, setSnackMessage] = useState<string>("")
-  const [snackSeverity, setSnackSeverity] = useState<
-    "success" | "error" | "info"
-  >()
 
   const {
     register,
@@ -121,10 +116,7 @@ export default function CreateTournament() {
     "Did Not Qualify",
   ]
   const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
-    setSnackSeverity("info")
-    setSnackMessage("Loading...")
-    setSnackBarOpen(true)
-
+    toast.loading("Loading...")
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
     const playersIdsToAdd = listOfPlayersToIdArray(selectedPlayers)
@@ -139,45 +131,17 @@ export default function CreateTournament() {
     }
 
     const res = await UpdateTournament(allData, claims!.__raw)
-
+    toast.dismiss()
     if (res !== undefined) {
-      setSnackSeverity("error")
-      setSnackMessage(res.data.detail)
-      setSnackBarOpen(true)
+      toast.error(res.data.detail)
     } else {
-      setSnackSeverity("success")
-      setSnackMessage("Tournament Updated")
-      setSnackBarOpen(true)
+      toast.success("Tournament updated!")
     }
-  }
-
-  const handleClose = (reason?: string) => {
-    if (reason === "clickaway") {
-      return
-    }
-
-    setSnackBarOpen(false)
+    console.log(res)
   }
 
   return (
     <div className="create-tournament-page page">
-      {/* ---------- SNACK BAR ---------- */}
-      <Snackbar
-        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-        open={snackBarOpen}
-        autoHideDuration={4000}
-        onClose={() => handleClose()}
-      >
-        <Alert
-          onClose={() => handleClose()}
-          severity={snackSeverity}
-          sx={{ width: "100%" }}
-        >
-          {snackMessage}
-        </Alert>
-      </Snackbar>
-      {/* ---------- SNACK BAR END ---------- */}
-
       <h1 className="text-4xl pb-2">Edit</h1>
       <form
         className="create-tournament-form"
