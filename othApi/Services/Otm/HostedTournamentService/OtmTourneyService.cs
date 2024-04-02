@@ -11,7 +11,7 @@ public class OtmTourneyService : IOtmTourneyService
     {
         _db = db;
     }
-    public async Task<HostedTournament> AddtAsync(HostedTournament tournament)
+    public async Task<HostedTournament> AddAsync(HostedTournament tournament)
     {
         var tAdded = await _db.OtmTournaments.AddAsync(tournament);
         await _db.SaveChangesAsync();
