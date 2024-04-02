@@ -6,5 +6,8 @@ namespace othApi.Data.Exceptions
         public NotFoundException() : base()
         {
         }
+        public NotFoundException(string type, int id) : base($"{type} with id {id} not found")
+        {
+        }
     }
 }
