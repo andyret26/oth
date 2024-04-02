@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using Host = othApi.Data.Entities.Otm.Host;
 namespace othApi.Services.Otm.HostService;
@@ -35,5 +36,9 @@ public class HostService : IHostService
     public Task<Host?> UpdateAsync(int id, Host host)
     {
         throw new NotImplementedException();
+    }
+    public async Task<bool> ExistsAsync(int id)
+    {
+        return await _db.OtmHosts.AnyAsync(h => h.Id == id);
     }
 }

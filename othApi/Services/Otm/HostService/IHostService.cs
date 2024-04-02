@@ -9,4 +9,11 @@ public interface IHostService
     Task<Host?> DeleteAsync(int id);
     Task<Host?> UpdateAsync(int id, Host host);
 
+    /// <summary>
+    /// Check if a host exists
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>True if host exists, otherwise returns false</returns>
+    Task<bool> ExistsAsync(int id);
+
 }
