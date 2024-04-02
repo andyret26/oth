@@ -1,8 +1,12 @@
 using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
+using othApi.Data.Exceptions;
 using othApi.Services.OsuApi;
+using othApi.Services.Otm.HostedTournamentService;
 using othApi.Services.Otm.HostService;
 using othApi.Services.Players;
 using othApi.Utils;
@@ -19,16 +23,22 @@ public class HostController : ControllerBase
     private readonly IPlayerService _playerService;
     private readonly IOsuApiService _osuApiService;
     private readonly IHostService _hostService;
+    private readonly IOtmTourneyService _tournamentService;
+    private readonly IMapper _mapper;
 
     public HostController(
         IPlayerService playerService,
         IOsuApiService osuApiService,
-        IHostService hostService
+        IHostService hostService,
+        IOtmTourneyService tournamentService,
+        IMapper mapper
         )
     {
         _playerService = playerService;
         _osuApiService = osuApiService;
         _hostService = hostService;
+        _tournamentService = tournamentService;
+        _mapper = mapper;
     }
 
     [HttpPost("{id}")]
@@ -70,4 +80,25 @@ public class HostController : ControllerBase
             throw;
         }
     }
+
+    [HttpGet("{id}/tournaments")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OtmDashboardDto>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<List<OtmDashboardDto>>> GetAllByHostId(int id)
+    {
+        try
+        {
+            return _mapper.Map<List<OtmDashboardDto>>(await _tournamentService.GetAllByHostIdAsync(id));
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(new ErrorResponse("Not Found", 404, e.Message));
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using othApi.Data;
 using othApi.Data.Entities.Otm;
+using othApi.Data.Exceptions;
 
 namespace othApi.Services.Otm.HostedTournamentService;
 
@@ -36,5 +38,12 @@ public class OtmTourneyService : IOtmTourneyService
     public Task<HostedTournament?> UpdateAsync(HostedTournament tournament)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId)
+    {
+        if (!await _db.OtmHosts.AnyAsync((h) => h.Id == hostId)) throw new NotFoundException("Host", hostId);
+        return await _db.OtmTournaments.Where(t => t.HostId == hostId).ToListAsync();
+
     }
 }
