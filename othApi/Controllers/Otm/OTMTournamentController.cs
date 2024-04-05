@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
@@ -24,6 +25,7 @@ public class OTMTournamentController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OtmDashboardDto))]
     public async Task<ActionResult<OtmDashboardDto>> PostTournament(OTMPostTourneyDto dto)
     {
