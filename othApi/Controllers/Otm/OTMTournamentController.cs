@@ -24,6 +24,7 @@ public class OTMTournamentController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OtmDashboardDto))]
     public async Task<ActionResult<OtmDashboardDto>> PostTournament(OTMPostTourneyDto dto)
     {
         var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
