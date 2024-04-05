@@ -62,9 +62,9 @@ public class TournamentService : ITournamentService
     {
         try
         {
-            if (tournament.ForumPostLink != null)
+            if (!tournament.ForumPostLink.IsNullOrEmpty())
             {
-                var img = await _osuApiService.GetForumPostCover(tournament.ForumPostLink.Split("/")[6]);
+                var img = await _osuApiService.GetForumPostCover(tournament.ForumPostLink!.Split("/")[6]);
                 tournament.ImageLink = img;
             }
 
