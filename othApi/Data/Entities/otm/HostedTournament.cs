@@ -7,10 +7,14 @@ public class HostedTournament
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string? FormuPostLink { get; set; }
+    public bool IsTeamTourney { get; set; }
+    public string Format { get; set; } = null!;
+    public int MaxTeamSize { get; set; }
+    public string RankRange { get; set; } = null!;
+
+
+
     public List<Round>? Rounds { get; set; }
-
-
-
     public List<Player>? Players { get; set; }
     public List<Team>? Teams { get; set; }
     public List<Staff>? Staff { get; set; }
