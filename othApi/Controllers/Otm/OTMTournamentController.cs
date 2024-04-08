@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
+using othApi.Data.Exceptions;
 using othApi.Services.Otm.HostedTournamentService;
 using othApi.Utils;
 
@@ -42,13 +43,31 @@ public class OTMTournamentController : ControllerBase
             var addedTourney = await _tourneyService.AddAsync(tToAdd);
             var dtoToReturn = _mapper.Map<OtmTournamentDto>(addedTourney);
 
-            return CreatedAtAction(null, new { id = addedTourney.Id }, dtoToReturn);
+            return CreatedAtAction("GetTournament", new { id = addedTourney.Id }, dtoToReturn);
         }
         catch (Microsoft.EntityFrameworkCore.DbUpdateException e)
         {
             Npgsql.PostgresException ex = (Npgsql.PostgresException)e.InnerException!;
             if (ex.SqlState == "23505") return Conflict(new ErrorResponse("Conflict", 409, "Tournament with that name already exists"));
             return BadRequest("Something went wrong");
+        }
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OtmTournamentDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<OtmTournamentDto>> GetTournament(int id)
+    {
+        try
+        {
+            var tourney = await _tourneyService.GetByIdAsync(id);
+            var dtoToReturn = _mapper.Map<OtmTournamentDto>(tourney);
+            return Ok(dtoToReturn);
+
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(new ErrorResponse("Not Found", 404, e.Message));
         }
     }
 

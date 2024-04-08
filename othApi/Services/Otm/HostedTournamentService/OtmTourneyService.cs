@@ -30,9 +30,11 @@ public class OtmTourneyService : IOtmTourneyService
         throw new NotImplementedException();
     }
 
-    public Task<HostedTournament?> GetByIdAsync(int id)
+    public async Task<HostedTournament?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var t = await _db.OtmTournaments.FirstOrDefaultAsync(t => t.Id == id);
+        if (t == null) throw new NotFoundException("Tournament", id);
+        return t;
     }
 
     public Task<HostedTournament?> UpdateAsync(HostedTournament tournament)
