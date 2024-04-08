@@ -43,7 +43,7 @@ public class OtmTourneyService : IOtmTourneyService
     public async Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId)
     {
         if (!await _db.OtmHosts.AnyAsync((h) => h.Id == hostId)) throw new NotFoundException("Host", hostId);
-        return await _db.OtmTournaments.Where(t => t.HostId == hostId).ToListAsync();
+        return await _db.OtmTournaments.Where(t => t.HostId == hostId).Include(t => t.Rounds).Include(t => t.Players).Include(t => t.Teams).Include(t => t.Staff).ToListAsync();
 
     }
 }

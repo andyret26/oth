@@ -9,5 +9,8 @@ public class OtmMapper : Profile
     {
         CreateMap<OTMPostTourneyDto, HostedTournament>();
         CreateMap<HostedTournament, OtmDashboardDto>();
+        CreateMap<Staff, StaffDto>();
+        CreateMap<Team, TeamDto>();
+        CreateMap<Round, RoundDto>();
     }
 }
