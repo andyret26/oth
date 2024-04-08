@@ -1,6 +1,6 @@
 namespace othApi.Data.Dtos.OtmDtos;
 
-public class OtmDashboardDto
+public class OtmTournamentDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;

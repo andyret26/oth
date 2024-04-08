@@ -82,13 +82,13 @@ public class HostController : ControllerBase
     }
 
     [HttpGet("{id}/tournaments")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OtmDashboardDto>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<OtmTournamentDto>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<List<OtmDashboardDto>>> GetAllByHostId(int id)
+    public async Task<ActionResult<List<OtmTournamentDto>>> GetAllByHostId(int id)
     {
         try
         {
-            return _mapper.Map<List<OtmDashboardDto>>(await _tournamentService.GetAllByHostIdAsync(id));
+            return _mapper.Map<List<OtmTournamentDto>>(await _tournamentService.GetAllByHostIdAsync(id));
         }
         catch (NotFoundException e)
         {
