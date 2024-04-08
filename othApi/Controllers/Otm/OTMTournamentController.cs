@@ -28,8 +28,8 @@ public class OTMTournamentController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OtmDashboardDto))]
-    public async Task<ActionResult<OtmDashboardDto>> PostTournament(OTMPostTourneyDto dto)
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(OtmTournamentDto))]
+    public async Task<ActionResult<OtmTournamentDto>> PostTournament(OTMPostTourneyDto dto)
     {
         var authSub = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         if (authSub == null) return Unauthorized();
@@ -40,7 +40,7 @@ public class OTMTournamentController : ControllerBase
             tToAdd.HostId = int.Parse(authSub.Split("|")[2]);
 
             var addedTourney = await _tourneyService.AddAsync(tToAdd);
-            var dtoToReturn = _mapper.Map<OtmDashboardDto>(addedTourney);
+            var dtoToReturn = _mapper.Map<OtmTournamentDto>(addedTourney);
 
             return CreatedAtAction(null, new { id = addedTourney.Id }, dtoToReturn);
         }
