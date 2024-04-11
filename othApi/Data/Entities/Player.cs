@@ -11,4 +11,5 @@ public class Player
     public string Country_code { get; set; } = null!;
     public List<Tournament>? Tournaments { get; set; }
     public List<HostedTournament>? OtmTournaments { get; set; }
+    public List<Team>? Teams { get; set; }
 }

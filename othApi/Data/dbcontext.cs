@@ -44,6 +44,11 @@ public class DataContext : DbContext
             .WithMany(p => p.OtmTournaments)
             .UsingEntity(j => j.ToTable("OtmTournamentPlayer"));
 
+        modelBuilder.Entity<Team>()
+            .HasMany(t => t.Players)
+            .WithMany(p => p.Teams)
+            .UsingEntity(j => j.ToTable("OtmTeamPlayer"));
+
 
         base.OnModelCreating(modelBuilder);
 
