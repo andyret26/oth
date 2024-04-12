@@ -55,11 +55,11 @@ public class PlayerService : IPlayerService
         };
     }
 
-    public List<Player>? GetMultipleById(List<int> ids)
+    public async Task<List<Player>> GetMultipleById(List<int> ids)
     {
         try
         {
-            var players = _db.Players.Where((p) => ids.Contains(p.Id)).ToList();
+            var players = await _db.Players.Where((p) => ids.Contains(p.Id)).ToListAsync();
             return players;
         }
         catch (SqlException err)
