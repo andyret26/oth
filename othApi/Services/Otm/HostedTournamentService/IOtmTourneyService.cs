@@ -16,4 +16,5 @@ public interface IOtmTourneyService
     /// <param name="hostId">Host to get tournaments from</param>
     /// <returns>List of tournaments created by the specified host</returns>
     public Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId);
+    public Task<HostedTournament> AddTeamAsync(int tournamentId, Team team);
 }

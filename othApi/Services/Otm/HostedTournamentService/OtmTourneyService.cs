@@ -32,7 +32,12 @@ public class OtmTourneyService : IOtmTourneyService
 
     public async Task<HostedTournament?> GetByIdAsync(int id)
     {
-        var t = await _db.OtmTournaments.FirstOrDefaultAsync(t => t.Id == id);
+        var t = await _db.OtmTournaments
+            .Include(t => t.Teams!).ThenInclude(team => team.Players)
+            .Include(t => t.Players)
+            .Include(t => t.Rounds)
+            .Include(t => t.Staff)
+            .FirstOrDefaultAsync(t => t.Id == id);
         if (t == null) throw new NotFoundException("Tournament", id);
         return t;
     }
@@ -46,6 +51,17 @@ public class OtmTourneyService : IOtmTourneyService
     {
         if (!await _db.OtmHosts.AnyAsync((h) => h.Id == hostId)) throw new NotFoundException("Host", hostId);
         return await _db.OtmTournaments.Where(t => t.HostId == hostId).Include(t => t.Rounds).Include(t => t.Players).Include(t => t.Teams).Include(t => t.Staff).ToListAsync();
+
+    }
+
+    public async Task<HostedTournament> AddTeamAsync(int tournamentId, Team team)
+    {
+        var t = _db.OtmTournaments.SingleOrDefault(t => t.Id == tournamentId);
+        if (t == null) throw new NotFoundException("Tournament", tournamentId);
+        if (t.Teams == null) t.Teams = new List<Team>();
+        t.Teams.Add(team);
+        await _db.SaveChangesAsync();
+        return t;
 
     }
 }
