@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
+using othApi.Data.Exceptions;
 
 namespace othApi.Services.Players;
 
@@ -172,15 +173,16 @@ public class PlayerService : IPlayerService
 
         var wins = _db.Players
             .Where(p => p.Id == id)
-            .Select(p => new {
+            .Select(p => new
+            {
                 firsts = p.Tournaments!.Count(t => t.Placement == "1st"),
                 seconds = p.Tournaments!.Count(t => t.Placement == "2nd"),
                 thirds = p.Tournaments!.Count(t => t.Placement == "3rd")
             })
             .FirstOrDefault();
 
-        var firstRate = wins!.firsts/(decimal)totalTournaments*100;
-        var top3Rate = (wins!.firsts + wins.seconds + wins.thirds)/(decimal)totalTournaments*100;
+        var firstRate = wins!.firsts / (decimal)totalTournaments * 100;
+        var top3Rate = (wins!.firsts + wins.seconds + wins.thirds) / (decimal)totalTournaments * 100;
 
 
 
@@ -190,17 +192,18 @@ public class PlayerService : IPlayerService
             .ToList();
 
         var avgPlace = Convert.ToDecimal(allplace.Average());
-        
-        return new PlayerStats{
-            AvgPlacement=Math.Round(avgPlace, 1),
-            FirstPlaces=wins.firsts,
-            FirstRate=Math.Round(firstRate, 1),
-            SecondPlaces=wins.seconds,
-            ThirdPlaces=wins.thirds,
-            Top3Rate=Math.Round(top3Rate, 1),
-            TotalTournaments=totalTournaments,
-            UniqueFlagCount=uniqueFlagCount,
-            UniqueTeamMatesCount=uniqueTeamMatesCount
+
+        return new PlayerStats
+        {
+            AvgPlacement = Math.Round(avgPlace, 1),
+            FirstPlaces = wins.firsts,
+            FirstRate = Math.Round(firstRate, 1),
+            SecondPlaces = wins.seconds,
+            ThirdPlaces = wins.thirds,
+            Top3Rate = Math.Round(top3Rate, 1),
+            TotalTournaments = totalTournaments,
+            UniqueFlagCount = uniqueFlagCount,
+            UniqueTeamMatesCount = uniqueTeamMatesCount
         };
     }
 
@@ -217,5 +220,21 @@ public class PlayerService : IPlayerService
 
         // Handle other cases or return a default value if needed
         return null;
+    }
+
+    public async Task AddMultipleAsync(List<Player> players)
+    {
+        await _db.AddRangeAsync(players);
+        await _db.SaveChangesAsync();
+        return;
+    }
+
+    public async Task UpdateDiscordUsername(int id, string newDiscordUsername)
+    {
+        var player = _db.Players.SingleOrDefault(p => p.Id == id);
+        if (player == null) throw new NotFoundException("Player", id);
+
+        player.DiscordTag = newDiscordUsername;
+        await _db.SaveChangesAsync();
     }
 }
