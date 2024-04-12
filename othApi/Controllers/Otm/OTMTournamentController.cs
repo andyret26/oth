@@ -6,7 +6,9 @@ using Newtonsoft.Json;
 using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
 using othApi.Data.Exceptions;
+using othApi.Services.OsuApi;
 using othApi.Services.Otm.HostedTournamentService;
+using othApi.Services.Players;
 using othApi.Utils;
 
 namespace othApi.Controllers.Otm;
@@ -20,11 +22,20 @@ public class OTMTournamentController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IOtmTourneyService _tourneyService;
+    private readonly IOsuApiService _osuApiService;
+    private readonly IPlayerService _playerService;
 
-    public OTMTournamentController(IMapper mapper, IOtmTourneyService tourneyService)
+    public OTMTournamentController(
+        IMapper mapper,
+        IOtmTourneyService tourneyService,
+        IOsuApiService osuApiService,
+        IPlayerService playerService
+        )
     {
         _mapper = mapper;
         _tourneyService = tourneyService;
+        _osuApiService = osuApiService;
+        _playerService = playerService;
     }
 
     [HttpPost]
@@ -49,6 +60,7 @@ public class OTMTournamentController : ControllerBase
         {
             Npgsql.PostgresException ex = (Npgsql.PostgresException)e.InnerException!;
             if (ex.SqlState == "23505") return Conflict(new ErrorResponse("Conflict", 409, "Tournament with that name already exists"));
+            if (ex.SqlState == "23514") return UnprocessableEntity(new ErrorResponse("Unprocessable Entity", 422, "Some fields are missing or invalid"));
             return BadRequest("Something went wrong");
         }
     }
@@ -69,6 +81,44 @@ public class OTMTournamentController : ControllerBase
         {
             return NotFound(new ErrorResponse("Not Found", 404, e.Message));
         }
+    }
+
+    [HttpPost("{tournamentId}/register-team")]
+
+    public async Task<ActionResult> RegisterTeam(int tournamentId, OtmRegistrationDto regsDto)
+    {
+        if (regsDto.Players.Count <= 1) return BadRequest(new ErrorResponse("Bad Request", 400, "You need at least 2 players to register a team"));
+        regsDto.Players.Where(p => p.OsuUserId == 0).ToList().ForEach(p => regsDto.Players.Remove(p));
+        System.Console.WriteLine("\n\n\n ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ \n\n\n");
+        System.Console.WriteLine(JsonConvert.SerializeObject(regsDto.Players));
+        System.Console.WriteLine("\n\n\n ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ \n\n\n");
+
+        List<int> playerIds = new();
+        regsDto.Players.ForEach(p => playerIds.Add(p.OsuUserId));
+        try
+        {
+            var playersToAddToDb = await _osuApiService.GetPlayers(playerIds);
+            if (playersToAddToDb != null) await _playerService.AddMultipleAsync(playersToAddToDb!.ToList());
+
+            regsDto.Players.ForEach(p => _playerService.UpdateDiscordUsername(p.OsuUserId, p.DiscordUsername));
+
+            Team team = new()
+            {
+                TeamName = regsDto.TeamName,
+                Players = await _playerService.GetMultipleById(playerIds)
+            };
+
+            var TournamentTeamGotAddedTo = await _tourneyService.AddTeamAsync(tournamentId, team);
+            return Ok(_mapper.Map<OtmTournamentDto>(TournamentTeamGotAddedTo));
+
+
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+
     }
 
 }
