@@ -85,7 +85,7 @@ namespace othApi.Controllers
                     }
 
                     //  Get Players from db
-                    var teamMatesToAdd = _playerService.GetMultipleById(tournament.TeamMateIds);
+                    var teamMatesToAdd = await _playerService.GetMultipleById(tournament.TeamMateIds);
                     if (teamMatesToAdd == null)
                     {
                         return NotFound("One or more players do not exist in the database");
