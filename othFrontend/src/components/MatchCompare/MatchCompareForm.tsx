@@ -12,11 +12,11 @@ import "../../css/MatchCompare.scss"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { AxiosError } from "axios"
 import toast from "react-hot-toast"
-import { MatchCompareRequest, Map } from "../../helpers/interfaces"
+import { MatchCompareRequest, MapV1 } from "../../helpers/interfaces"
 import { compareMatches } from "../../services/othApiService"
 
 interface CompProps {
-  onCompare: (data: Map[]) => void
+  onCompare: (data: MapV1[]) => void
 }
 
 export default function MatchCompareForm({ onCompare }: CompProps) {
@@ -52,6 +52,11 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
     if (!getValues("team2Color")) {
       setValue("team2Color", "blue")
     }
+
+    setValue("ignoreStart1", 0)
+    setValue("ignoreEnd1", 0)
+    setValue("ignoreStart2", 0)
+    setValue("ignoreEnd2", 0)
   })
 
   return (

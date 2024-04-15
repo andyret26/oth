@@ -6,7 +6,7 @@ import {
   PlayerMin,
   PlayerStats,
   MatchCompareRequest,
-  Map,
+  MapV1,
 } from "../helpers/interfaces"
 
 let OTH_API_URL: string
@@ -98,9 +98,9 @@ export async function UpdateTournament(
 
 export async function compareMatches(
   requestObj: MatchCompareRequest
-): Promise<Map[]> {
+): Promise<MapV1[]> {
   const response = await axios.post(
-    `${OTH_API_URL}/misc/compare-matches`,
+    `${OTH_API_URL}/misc/compare-matches-v1`,
     requestObj
   )
   return response.data

@@ -53,7 +53,7 @@ public class MiscController : ControllerBase
     [HttpPost("compare-matches-v1")]
     [Consumes("application/Json")]
     [Produces("application/Json")]
-    public async Task<ActionResult> CompareMatchesV1([FromBody] MiscCompareRequestDto matchInfo)
+    public async Task<ActionResult<List<MapV1>>> CompareMatchesV1([FromBody] MiscCompareRequestDto matchInfo)
     {
         var games1 = await _osuApiService.GetMatchGamesV1Async(matchInfo.MatchId1);
         var games2 = await _osuApiService.GetMatchGamesV1Async(matchInfo.MatchId2);

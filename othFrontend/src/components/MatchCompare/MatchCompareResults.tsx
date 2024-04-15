@@ -1,9 +1,9 @@
 import { Button } from "@mui/material"
-import { Map } from "../../helpers/interfaces"
+import { MapV1 } from "../../helpers/interfaces"
 
 interface CompProps {
   onReset: () => void
-  maps: Map[]
+  maps: MapV1[]
 }
 
 export default function MatchCompareResults({ onReset, maps }: CompProps) {
@@ -23,17 +23,9 @@ export default function MatchCompareResults({ onReset, maps }: CompProps) {
           <div className="results__map" key={map.score2}>
             <h3 className="results__map-field results__map-title ">
               {map.title}
-              <div className="results__icons ">
-                {map.mods
-                  .filter((m) => m !== "NF")
-                  .map((mod) => (
-                    <img
-                      className="w-8"
-                      src={`src/assets/mod_${mod}.png`}
-                      alt="test"
-                    />
-                  ))}
-              </div>
+              {/* <div className="results__icons ">
+                <p>mods Icon Here</p>
+              </div> */}
             </h3>
             <p className="results__map-field results__map-score1">
               {map.score1}

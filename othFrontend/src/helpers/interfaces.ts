@@ -100,11 +100,21 @@ export interface MatchCompareRequest {
   user2Id: number
 }
 
-export interface Map {
+export interface MapV2 {
   title: string
   artist: string
   mods: string[]
   score1: number
   score2: number
   diff: number
+}
+
+export interface MapV1 {
+  beatmap_id: number
+  mods: number
+  score1: number
+  score2: number
+  diff: number
+  title: string
+  imgUrl: string
 }
