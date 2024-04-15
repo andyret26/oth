@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using Newtonsoft.Json;
 using othApi.Data;
 using othApi.Data.Dtos;
 using othApi.Data.Exceptions;
@@ -20,7 +19,7 @@ public class MiscController : ControllerBase
         _osuApiService = osuApiService;
     }
 
-    [HttpPost("compare-matches")]
+    [HttpPost("compare-matches-v2")]
     [Consumes("application/Json")]
     [Produces("application/Json")]
     [ProducesResponseType(200)]
@@ -50,14 +49,26 @@ public class MiscController : ControllerBase
 
     }
 
-    [HttpPost("qual-stats")]
-    public async Task<ActionResult> GetQualStats()
-    {
-        // var titles = FetchData.FetchSheetData();
-        // var test = await _osuApiService.GetUrlData("https://osu.ppy.sh/community/matches/112765313");
-        // System.Console.WriteLine(test);
 
-        // await _osuApiService.GetMatchesAsync(new List<int> { 112765313, 112806192, 112815084, 112826811, 112827493, 112904147, 112908040, 112921293, 112924861, 112923123, 112924861 });
-        return Ok();
+    [HttpPost("compare-matches-v1")]
+    [Consumes("application/Json")]
+    [Produces("application/Json")]
+    public async Task<ActionResult> CompareMatchesV1([FromBody] MiscCompareRequestDto matchInfo)
+    {
+        var games1 = await _osuApiService.GetMatchGamesV1Async(matchInfo.MatchId1);
+        var games2 = await _osuApiService.GetMatchGamesV1Async(matchInfo.MatchId2);
+        var maps = GamesToMapCompare.CompareV1(games1, games2, matchInfo);
+        var beatmapIds = maps.Select(m => m.Beatmap_id).ToList();
+
+        var beatmaps = await _osuApiService.GetBeatmapsAsync(beatmapIds);
+        foreach (var map in maps)
+        {
+            var bm = beatmaps.FirstOrDefault(bm => bm.Id == map.Beatmap_id)!;
+            map.Title = bm.Beatmapset.Title;
+            map.ImgUrl = bm.Beatmapset.Covers.Cover;
+
+        }
+
+        return Ok(maps);
     }
 }

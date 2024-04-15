@@ -24,7 +24,6 @@ public class TournamentService : ITournamentService
 
     public Tournament? Delete(int id)
     {
-        System.Console.WriteLine("Delete called");
         _db.Tournaments.Where((t) => t.Id == id).ExecuteDelete();
         _db.SaveChanges();
         return null;

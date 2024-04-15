@@ -89,9 +89,7 @@ public class OTMTournamentController : ControllerBase
     {
         if (regsDto.Players.Count <= 1) return BadRequest(new ErrorResponse("Bad Request", 400, "You need at least 2 players to register a team"));
         regsDto.Players.Where(p => p.OsuUserId == 0).ToList().ForEach(p => regsDto.Players.Remove(p));
-        System.Console.WriteLine("\n\n\n ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ \n\n\n");
-        System.Console.WriteLine(JsonConvert.SerializeObject(regsDto.Players));
-        System.Console.WriteLine("\n\n\n ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ \n\n\n");
+
 
         List<int> playerIds = new();
         regsDto.Players.ForEach(p => playerIds.Add(p.OsuUserId));

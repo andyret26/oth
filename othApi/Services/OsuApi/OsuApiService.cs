@@ -237,12 +237,70 @@ class OsuApiService : IOsuApiService
         }
     }
 
-}
+    public async Task<List<GameV1>> GetMatchGamesV1Async(long matchId)
+    {
+        var key = Environment.GetEnvironmentVariable("OSU_API_V1_KEY")!;
+
+        var url = new Uri($"https://osu.ppy.sh/api/get_match?mp={matchId}&k={key}");
+        using (HttpClient http = new HttpClient())
+        {
+            http.DefaultRequestHeaders.Add("Accept", "application/json");
+            HttpResponseMessage response = await http.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<MatchResponseObjV1>(responseBody)!.Games.ToList();
+
+            }
+            else
+            {
+                throw new Exception($"Request failed with status code {response.StatusCode}");
+            }
+        }
+    }
+
+    public async Task<List<Beatmap>> GetBeatmapsAsync(List<int> mapIds)
+    {
+        using HttpClient http = new();
+
+        string bearerToken = await GetToken();
+
+        var baseUrl = new Uri("https://osu.ppy.sh/api/v2/beatmaps");
+
+        var queryParams = new List<KeyValuePair<string, string>>();
+        foreach (int id in mapIds)
+        {
+            queryParams.Add(new KeyValuePair<string, string>("ids[]", id.ToString()));
+        }
+
+        var queryString = string.Join("&", queryParams.Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+
+        var fullUrl = new Uri($"{baseUrl}?{queryString}");
 
 
-public class TokenResponse
-{
-    public string Access_token { get; set; } = null!;
-    public string Token_type { get; set; } = null!;
-    // Add more properties as needed to match the JSON structure
+        http.DefaultRequestHeaders.Add("Accept", "application/json");
+        http.DefaultRequestHeaders.Add("Authorization", $"Bearer {bearerToken}");
+
+        HttpResponseMessage response = await http.GetAsync(fullUrl);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string responseBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<BeatmapResponseObj>(responseBody)!.Beatmaps;
+        }
+        else
+        {
+            throw new Exception($"Request failed with status code {response.StatusCode}");
+        }
+
+    }
+
+
+    public class TokenResponse
+    {
+        public string Access_token { get; set; } = null!;
+        public string Token_type { get; set; } = null!;
+        // Add more properties as needed to match the JSON structure
+    }
 }

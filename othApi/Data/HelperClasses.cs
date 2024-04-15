@@ -80,11 +80,23 @@ public class Game
     public ScoreObj[] Scores { get; set; } = null!;
 
 }
+public class BeatmapResponseObj
+{
+    public List<Beatmap> Beatmaps { get; set; } = null!;
+}
 
 public class Beatmap
 {
     public long Id { get; set; }
     public long Beatmapset_id { get; set; }
+    public decimal Difficulty_rating { get; set; }
+    public int Total_length { get; set; }
+    public decimal Bpm { get; set; }
+    public decimal Ar { get; set; }
+    public decimal Accuracy { get; set; } // OD?
+    public decimal Cs { get; set; }
+    public string Url { get; set; } = null!;
+
     public Beatmapset Beatmapset { get; set; } = null!;
 }
 
@@ -92,7 +104,14 @@ public class Beatmapset
 {
     public string Artist { get; set; } = null!;
     public string Title { get; set; } = null!;
+    public string Creator { get; set; } = null!;
+    public Covers Covers { get; set; } = null!;
 
+}
+
+public class Covers
+{
+    public string Cover { get; set; } = null!;
 }
 
 public class ScoreObj
@@ -118,3 +137,39 @@ public class Map
     public int Score2 { get; set; }
     public int Diff { get; set; }
 }
+
+public class MatchResponseObjV1
+{
+    public GameV1[] Games { get; set; } = null!;
+}
+
+public class GameV1
+{
+    public int Beatmap_id { get; set; }
+    public int Team_type { get; set; }
+    public int Mods { get; set; }
+    public ScoreObjV1[] Scores { get; set; } = null!;
+
+
+}
+
+public class ScoreObjV1
+{
+    public int Team { get; set; }
+    public int Score { get; set; }
+    public int User_id;
+}
+
+public class MapV1
+{
+    public int Beatmap_id { get; set; }
+    public int Mods { get; set; }
+    public int Score1 { get; set; }
+    public int Score2 { get; set; }
+    public int Diff { get; set; }
+
+    public string? Title { get; set; }
+    public string? ImgUrl { get; set; }
+
+}
+

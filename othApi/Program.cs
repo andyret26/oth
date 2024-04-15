@@ -106,7 +106,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddRateLimiter(_ => _
     .AddFixedWindowLimiter(policyName: "fixed", options =>
     {
-        options.PermitLimit = 30;
+        options.PermitLimit = 20;
         options.Window = TimeSpan.FromSeconds(60);
     }));
 
