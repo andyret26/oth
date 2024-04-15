@@ -33,16 +33,5 @@ OSU_CLIENT_SECRET=OusClientSecretHere
 
 ```
 
-https://osu.ppy.sh/community/matches/112765313
-https://osu.ppy.sh/community/matches/112806192
-https://osu.ppy.sh/community/matches/112815084
-https://osu.ppy.sh/community/matches/112826811
-https://osu.ppy.sh/community/matches/112827493
-https://osu.ppy.sh/community/matches/112904147
-https://osu.ppy.sh/community/matches/112908040
-https://osu.ppy.sh/community/matches/112921293
-https://osu.ppy.sh/community/matches/112924861
-https://osu.ppy.sh/community/matches/112923123
-https://osu.ppy.sh/community/matches/112924861
-
-https://docs.google.com/spreadsheets/u/0/d/1_bHCphMWXDwOsl0wqi44D41XnVMN2Q696IO9OPlx8GU/htmlview#
+https://osu.ppy.sh/mp/113478292
+https://osu.ppy.sh/mp/113491873
