@@ -66,6 +66,7 @@ public class MiscController : ControllerBase
             var bm = beatmaps.FirstOrDefault(bm => bm.Id == map.Beatmap_id)!;
             map.Title = bm.Beatmapset.Title;
             map.ImgUrl = bm.Beatmapset.Covers.Cover;
+            map.SlimcoverUrl = bm.Beatmapset.Covers.Slimcover;
 
         }
 

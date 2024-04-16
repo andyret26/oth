@@ -287,6 +287,7 @@ class OsuApiService : IOsuApiService
         if (response.IsSuccessStatusCode)
         {
             string responseBody = await response.Content.ReadAsStringAsync();
+
             return JsonConvert.DeserializeObject<BeatmapResponseObj>(responseBody)!.Beatmaps;
         }
         else

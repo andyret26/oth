@@ -117,4 +117,5 @@ export interface MapV1 {
   diff: number
   title: string
   imgUrl: string
+  slimcoverUrl: string
 }

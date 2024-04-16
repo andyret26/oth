@@ -112,6 +112,7 @@ public class Beatmapset
 public class Covers
 {
     public string Cover { get; set; } = null!;
+    public string Slimcover { get; set; } = null!;
 }
 
 public class ScoreObj
@@ -170,6 +171,7 @@ public class MapV1
 
     public string? Title { get; set; }
     public string? ImgUrl { get; set; }
+    public string? SlimcoverUrl { get; set; }
 
 }
 
