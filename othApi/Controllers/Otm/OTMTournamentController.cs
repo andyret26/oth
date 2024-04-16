@@ -112,7 +112,11 @@ public class OTMTournamentController : ControllerBase
             var playersToAddToDb = await _osuApiService.GetPlayers(playerIds);
             if (playersToAddToDb != null) await _playerService.AddMultipleAsync(playersToAddToDb!.ToList());
 
-            regsDto.Players.ForEach(p => _playerService.UpdateDiscordUsername(p.OsuUserId, p.DiscordUsername));
+
+            foreach (var p in regsDto.Players)
+            {
+                await _playerService.UpdateDiscordUsername(p.OsuUserId, p.DiscordUsername);
+            }
 
             Team team = new()
             {
