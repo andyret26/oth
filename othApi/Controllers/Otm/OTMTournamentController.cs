@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
@@ -84,10 +85,23 @@ public class OTMTournamentController : ControllerBase
     }
 
     [HttpPost("{tournamentId}/register-team")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OtmTournamentDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
 
     public async Task<ActionResult> RegisterTeam(int tournamentId, OtmRegistrationDto regsDto)
     {
+        if (regsDto.TeamName.IsNullOrEmpty()) return BadRequest(new ErrorResponse("Bad Request", 400, "Team name is required"));
+        if (await _tourneyService.TeamNameExistsInTournamentAsync(tournamentId, regsDto.TeamName)) return Conflict(new ErrorResponse("Conflict", 409, "Team with that name already exists in this tournament"));
+
+        var playersThatHasTeam = await _tourneyService.PlayerExistsInTeamTournamentAsync(tournamentId, regsDto.Players.Select(p => p.OsuUserId).ToList());
+        if (playersThatHasTeam.Count > 0) return Conflict(new ErrorResponse("Conflict", 409, $"These players alread is in a team: {string.Join(',', playersThatHasTeam)}"));
+
+
         if (regsDto.Players.Count <= 1) return BadRequest(new ErrorResponse("Bad Request", 400, "You need at least 2 players to register a team"));
+
+        // Remove players with no osu id
         regsDto.Players.Where(p => p.OsuUserId == 0).ToList().ForEach(p => regsDto.Players.Remove(p));
 
 
@@ -110,6 +124,10 @@ public class OTMTournamentController : ControllerBase
             return Ok(_mapper.Map<OtmTournamentDto>(TournamentTeamGotAddedTo));
 
 
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(new ErrorResponse("Not Found", 404, e.Message));
         }
         catch (System.Exception)
         {

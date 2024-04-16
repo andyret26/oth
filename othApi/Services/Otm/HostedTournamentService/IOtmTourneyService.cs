@@ -17,4 +17,13 @@ public interface IOtmTourneyService
     /// <returns>List of tournaments created by the specified host</returns>
     public Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId);
     public Task<HostedTournament> AddTeamAsync(int tournamentId, Team team);
+    public Task<bool> TeamNameExistsInTournamentAsync(int tournamentId, string teamName);
+
+    /// <summary>
+    /// Check if a player exists in a team in the specified tournament
+    /// </summary>
+    /// <param name="tournamentId">Tournament to check in</param>
+    /// <param name="playerIds">List of player ids to check</param>
+    /// <returns>List of player ids that has a team</returns>
+    public Task<List<int>> PlayerExistsInTeamTournamentAsync(int tournamentId, List<int> playerIds);
 }

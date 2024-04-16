@@ -64,4 +64,30 @@ public class OtmTourneyService : IOtmTourneyService
         return t;
 
     }
+
+    public async Task<bool> TeamNameExistsInTournamentAsync(int tournamentId, string teamName)
+    {
+        var t = await GetByIdAsync(tournamentId);
+        return t!.Teams!.Any(t => t.TeamName == teamName);
+    }
+    public async Task<List<int>> PlayerExistsInTeamTournamentAsync(int tournamentId, List<int> playerIds)
+    {
+        // return players that alreay exists
+        var t = await GetByIdAsync(tournamentId);
+        List<int> players = new();
+        foreach (var team in t!.Teams!)
+        {
+            foreach (var player in team!.Players!)
+            {
+                if (playerIds.Contains(player.Id))
+                {
+                    if (!players.Contains(player.Id))
+                    {
+                        players.Add(player.Id);
+                    }
+                }
+            }
+        }
+        return players;
+    }
 }
