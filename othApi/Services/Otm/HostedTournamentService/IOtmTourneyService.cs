@@ -1,3 +1,4 @@
+using othApi.Data.Entities;
 using othApi.Data.Entities.Otm;
 
 namespace othApi.Services.Otm.HostedTournamentService;
@@ -17,8 +18,9 @@ public interface IOtmTourneyService
     /// <returns>List of tournaments created by the specified host</returns>
     public Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId);
     public Task<HostedTournament> AddTeamAsync(int tournamentId, Team team);
+    public Task<Player> AddPlayerAsync(int tournamentId, Player player);
     public Task<bool> TeamNameExistsInTournamentAsync(int tournamentId, string teamName);
-
+    public Task<bool> PlayerExistsInTourneyAsync(int tournamentId, int osuId);
     /// <summary>
     /// Check if a player exists in a team in the specified tournament
     /// </summary>

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using othApi.Data;
+using othApi.Data.Entities;
 using othApi.Data.Entities.Otm;
 using othApi.Data.Exceptions;
 
@@ -89,5 +90,23 @@ public class OtmTourneyService : IOtmTourneyService
             }
         }
         return players;
+    }
+
+    public async Task<Player> AddPlayerAsync(int tournamentId, Player player)
+    {
+        var tournament = await _db.OtmTournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
+        if (tournament == null) throw new NotFoundException("Tournament", tournamentId);
+        if (tournament.Players == null) tournament.Players = new List<Player>();
+        tournament.Players.Add(player);
+        await _db.SaveChangesAsync();
+        return player;
+    }
+
+    public async Task<bool> PlayerExistsInTourneyAsync(int tournamentId, int osuId)
+    {
+        var tournament = await _db.OtmTournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
+        if (tournament == null) throw new NotFoundException("Tournament", tournamentId);
+
+        return tournament.Players!.Any(p => p.Id == osuId);
     }
 }

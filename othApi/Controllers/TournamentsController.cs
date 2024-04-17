@@ -80,7 +80,7 @@ namespace othApi.Controllers
                     {
                         foreach (var player in playersDoNotExists)
                         {
-                            _playerService.Post(player);
+                            await _playerService.PostAsync(player);
                         }
                     }
 

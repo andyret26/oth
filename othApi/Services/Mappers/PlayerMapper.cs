@@ -20,6 +20,8 @@ namespace othApi.Services.Mappers
                     (opt) => opt.MapFrom(prd => prd.Statistics_rulesets.Osu.Global_rank));
 
             CreateMap<Player, OtmDashboardPlayerDto>();
+            CreateMap<Player, OtmPlayerDto>()
+                .ForMember(dto => dto.DiscordUsername, opt => opt.MapFrom(p => p.DiscordTag));
 
         }
     }

@@ -58,12 +58,12 @@ public class HostController : ControllerBase
         try
         {
 
-            var player = _playerService.GetById(id);
+            var player = await _playerService.GetByIdAsync(id);
             if (player == null)
             {
                 var players = await _osuApiService.GetPlayers(new List<int> { id });
                 if (players!.Length == 0) return NotFound();
-                player = _playerService.Post(players[0]);
+                player = await _playerService.PostAsync(players[0]);
             }
             var newHost = new Data.Entities.Otm.Host
             {

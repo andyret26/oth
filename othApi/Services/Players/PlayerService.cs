@@ -41,11 +41,11 @@ public class PlayerService : IPlayerService
         }
     }
 
-    public Player? GetById(int id)
+    public async Task<Player?> GetByIdAsync(int id)
     {
         try
         {
-            var player = _db.Players.Include(p => p.Tournaments).SingleOrDefault((p) => p.Id == id);
+            var player = await _db.Players.Include(p => p.Tournaments).SingleOrDefaultAsync((p) => p.Id == id);
             return player;
         }
         catch (SqlException err)
@@ -69,12 +69,12 @@ public class PlayerService : IPlayerService
         };
     }
 
-    public Player Post(Player player)
+    public async Task<Player> PostAsync(Player player)
     {
         try
         {
-            var addedPlayer = _db.Players.Add(player);
-            _db.SaveChanges();
+            var addedPlayer = await _db.Players.AddAsync(player);
+            await _db.SaveChangesAsync();
 
             return addedPlayer.Entity;
         }

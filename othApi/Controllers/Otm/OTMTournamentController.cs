@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using othApi.Data.Dtos.OtmDtos;
@@ -85,6 +86,7 @@ public class OTMTournamentController : ControllerBase
     }
 
     [HttpPost("{tournamentId}/register-team")]
+    [EnableRateLimiting("fixed")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OtmTournamentDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -139,6 +141,39 @@ public class OTMTournamentController : ControllerBase
             throw;
         }
 
+    }
+
+    [HttpPost("{tournamentId}/register-player")]
+    [EnableRateLimiting("fixed")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OtmPlayerDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<OtmPlayerDto>> RegisterPlayer(int tournamentId, PlayerRegistration regsDto)
+    {
+
+        if (regsDto.OsuUserId == 0) return BadRequest(new ErrorResponse("Bad Request", 400, "Osu user id is required"));
+        if (await _tourneyService.PlayerExistsInTourneyAsync(tournamentId, regsDto.OsuUserId)) return Conflict(new ErrorResponse("Conflict", 409, "Player already exists in this tournament"));
+
+        try
+        {
+            var playersToAdd = await _osuApiService.GetPlayers(new List<int> { regsDto.OsuUserId });
+            if (playersToAdd != null) await _playerService.PostAsync(playersToAdd[0]);
+
+            await _playerService.UpdateDiscordUsername(regsDto.OsuUserId, regsDto.DiscordUsername);
+
+
+            var pToAdd = await _playerService.GetByIdAsync(regsDto.OsuUserId);
+            if (pToAdd == null) return NotFound(new ErrorResponse("Not Found", 404, "Player not found"));
+            var playerAdded = await _tourneyService.AddPlayerAsync(tournamentId, pToAdd);
+
+            return Ok(_mapper.Map<OtmPlayerDto>(playerAdded));
+
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(new ErrorResponse("Not Found", 404, e.Message));
+        }
     }
 
 }

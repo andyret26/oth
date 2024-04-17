@@ -44,9 +44,9 @@ namespace othApi.Controllers
 
         // GET: api/Player/5
         [HttpGet("{id}")]
-        public ActionResult<PlayerDto> GetPlayer(int id)
+        public async Task<ActionResult<PlayerDto>> GetPlayer(int id)
         {
-            var player = _playerService.GetById(id);
+            var player = await _playerService.GetByIdAsync(id);
             var playerDto = _mapper.Map<PlayerDto>(player);
             return playerDto;
         }
@@ -76,7 +76,7 @@ namespace othApi.Controllers
             if (players.Length == 0) return NotFound($"Player with id {id} not found");
 
 
-            var addedPlayer = _playerService.Post(players[0]);
+            var addedPlayer = await _playerService.PostAsync(players[0]);
             var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
 
             await _discordService.SendMessage($"User {useSub.Value} successfully added player {playerDto.Id}");
@@ -100,7 +100,7 @@ namespace othApi.Controllers
             try
             {
                 var player = await _osuApiService.GetPlayerByUsername(username);
-                var addedPlayer = _playerService.Post(player);
+                var addedPlayer = await _playerService.PostAsync(player);
                 var playerDto = _mapper.Map<PlayerDto>(addedPlayer);
                 await _discordService.SendMessage($"User {useSub.Value} successfully added player {playerDto.Username}");
                 return CreatedAtAction("GetPlayer", new { id = playerDto.Id }, playerDto);
