@@ -106,7 +106,7 @@ public class OtmTourneyService : IOtmTourneyService
     {
         var tournament = await _db.OtmTournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
         if (tournament == null) throw new NotFoundException("Tournament", tournamentId);
-
+        if (tournament.Players == null) return false;
         return tournament.Players!.Any(p => p.Id == osuId);
     }
 }

@@ -153,7 +153,6 @@ public class OTMTournamentController : ControllerBase
     {
 
         if (regsDto.OsuUserId == 0) return BadRequest(new ErrorResponse("Bad Request", 400, "Osu user id is required"));
-        if (await _tourneyService.PlayerExistsInTourneyAsync(tournamentId, regsDto.OsuUserId)) return Conflict(new ErrorResponse("Conflict", 409, "Player already exists in this tournament"));
 
         try
         {
@@ -170,10 +169,17 @@ public class OTMTournamentController : ControllerBase
             return Ok(_mapper.Map<OtmPlayerDto>(playerAdded));
 
         }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException e)
+        {
+            Npgsql.PostgresException ex = (Npgsql.PostgresException)e.InnerException!;
+            if (ex.SqlState == "23505") return Conflict(new ErrorResponse("Conflict", 409, "Player already exists in this tournament"));
+            return BadRequest("Something went wrong");
+        }
         catch (NotFoundException e)
         {
             return NotFound(new ErrorResponse("Not Found", 404, e.Message));
         }
+
     }
 
 }
