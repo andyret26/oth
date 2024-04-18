@@ -49,6 +49,11 @@ public class DataContext : DbContext
             .WithMany(p => p.Teams)
             .UsingEntity(j => j.ToTable("OtmTeamPlayer"));
 
+        modelBuilder.Entity<Stats>()
+            .HasKey(s => new { s.MapId, s.PlayerId });
+
+
+
 
         base.OnModelCreating(modelBuilder);
 

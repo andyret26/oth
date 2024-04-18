@@ -54,5 +54,6 @@ public class TMap
     public string Mapper { get; set; } = null!;
 
     public string? Link { get; set; }
+    public List<Stats>? Stats { get; set; }
 
 }

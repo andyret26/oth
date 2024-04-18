@@ -12,4 +12,6 @@ public class Player
     public List<Tournament>? Tournaments { get; set; }
     public List<HostedTournament>? OtmTournaments { get; set; }
     public List<Team>? Teams { get; set; }
+    public List<Stats>? Stats { get; set; }
+
 }
