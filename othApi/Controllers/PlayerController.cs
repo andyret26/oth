@@ -39,6 +39,7 @@ namespace othApi.Controllers
         {
             var players = _playerService.GetMinimal();
             var playerDtos = _mapper.Map<IEnumerable<PlayerMinimalDto>>(players);
+            _discordService.SendMessage("player min called");
             return Ok(playerDtos);
         }
 
