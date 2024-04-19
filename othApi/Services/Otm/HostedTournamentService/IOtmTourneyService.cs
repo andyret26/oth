@@ -19,6 +19,7 @@ public interface IOtmTourneyService
     public Task<List<HostedTournament>> GetAllByHostIdAsync(int hostId);
     public Task<HostedTournament> AddTeamAsync(int tournamentId, Team team);
     public Task<Player> AddPlayerAsync(int tournamentId, Player player);
+    public Task<Round> AddRoundAsync(int tournamentId, Round round);
     public Task<bool> TeamNameExistsInTournamentAsync(int tournamentId, string teamName);
     public Task<bool> PlayerExistsInTourneyAsync(int tournamentId, int osuId);
     /// <summary>

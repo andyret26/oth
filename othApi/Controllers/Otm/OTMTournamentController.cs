@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using othApi.Data.Dtos.OtmDtos;
 using othApi.Data.Entities.Otm;
 using othApi.Data.Exceptions;
@@ -180,6 +179,31 @@ public class OTMTournamentController : ControllerBase
             return NotFound(new ErrorResponse("Not Found", 404, e.Message));
         }
 
+    }
+
+    [HttpPost("{tournamentId}/add-round")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RoundDto))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+    public async Task<ActionResult<RoundDto>> AddRound(int tournamentId, [FromBody] string roundName)
+    {
+        var tokenId = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (tokenId == null) return Unauthorized(new ErrorResponse("Unauthorized", 401, "Unauthorized"));
+
+        var tournament = await _tourneyService.GetByIdAsync(tournamentId);
+        if (tournament == null) return NotFound(new ErrorResponse("Not Found", 404, $"Tournament with id {tournamentId} not found"));
+
+        if (tokenId.Value.Split("|")[2] != tournament.HostId.ToString()) return Unauthorized(new ErrorResponse("Unauthorized", 401, "Cannot add round to a tournament you do not own"));
+
+        var round = new Round
+        {
+            Name = roundName
+        };
+
+        var addedRound = await _tourneyService.AddRoundAsync(tournamentId, round);
+        return Ok(_mapper.Map<RoundDto>(addedRound));
     }
 
 }

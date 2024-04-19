@@ -102,6 +102,16 @@ public class OtmTourneyService : IOtmTourneyService
         return player;
     }
 
+    public async Task<Round> AddRoundAsync(int tournamentId, Round round)
+    {
+        var tourney = await _db.OtmTournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
+        if (tourney == null) throw new NotFoundException("Tournament", tournamentId);
+        if (tourney.Rounds == null) tourney.Rounds = new List<Round>();
+        tourney.Rounds.Add(round);
+        await _db.SaveChangesAsync();
+        return round;
+    }
+
     public async Task<bool> PlayerExistsInTourneyAsync(int tournamentId, int osuId)
     {
         var tournament = await _db.OtmTournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
