@@ -117,7 +117,7 @@ discordClient!.LoginAsync(TokenType.Bot, Environment.GetEnvironmentVariable("DIS
 discordClient.StartAsync().GetAwaiter().GetResult();
 app.UseCors(builder =>
     {
-        builder.WithOrigins("http://localhost:5173", "https://osu-th.vercel.app", "http://localhost:5174", "https://osu-tm.vercel.app") // Replace with the allowed origin(s)
+        builder.WithOrigins("http://localhost:5173", "https://osu-th.vercel.app", "http://localhost:5174", "https://osu-tm.vercel.app", "https://ot-timer.azurewebsites.net") // Replace with the allowed origin(s)
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
