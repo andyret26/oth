@@ -50,7 +50,7 @@ public class DataContext : DbContext
             .UsingEntity(j => j.ToTable("OtmTeamPlayer"));
 
         modelBuilder.Entity<Stats>()
-            .HasKey(s => new { s.MapId, s.PlayerId });
+            .HasKey(s => new { s.MapId, s.PlayerId, s.RoundId });
 
 
 
