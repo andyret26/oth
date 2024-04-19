@@ -187,7 +187,7 @@ public class OTMTournamentController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<RoundDto>> AddRound(int tournamentId, [FromBody] string roundName)
+    public async Task<ActionResult<RoundDto>> AddRound(int tournamentId, [FromBody] RoundPostDto roundPostDto)
     {
         var tokenId = User.FindFirst(ClaimTypes.NameIdentifier);
         if (tokenId == null) return Unauthorized(new ErrorResponse("Unauthorized", 401, "Unauthorized"));
@@ -199,7 +199,7 @@ public class OTMTournamentController : ControllerBase
 
         var round = new Round
         {
-            Name = roundName
+            Name = roundPostDto.Name
         };
 
         var addedRound = await _tourneyService.AddRoundAsync(tournamentId, round);

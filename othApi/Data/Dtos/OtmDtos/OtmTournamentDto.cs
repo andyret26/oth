@@ -45,3 +45,8 @@ public class RoundDto
     public int Id { get; set; }
     public string Name { get; set; } = null!;
 }
+
+public class RoundPostDto
+{
+    public string Name { get; set; } = null!;
+}
