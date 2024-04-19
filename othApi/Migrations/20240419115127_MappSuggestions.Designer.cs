@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using othApi.Data;
@@ -12,9 +13,11 @@ using othApi.Data;
 namespace othApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240419115127_MappSuggestions")]
+    partial class MappSuggestions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,7 +261,10 @@ namespace othApi.Migrations
                     b.Property<int>("OrderNumber")
                         .HasColumnType("integer");
 
-                    b.Property<int>("RoundId")
+                    b.Property<int?>("RoundId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("RoundId1")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Sr")
@@ -267,68 +273,10 @@ namespace othApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RoundId");
+
+                    b.HasIndex("RoundId1");
 
                     b.ToTable("TMap");
-                });
-
-            modelBuilder.Entity("othApi.Data.Entities.Otm.TMapSuggestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Ar")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("Bpm")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Cs")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Length")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Mapper")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Mod")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Od")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoundId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Sr")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoundId");
-
-                    b.ToTable("TMapSuggestion");
                 });
 
             modelBuilder.Entity("othApi.Data.Entities.Otm.Team", b =>
@@ -549,24 +497,13 @@ namespace othApi.Migrations
 
             modelBuilder.Entity("othApi.Data.Entities.Otm.TMap", b =>
                 {
-                    b.HasOne("othApi.Data.Entities.Otm.Round", "Round")
-                        .WithMany("Mappool")
-                        .HasForeignKey("RoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Round");
-                });
-
-            modelBuilder.Entity("othApi.Data.Entities.Otm.TMapSuggestion", b =>
-                {
-                    b.HasOne("othApi.Data.Entities.Otm.Round", "Round")
+                    b.HasOne("othApi.Data.Entities.Otm.Round", null)
                         .WithMany("MapSuggestions")
-                        .HasForeignKey("RoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoundId");
 
-                    b.Navigation("Round");
+                    b.HasOne("othApi.Data.Entities.Otm.Round", null)
+                        .WithMany("Mappool")
+                        .HasForeignKey("RoundId1");
                 });
 
             modelBuilder.Entity("othApi.Data.Entities.Otm.Team", b =>

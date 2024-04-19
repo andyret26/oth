@@ -52,6 +52,14 @@ public class DataContext : DbContext
         modelBuilder.Entity<Stats>()
             .HasKey(s => new { s.MapId, s.PlayerId, s.RoundId });
 
+        modelBuilder.Entity<TMap>()
+            .HasOne(m => m.Round)
+            .WithMany(r => r.Mappool);
+
+        modelBuilder.Entity<TMapSuggestion>()
+            .HasOne(m => m.Round)
+            .WithMany(r => r.MapSuggestions);
+
 
 
 
