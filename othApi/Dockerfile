@@ -8,7 +8,7 @@ EXPOSE 81
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["othApi.csproj", "."]
+COPY ["./othApi/othApi.csproj", "."]
 RUN dotnet restore "./././othApi.csproj"
 COPY . .
 WORKDIR "/src/."
