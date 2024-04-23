@@ -11,41 +11,41 @@ on:
 
 jobs:
   build:
-    runs-on: "ubuntu-latest"
+    runs-on: 'ubuntu-latest'
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Log in to registry
-        uses: docker/login-action@v3
-        with:
-          registry: https://index.docker.io/v1/
-          username: andy26
-          password: ${{ secrets.AzureAppService_ContainerPassword_38d53994ac1547e4aacd283f86904c99 }}
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_4d856669e872467e8d19a4ab2317feee }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_218705e9b4ba40328cc99a741ace7f03 }}
 
-      - name: Build and push container image to registry
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: index.docker.io/andy26/oth-api:${{ github.sha }}
-          file: ./othApi/Dockerfile
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_4d856669e872467e8d19a4ab2317feee }}/andy26/otm-api:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "production"
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: "oth-api"
-          slot-name: "production"
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_f4b1664435e5412d9774e0e6654d0ba1 }}
-          images: "index.docker.io/andy26/oth-api:${{ github.sha }}"
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'oth-api'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_24cad66909574c44a89b2acadf1f0e1a }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_4d856669e872467e8d19a4ab2317feee }}/andy26/otm-api:${{ github.sha }}'
