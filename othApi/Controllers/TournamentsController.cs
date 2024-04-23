@@ -1,10 +1,8 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.IdentityModel.Tokens;
 using othApi.Data.Dtos;
 using othApi.Data.Entities;
 using othApi.Data.Exceptions;

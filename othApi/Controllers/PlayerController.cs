@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using othApi.Data.Exceptions;
 using Microsoft.AspNetCore.RateLimiting;
 using othApi.Services.Discord;
-using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace othApi.Controllers

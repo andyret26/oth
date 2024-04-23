@@ -12,8 +12,7 @@ using Discord;
 using Discord.WebSocket;
 using Microsoft.AspNetCore.RateLimiting;
 using othApi.Services.Discord;
-using othApi.Services.Otm.HostService;
-using othApi.Services.Otm.HostedTournamentService;
+
 
 DotEnv.Load();
 
@@ -22,9 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 
-// OTM Services
-builder.Services.AddScoped<IHostService, HostService>();
-builder.Services.AddScoped<IOtmTourneyService, OtmTourneyService>();
+
 
 builder.Services.AddScoped<IOsuApiService, OsuApiService>();
 builder.Services.AddScoped<IDiscordService, DiscordService>();

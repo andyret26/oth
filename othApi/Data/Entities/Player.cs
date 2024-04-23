@@ -1,5 +1,3 @@
-using othApi.Data.Entities.Otm;
-
 namespace othApi.Data.Entities;
 public class Player
 {
@@ -10,8 +8,5 @@ public class Player
     public int Global_rank { get; set; }
     public string Country_code { get; set; } = null!;
     public List<Tournament>? Tournaments { get; set; }
-    public List<HostedTournament>? OtmTournaments { get; set; }
-    public List<Team>? Teams { get; set; }
-    public List<Stats>? Stats { get; set; }
 
 }

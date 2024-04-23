@@ -2,7 +2,6 @@ namespace othApi.Data;
 
 using Microsoft.EntityFrameworkCore;
 using othApi.Data.Entities;
-using othApi.Data.Entities.Otm;
 
 public class DataContext : DbContext
 {
@@ -10,9 +9,6 @@ public class DataContext : DbContext
     public DbSet<Tournament> Tournaments { get; set; } = null!;
     public DbSet<Player> Players { get; set; } = null!;
 
-    public DbSet<Host> OtmHosts { get; set; } = null!;
-    public DbSet<HostedTournament> OtmTournaments { get; set; } = null!;
-    public DbSet<Staff> OtmStaff { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,40 +23,6 @@ public class DataContext : DbContext
             .HasOne(t => t.AddedBy)
             .WithMany()
             .HasForeignKey(t => t.AddedById);
-
-        // OTM
-        modelBuilder.Entity<Host>()
-            .HasMany(h => h.Tournaments)
-            .WithOne(t => t.Host)
-            .HasForeignKey(t => t.HostId);
-
-        modelBuilder.Entity<HostedTournament>()
-            .HasMany(t => t.Staff)
-            .WithMany(s => s.Tournaments)
-            .UsingEntity(j => j.ToTable("OtmTournamentStaff"));
-
-        modelBuilder.Entity<HostedTournament>()
-            .HasMany(t => t.Players)
-            .WithMany(p => p.OtmTournaments)
-            .UsingEntity(j => j.ToTable("OtmTournamentPlayer"));
-
-        modelBuilder.Entity<Team>()
-            .HasMany(t => t.Players)
-            .WithMany(p => p.Teams)
-            .UsingEntity(j => j.ToTable("OtmTeamPlayer"));
-
-        modelBuilder.Entity<Stats>()
-            .HasKey(s => new { s.MapId, s.PlayerId, s.RoundId });
-
-        modelBuilder.Entity<TMap>()
-            .HasOne(m => m.Round)
-            .WithMany(r => r.Mappool);
-
-        modelBuilder.Entity<TMapSuggestion>()
-            .HasOne(m => m.Round)
-            .WithMany(r => r.MapSuggestions);
-
-
 
 
         base.OnModelCreating(modelBuilder);
