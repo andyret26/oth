@@ -10,7 +10,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["./othApi/othApi.csproj", "."]
 RUN dotnet restore "./././othApi.csproj"
-COPY . .
+COPY "./othApi" .
 WORKDIR "/src/."
 RUN dotnet build "./othApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
