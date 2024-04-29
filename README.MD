@@ -3,8 +3,9 @@ I am participating in a game that involves multiple tournaments, and we use Goog
 
 With this application, I aim to create an improved method for adding and presenting tournament information in a more professional manner.
 
+Application: [Oth!](https://oth.vercel.app/)
+
 ### Cloud services
-- Supabase
 - Auth0
   
 ### Frontend vite 
@@ -13,25 +14,10 @@ npm install
 npm run dev
 ```
 
-### Backend
-```bash
-dotnet restore
-dotnet run
-```
+
 
 ### .env files
 ```bash
-# Frontend
 VITE_AUTH_DOMAIN=AuthDomainHere
 VITE_AUTH_CLIENT_ID=ClienIDHere
-
-# Backend
-SUPABASE_CONNECTION="ConnectionStringHere"
-JWKS_URI="JWKS_URI_Here"
-OSU_CLIENT_ID=OsuClientIdHere
-OSU_CLIENT_SECRET=OusClientSecretHere
-
 ```
-
-https://osu.ppy.sh/mp/113478292
-https://osu.ppy.sh/mp/113491873
