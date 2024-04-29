@@ -18,7 +18,7 @@ export default function History() {
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
   const [playerName, setPlayerName] = useState<string>("")
   const [logdinId, setLogdinId] = useState<number>(0)
-  const [sortOpt, setSortOpt] = useState<string>("Date")
+  const [sortOpt, setSortOpt] = useState<string>("Date (New First)")
 
   let content
 
