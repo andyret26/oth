@@ -5,6 +5,8 @@ With this application, I aim to create an improved method for adding and present
 
 Application: [Oth!](https://osu-th.vercel.app/#/history/3191010)
 
+![preview](preview.png)
+
 ### Cloud services
 - Auth0
   
