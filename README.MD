@@ -3,7 +3,7 @@ I am participating in a game that runs multiple tournaments a year, and we use G
 
 With this application, I aim to create an improved method for adding and presenting tournament information in a more professional manner.
 
-Application: [Oth!](https://oth.vercel.app/)
+Application: [Oth!](https://osu-th.vercel.app/#/history/3191010)
 
 ### Cloud services
 - Auth0
