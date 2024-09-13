@@ -1,0 +1,34 @@
+.search {
+  position: relative;
+  &__dropdown {
+    background-color: var(--bg3);
+    position: absolute;
+    left: 0px;
+    top: 35px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    max-height: 250px;
+    width: 150px;
+    z-index: 999;
+    text-align: center;
+    border-radius: var(--base-border-radius);
+  }
+
+  &__row {
+    &:hover {
+      background-color: var(--bg2);
+    }
+  }
+
+  &__link {
+    padding: 5px 5px;
+    position: relative;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

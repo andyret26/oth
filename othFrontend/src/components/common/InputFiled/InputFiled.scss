@@ -1,0 +1,30 @@
+.input {
+  width: 100%;
+  position: relative;
+  border-radius: var(--base-border-radius);
+
+  &__label {
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  &__field {
+    box-sizing: border-box;
+    border: none;
+    color: inherit;
+    width: 100%;
+    padding: 10px 30px 10px 10px;
+    border-radius: var(--base-border-radius);
+    height: 40px;
+
+    &:focus {
+      outline: 1px solid #6b575e;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 25%;
+    right: 10px;
+  }
+}

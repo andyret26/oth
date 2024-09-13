@@ -4,12 +4,13 @@ import { TbSearch, TbArrowsSort } from "react-icons/tb"
 import dayjs from "dayjs"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useLocation } from "react-router-dom"
-import { TextField } from "@mui/material"
-import { GetTournamentsByPlayerIdAsync } from "../services/othApiService"
-import { Tournament } from "../helpers/interfaces"
-import "../css/HistoryPage.css"
+import { GetTournamentsByPlayerIdAsync } from "../../services/othApiService"
+import { Tournament } from "../../helpers/interfaces"
 import "animate.css"
-import TournamentContainer from "../components/TournamentContainer"
+import TournamentContainer from "../../components/TournamentContainer"
+import InputFiled from "../../components/common/InputFiled/InputField"
+import SelectBox from "../../components/common/SelectBox/SelectBox"
+import "./History.scss"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
@@ -18,7 +19,7 @@ export default function History() {
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
   const [playerName, setPlayerName] = useState<string>("")
   const [logdinId, setLogdinId] = useState<number>(0)
-  const [sortOpt, setSortOpt] = useState<string>("Date (New First)")
+  const [, setSortOpt] = useState<string>("Date (New First)")
 
   let content
 
@@ -81,37 +82,33 @@ export default function History() {
 
     setTournaments(updatedTournaments!)
   }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+  }
+
   return (
     <div className="history-page gap-2 page">
       <h1 className="text-2xl  pb-4 font-extrabold sm:text-3xl">
         {playerName}&#39;s History
       </h1>
       <div className="flex gap-14 w-full items-center justify-center">
-        <TextField
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+        <InputFiled
+          onChange={handleSearchChange}
           placeholder="Search..."
-          InputProps={{
-            startAdornment: <TbSearch size={20} className="mr-3" />,
-          }}
-          size="small"
-          sx={{ width: "160px" }}
+          Icon={TbSearch}
         />
 
         <div className="flex items-center gap-1">
-          <TbArrowsSort className="text-2xl" />
-          <select
-            name="sort"
-            id="sort"
-            placeholder="Sort By"
-            value={sortOpt}
-            onChange={(e) => handleSortChange(e.target.value)}
-            className="bg-[#4e3c44] p-1 rounded-md"
-          >
-            <option value="Date (Old First)">Date (Old First)</option>
-            <option value="Name">Name</option>
-            <option value="Date (New First)">Date (New First)</option>
-          </select>
+          <TbArrowsSort size={20} />
+          <SelectBox
+            options={[
+              { label: "Date (New First)", value: "Date (New First)" },
+              { label: "Date (Old First)", value: "Date (Old First)" },
+              { label: "Name", value: "Name" },
+            ]}
+            onChange={(e) => handleSortChange(e)}
+          />
         </div>
       </div>
       {content}

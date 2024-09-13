@@ -1,119 +1,92 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
+
 :root {
-    --bg1: #1c1719;
-    --bg2: #382e32;
-    background-color: var(--bg1);
-    height: 100vh;
+  --bg1: #1c1719;
+  --bg2: #382e32;
+  --bg3: #473a3f;
+  --base-font-size: 14px;
+  --base-border-radius: 5px;
+  --text-color: #fff;
+  --osu-purple: #8c66ff;
+  --osu-blue: #54b2e0;
+  --osu-green: #73ff66;
+  --osu-pink: #ff66ab;
+  --osu-pink--hover: #ff76ab;
+  --osu-brown: #ff9966;
+  --osu-yellow: #ffd866;
+  --osu-red: #cc3333;
+  --nm-color: #7fc8ff;
+  --hd-color: #ffff7f;
+  --hr-color: #ff7f7f;
+  --dt-color: #ee7fff;
+  --fm-color: #7fff7f;
+  --tb-color: #c4c4c4;
+  --boxshadow-blue: 0px 0px 10px 2px var(--osu-blue);
+  --boxshadow-white: 0px 0px 5px 1px white;
+  background-color: var(--bg1);
+  color: var(--text-color);
+  font-family: "Comfortaa", sans-serif;
+  font-size: var(--base-font-size);
 }
 
-#root {
-    height: 100vh;
-    background-color: var(--bg1);
-
+::placeholder {
+  color: #aaa;
+  font-family: "Comfortaa", sans-serif;
+  font-size: var(--base-font-size);
 }
 
-#root > div {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+body {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  font-size: var(--base-font-size);
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
-    margin: 0px;
+  text-decoration: none;
+  color: var(--text-color);
 }
 
-p {
-    margin: 0px;
+input {
+  font-family: inherit;
+  font-size: var(--base-font-size);
 }
 
-.link {
-    color: #f5f5f5;
-    font-size: 18px;
-    margin: 0px;
-    padding: 9px 10px;
-    border-radius: 5px;
-    background-color: var(--bg2);
+button:focus {
+  outline: none;
 }
 
-.link:hover {
-    background-color: #2e2629;
+:focus {
+  box-shadow: var(--boxshadow-blue);
+  -webkit-box-shadow: var(--boxshadow-blue);
+  -moz-box-shadow: var(--boxshadow-blue);
+  border-radius: inherit;
 }
 
-.nav-bar {
-    background-color: #3d2932 !important;
-    min-height: 64px;
-    max-height: 64px;
+:focus-visible {
+  outline: none;
 }
 
-.nav-link {
-    font-size: 18px;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.nav-link:hover {
-    background-color: #6c585e;
-}
-
-.nav__logo-link {
-    margin-right: 10px;
-}
-
-.page {
-    height: calc(100vh - 64px);
-    max-height: calc(100vh - 64px);
-    overflow-y: auto;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding:10px 5px;
-}
-
+/* width */
 ::-webkit-scrollbar {
-    width: 5px;
+  width: 10px;
 }
 
-
+/* Track */
 ::-webkit-scrollbar-track {
-    background-color: none;
-}
-::-webkit-scrollbar-track:hover {
-    width: 10px;
+  background: #5c5c5c;
+  border-radius: var(--base-border-radius);
 }
 
-
-::-webkit-scrollbar-track-piece {
-    background-color: none;
-    border-radius: 10px;
-}
-
+/* Handle */
 ::-webkit-scrollbar-thumb {
-    background-color: #7d7d7d;
-    border-radius: 10px;
+  background: #bbbbbb;
+  border-radius: var(--base-border-radius);
 }
 
-.MuiToolbar-root {
-    height: 64px;
-}
-
-.css-14p6ir1-MuiPaper-root-MuiDialog-paper {
-    background-color: var(--bg1) !important;
-    background-image: none !important;
-    height: 80vh;
-}
-
-.s {
-    margin-left: 0.5rem;
-}
-
-@media (min-widt: 640px){
-    .page {
-        padding: 10px 20px
-    }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d3d3d3;
 }

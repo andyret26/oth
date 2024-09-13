@@ -1,23 +1,25 @@
-// Search.tsx
-
-import { TextField } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { TbSearch } from "react-icons/tb"
-import { PlayerMin } from "../helpers/interfaces"
-import { GetPlayersMinAsync } from "../services/othApiService"
+import { PlayerMin } from "../../helpers/interfaces"
+import { GetPlayersMinAsync } from "../../services/othApiService"
+import "./Search.scss"
+import InputFiled from "../common/InputFiled/InputField"
 
 const Search = () => {
-  const [query, setQuery] = useState<string>("")
+  const [, setQuery] = useState<string>("")
   const [players, setPlayers] = useState<PlayerMin[] | null>(null)
   const [searchPlayers, setSearchPlayers] = useState<PlayerMin[] | null>(null)
+  const searchDropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const fetchPlayers = async () => {
-      setPlayers(await GetPlayersMinAsync())
+    if (players === null) {
+      const fetchPlayers = async () => {
+        setPlayers(await GetPlayersMinAsync())
+      }
+      fetchPlayers()
     }
-    fetchPlayers()
-  }, [])
+  }, [players])
 
   function handleSearch(searchtest: string): void {
     if (!players) {
@@ -49,31 +51,39 @@ const Search = () => {
     setQuery("")
   }
 
+  const handleClickOutside = (e: MouseEvent) => {
+    if (
+      searchDropdownRef.current &&
+      !searchDropdownRef.current.contains(e.target as Node)
+    ) {
+      setSearchPlayers(null)
+      setQuery("")
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   return (
-    <div className="w-48">
-      <TextField
-        type="text"
-        value={query}
-        size="small"
-        onChange={handleChange}
-        placeholder="Search Player"
-        data-cy="nav-search"
-        InputProps={{
-          startAdornment: <TbSearch size={20} className="mr-3" />,
-        }}
-        autoComplete="off"
-      />
+    <div className="search">
+      <InputFiled Icon={TbSearch} onChange={handleChange} />
 
       {searchPlayers ? (
-        <div className="w-44 bg-[#4e3c44] absolute z-50 rounded-md max-h-56 overflow-y-scroll">
+        <div className="search__dropdown" ref={searchDropdownRef}>
           {searchPlayers?.map((p) => (
-            <div key={p.id} className="hover:bg-[#6b535e]">
+            <div key={p.id} className="search__row">
               <Link
+                className="search__link"
                 to={`/history/${p.id}`}
                 onClick={() => handleSearchClick()}
                 data-cy={`player-${p.id}`}
               >
-                <p className="pl-3 py-1">{p.username}</p>
+                {p.username}
               </Link>
             </div>
           ))}

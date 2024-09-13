@@ -9,7 +9,6 @@ export default function MatchCompare() {
 
   const onCompare = (data: MapV1[]) => {
     setMaps(data)
-    console.log(data)
   }
 
   const onReset = () => {

@@ -1,6 +1,6 @@
 import { Tournament } from "../helpers/interfaces"
 import { FadeInOnScroll } from "./FadeInOnScroll"
-import TourneyCard from "./TourneyCard"
+import TourneyCard from "./TourneyCard/TourneyCard"
 
 interface CompProps {
   tournamentsList: Tournament[]
