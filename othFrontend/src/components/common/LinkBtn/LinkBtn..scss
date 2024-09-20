@@ -1,0 +1,16 @@
+.link-btn {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  height: 12px;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bolder;
+  border-radius: var(--base-border-radius);
+
+  &:hover {
+    color: white;
+  }
+}

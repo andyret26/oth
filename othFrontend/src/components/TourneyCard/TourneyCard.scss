@@ -1,5 +1,5 @@
 .tournament-card {
-  width: 25rem;
+  width: 400px;
   height: 175px;
   padding: 10px;
   border-radius: 0.5rem;
@@ -26,5 +26,85 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+  }
+
+  &__header {
+    width: 100%;
+    border-bottom: 5px solid var(--osu-pink);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+  }
+
+  &__title {
+    margin: 5px;
+  }
+
+  &__edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    p {
+      margin: 0;
+    }
+
+    div > p {
+      margin: 0;
+    }
+  }
+
+  &__placement {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+
+  &__date {
+    color: #ffffff9d;
+  }
+
+  &__links {
+    position: absolute;
+    display: flex;
+    gap: 5px;
+    bottom: 10px;
+  }
+
+  &__team {
+    padding: 5px;
+    border-radius: var(--base-border-radius);
+    position: absolute;
+    display: flex;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%);
+    border: 2px solid var(--osu-pink2);
+    color: var(--osu-pink2);
+
+    &:hover {
+      color: white;
+      background-color: var(--osu-pink2);
+      cursor: default;
+    }
+  }
+
+  &__format {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
   }
 }

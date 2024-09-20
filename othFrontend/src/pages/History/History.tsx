@@ -88,18 +88,16 @@ export default function History() {
   }
 
   return (
-    <div className="history-page gap-2 page">
-      <h1 className="text-2xl  pb-4 font-extrabold sm:text-3xl">
-        {playerName}&#39;s History
-      </h1>
-      <div className="flex gap-14 w-full items-center justify-center">
+    <div className="history-page page">
+      <h1 className="history-page__title">{playerName}&#39;s History</h1>
+      <div className="history-page__inputs">
         <InputFiled
           onChange={handleSearchChange}
           placeholder="Search..."
           Icon={TbSearch}
         />
 
-        <div className="flex items-center gap-1">
+        <div className="history-page__sort">
           <TbArrowsSort size={20} />
           <SelectBox
             options={[

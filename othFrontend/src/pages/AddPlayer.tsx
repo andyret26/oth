@@ -1,20 +1,14 @@
-import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material"
+import { Button, TextField } from "@mui/material"
 import { useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
 import { AxiosError } from "axios"
 import toast from "react-hot-toast"
+import RadioGroup from "../components/common/RadioGroup/RadioGroup"
 import {
   AddPlayerAsync,
   AddPlayerByUsernameAsync,
 } from "../services/othApiService"
+import InputFiled from "../components/common/InputFiled/InputField"
 
 export default function AddPlayer() {
   const { getIdTokenClaims } = useAuth0()
@@ -55,42 +49,31 @@ export default function AddPlayer() {
   }
 
   return (
-    <div className="h-[50vh] flex flex-col gap-3 justify-center items-center">
-      <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">Add by</FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="id"
-          name="radio-buttons-group"
-          row
-          value={addBy}
-          onChange={(e) => setAddBy(e.target.value as "id" | "username")}
-        >
-          <FormControlLabel value="id" control={<Radio />} label="Id" />
-          <FormControlLabel
-            value="username"
-            control={<Radio />}
-            label="Username"
-          />
-        </RadioGroup>
-      </FormControl>
-      <form onSubmit={(e) => handleSubmit(e)} className=" flex flex-col gap-4">
-        <TextField
-          variant="outlined"
-          label={addBy}
-          value={userToAdd}
-          onChange={(e) => {
-            setUserToAdd(e.target.value)
-            setError("")
-          }}
-          autoComplete="off"
-          error={error !== ""}
-          helperText={error}
-        />
-        <Button variant="contained" type="submit" disabled={loading}>
-          <div>{loading ? "Adding..." : "Add"}</div>
-        </Button>
-      </form>
+    <div className="add-player">
+      <RadioGroup
+        id="player-add"
+        options={[
+          { label: "Id", value: "id" },
+          { label: "Username", value: "username" },
+        ]}
+        value={addBy}
+        onChange={(e) => setAddBy(e.value as "id" | "username")}
+        direction="row"
+      />
+
+      <InputFiled
+        onChange={(e) => {
+          setUserToAdd(e.target.value)
+          setError("")
+        }}
+        // autoComplete="off"
+        // error={error !== ""}
+        // helperText={error}
+        placeholder={addBy}
+      />
+      <Button variant="contained" type="submit" disabled={loading}>
+        <div>{loading ? "Adding..." : "Add"}</div>
+      </Button>
     </div>
   )
 }

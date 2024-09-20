@@ -3,7 +3,7 @@
 :root {
   --bg1: #1c1719;
   --bg2: #382e32;
-  --bg3: #473a3f;
+  --bg3: rgb(71, 58, 63);
   --base-font-size: 14px;
   --base-border-radius: 5px;
   --text-color: #fff;
@@ -11,7 +11,7 @@
   --osu-blue: #54b2e0;
   --osu-green: #73ff66;
   --osu-pink: #ff66ab;
-  --osu-pink--hover: #ff76ab;
+  --osu-pink2: #fca5a5;
   --osu-brown: #ff9966;
   --osu-yellow: #ffd866;
   --osu-red: #cc3333;
@@ -21,6 +21,9 @@
   --dt-color: #ee7fff;
   --fm-color: #7fff7f;
   --tb-color: #c4c4c4;
+  --gold-color: #ffbd42;
+  --silver-color: #d9d9d9;
+  --bronze-color: #cf640d;
   --boxshadow-blue: 0px 0px 10px 2px var(--osu-blue);
   --boxshadow-white: 0px 0px 5px 1px white;
   background-color: var(--bg1);
@@ -89,4 +92,15 @@ button:focus {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #d3d3d3;
+}
+
+.page {
+  height: calc(100vh - 70px);
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 5px;
 }

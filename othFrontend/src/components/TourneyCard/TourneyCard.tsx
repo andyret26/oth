@@ -3,8 +3,9 @@ import { Link } from "react-router-dom"
 import { TbEdit, TbTournament, TbFileSpreadsheet } from "react-icons/tb"
 import dayjs from "dayjs"
 import { Tournament } from "../../helpers/interfaces"
-import ShowTeamBox from "../ShowTeamBox"
+import TeamBox from "../TeamBox/TeamBox"
 import "./TourneyCard.scss"
+import LinkBtn from "../common/LinkBtn/LinkBtn"
 
 interface CompProps {
   tournament: Tournament
@@ -31,17 +32,21 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           }}
         />
       </div>
-      <div id="tourney-card" className="tournament-card__content">
-        <div className="">
-          <p className="">{t.name}</p>
+      <div className="tournament-card__content">
+        <div className="tournament-card__header">
+          <p className="tournament-card__title">{t.name}</p>
         </div>
         {logdinId === t.addedById ? (
-          <Link className="" to={`/tournament/edit/${t.id}`}>
+          <Link
+            className="tournament-card__edit"
+            to={`/tournament/edit/${t.id}`}
+          >
             <TbEdit size={20} />
           </Link>
         ) : null}
-        <div className="">
-          <div className="">
+
+        <div className="tournament-card__info">
+          <div className="tournament-card__placement">
             <p className={`t-placement ${t.placement.substring(1, 3)}`}>
               {t.placement === "Did Not Qualify"
                 ? "DNQ"
@@ -51,46 +56,33 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           </div>
           <p className="">{t.rankRange}</p>
 
-          <p className="">{dayjs(t.date).format("DD MMM YYYY")}</p>
+          <p className="tournament-card__date">
+            {dayjs(t.date).format("DD MMM YYYY")}
+          </p>
         </div>
 
-        <div className="">
+        <div className="tournament-card__links">
           {t.forumPostLink ? (
-            <a
-              href={t.forumPostLink}
-              className=""
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <LinkBtn href={t.forumPostLink} color="pink">
               Forum Post
-            </a>
+            </LinkBtn>
           ) : null}
           {t.bracketLink ? (
-            <a
-              href={t.bracketLink}
-              className=""
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <TbTournament size={17} className="" />
+            <LinkBtn href={t.bracketLink} color="blue">
+              <TbTournament size={17} />
               <p className="inline">Bracket</p>
-            </a>
+            </LinkBtn>
           ) : null}
           {t.mainSheetLink ? (
-            <a
-              href={t.mainSheetLink}
-              className=""
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <TbFileSpreadsheet size={17} className="" />
+            <LinkBtn href={t.mainSheetLink} color="green" textColor="black">
+              <TbFileSpreadsheet size={17} />
               <p className="inline">Sheet</p>
-            </a>
+            </LinkBtn>
           ) : null}
         </div>
 
         {t.teamMates.length > 1 ? (
-          <div className="">
+          <div className="tournament-card__team">
             <div
               id="team"
               onMouseEnter={() => {
@@ -109,10 +101,11 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           </div>
         ) : null}
 
-        {showTeam ? <ShowTeamBox t={t} /> : null}
-        <div className="">
-          <p>{t.teamSize}</p>
-          <p>{t.format}</p>
+        {showTeam ? <TeamBox t={t} /> : null}
+
+        <div className="tournament-card__format">
+          <div>{t.teamSize}</div>
+          <div>{t.format}</div>
         </div>
       </div>
     </div>

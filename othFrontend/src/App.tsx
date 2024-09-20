@@ -13,7 +13,7 @@ import Unauthorized from "./pages/Unauthorized"
 import { PrivateRoute } from "./components/PrivateRoute"
 import NotFound from "./pages/NotFound"
 import AddPlayer from "./pages/AddPlayer"
-import Stats from "./pages/Stats"
+import Stats from "./pages/Stats/Stats"
 import MatchCompare from "./pages/MatchCompare"
 import QualStats from "./pages/QualStats"
 

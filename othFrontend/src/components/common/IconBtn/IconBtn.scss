@@ -14,7 +14,7 @@
 
   &:hover {
     cursor: pointer;
-    background-color: var(--osu-pink--hover) !important;
+    filter: brightness(1.07);
   }
 
   &:disabled {
