@@ -26,7 +26,7 @@ export default function NameCard(props: CompProps) {
           onClick={() =>
             setSelectedPlayers(selectedPlayers.filter((sp) => sp !== player))
           }
-          onKeyUp={(event: React.KeyboardEvent<HTMLDivElement>) => {
+          onKeyUp={(event: React.KeyboardEvent<SVGElement>) => {
             if (event.key === "Enter") {
               setSelectedPlayers(selectedPlayers.filter((sp) => sp !== player))
             }
