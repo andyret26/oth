@@ -6,6 +6,7 @@ interface Props {
   textColor?: string
   disabled?: boolean
   onClick: () => void
+  error: boolean
 }
 
 export default function StandardBtn({
@@ -20,7 +21,10 @@ export default function StandardBtn({
       className="btn"
       type="button"
       disabled={disabled}
-      style={{ backgroundColor: `var(--osu-${color})`, color: textColor }}
+      style={{
+        backgroundColor: `var(--osu-${color})`,
+        color: textColor,
+      }}
       onClick={onClick}
     >
       {btnText}
@@ -33,4 +37,5 @@ StandardBtn.defaultProps = {
   color: "pink",
   textColor: "white",
   disabled: false,
+  error: false,
 }

@@ -9,6 +9,7 @@ interface Props {
   maxTextLength?: number
   label?: string
   maxWidth?: string
+  error?: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -20,6 +21,7 @@ function InputFiled({
   maxWidth,
   placeholder,
   onChange,
+  error,
 }: Props) {
   const [text, setText] = useState<string>("")
 
@@ -38,7 +40,13 @@ function InputFiled({
   }
 
   return (
-    <div className="input" style={{ maxWidth }}>
+    <div
+      className="input"
+      style={{
+        maxWidth,
+        outline: error ? " 1px solid var(--osu-red)" : "unset",
+      }}
+    >
       <label className="input__label" v-if="label" htmlFor="id">
         {label}
       </label>
@@ -64,6 +72,7 @@ function InputFiled({
 InputFiled.defaultProps = {
   bgColor: "var(--bg3)",
   maxWidth: "200px",
+  error: false,
 }
 
 export default InputFiled

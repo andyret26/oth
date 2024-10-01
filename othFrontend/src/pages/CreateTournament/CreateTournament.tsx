@@ -11,12 +11,12 @@ import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { Dayjs } from "dayjs"
 import toast from "react-hot-toast"
-import { PlayerMin, TournamentPost } from "../helpers/interfaces"
-import "../css/CreateTournament.css"
-import { AddTournamentAsync } from "../services/othApiService"
-import { SimpleDialog } from "../components/SimpleDialog"
-import NameCard from "../components/NameCard"
-import { listOfPlayersToIdArray } from "../helpers/functions"
+import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
+import "./CreateTournament.scss"
+import { AddTournamentAsync } from "../../services/othApiService"
+import { SimpleDialog } from "../../components/SimpleDialog"
+import NameCard from "../../components/NameCard"
+import { listOfPlayersToIdArray } from "../../helpers/functions"
 
 export default function CreateTournament() {
   const [open, setOpen] = useState(false)
@@ -96,12 +96,12 @@ export default function CreateTournament() {
   }
 
   return (
-    <div className="page create-tournament-page">
+    <div className="page create-tournament">
       <form
-        className="create-tournament-form"
+        className="create-tournament__form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="input-container">
+        <div className="create-tournament__date-container">
           <DatePicker
             value={date}
             onChange={(newValue) => {

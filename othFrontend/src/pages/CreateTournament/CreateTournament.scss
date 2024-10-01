@@ -1,10 +1,7 @@
-
-.create-tournament-page {
-    padding: 20px;
-}
-
-.create-tournament-form {
+.create-tournament {
+  &__form {
     width: 100%;
+    margin: 20px;
     padding: 30px;
     gap: 30px;
     background-color: #382e32;
@@ -15,37 +12,23 @@
 
     border-radius: 10px;
 
-}
+    max-width: 500px;
+    & > * {
+      width: 100%;
+    }
+  }
 
-.create-tournament-form > * {
+  &__date-container {
     width: 100%;
 
-}
-
-.select > label {
-    margin-left: -13px;
-
-}
-
-.input-container {
-    width: 100%;
-    
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 0.75rem;
-}
 
-.input-container > * {
-    width: 100%;
-}
-
-
-@media (min-width: 500px) {
-    .create-tournament-form {
-        width: 100%;
-        max-width: 500px;
+    & > div {
+      width: 100%;
     }
+  }
 }
-

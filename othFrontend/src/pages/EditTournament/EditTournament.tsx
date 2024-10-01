@@ -1,4 +1,4 @@
-import "../css/CreateTournament.css"
+import "./EditTournament.scss"
 import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import TextField from "@mui/material/TextField/TextField"
@@ -13,11 +13,14 @@ import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useLocation } from "react-router-dom"
 import toast from "react-hot-toast"
-import { PlayerMin, TournamentPost } from "../helpers/interfaces"
-import { GetTournamentById, UpdateTournament } from "../services/othApiService"
-import NameCard from "../components/NameCard"
-import { SimpleDialog } from "../components/SimpleDialog"
-import { listOfPlayersToIdArray } from "../helpers/functions"
+import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
+import {
+  GetTournamentById,
+  UpdateTournament,
+} from "../../services/othApiService"
+import NameCard from "../../components/NameCard"
+import { SimpleDialog } from "../../components/SimpleDialog"
+import { listOfPlayersToIdArray } from "../../helpers/functions"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
@@ -139,13 +142,10 @@ export default function CreateTournament() {
   }
 
   return (
-    <div className="create-tournament-page page">
-      <h1 className="text-4xl pb-2">Edit</h1>
-      <form
-        className="create-tournament-form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="input-container">
+    <div className="edit-tournament page">
+      <h1 className="">Edit</h1>
+      <form className="edit-tournament__form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="edit-tournament__date-container">
           <DatePicker
             value={date}
             onChange={(newValue) => {
