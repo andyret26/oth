@@ -16,6 +16,7 @@ interface Props {
   textColor?: string
   disabled?: boolean
   onClick: () => void
+  size?: number
 }
 
 const IconBtn = forwardRef<HTMLButtonElement, Props>(
@@ -26,6 +27,7 @@ const IconBtn = forwardRef<HTMLButtonElement, Props>(
       bgColor = "purple",
       textColor = "black",
       disabled = false,
+      size = 15,
     },
     ref
   ) => {
@@ -38,7 +40,7 @@ const IconBtn = forwardRef<HTMLButtonElement, Props>(
         style={{ backgroundColor: `var(--osu-${bgColor})`, color: textColor }}
         ref={ref}
       >
-        <Icon />
+        <Icon size={size} />
       </button>
     )
   }

@@ -1,53 +1,43 @@
 .radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
   &__label {
-    margin-bottom: 5px;
     font-weight: 900;
-    font-size: 16px;
   }
 
   &__fields {
     display: flex;
-    justify-content: space-evenly;
-    gap: 5px;
+    gap: 15px;
   }
 
   &__field {
     display: flex;
     align-items: center;
     gap: 5px;
-    position: relative;
-    border-radius: 9999px;
-    padding: 5px;
-
-    &:focus-visible {
-      outline: none;
-    }
-  }
-
-  &__checkbox {
-    box-sizing: border-box;
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    padding: 2px;
-    background-color: var(--bg3);
-    border-radius: 999999px;
-    border: 2px solid var(--osu-pink);
   }
 
   &__input {
-    display: none;
-  }
-  &__input-label {
+    position: relative;
+    border: 2px solid var(--osu-pink);
+    border-radius: 99999px;
+    height: 15px;
+    width: 15px;
     cursor: pointer;
-    padding-left: 20px;
-    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      background-color: var(--bg3);
+    }
   }
-}
 
-.radio-group__field .radio-group__input:checked ~ .radio-group__checkbox {
-  background-color: var(--osu-pink);
-}
-.radio-group__input-label:hover + .radio-group__checkbox {
-  background-color: var(--bg1);
+  &__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    background-color: var(--osu-pink);
+  }
 }

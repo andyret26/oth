@@ -9,18 +9,19 @@ import { Autocomplete } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
 
 import Button from "@mui/material/Button/Button"
-import { DatePicker } from "@mui/x-date-pickers"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useLocation } from "react-router-dom"
 import toast from "react-hot-toast"
+import { DayPicker } from "react-day-picker"
 import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
 import {
   GetTournamentById,
   UpdateTournament,
 } from "../../services/othApiService"
-import NameCard from "../../components/NameCard"
-import { SimpleDialog } from "../../components/SimpleDialog"
+import NameCard from "../../components/PlayerMinCard/PlayerMinCard"
+import { SimpleDialog } from "../../components/Dialog/AddTeammateDialog"
 import { listOfPlayersToIdArray } from "../../helpers/functions"
+import "react-day-picker/style.css"
 
 export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
@@ -143,28 +144,22 @@ export default function CreateTournament() {
 
   return (
     <div className="edit-tournament page">
-      <h1 className="">Edit</h1>
+      {/* <h1 className="">Edit</h1>
       <form className="edit-tournament__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="edit-tournament__date-container">
-          <DatePicker
-            value={date}
-            onChange={(newValue) => {
+          <DayPicker
+            mode="single"
+            selected={date}
+            onSelect={(newValue) => {
               setDate(newValue)
             }}
-            className="date-picker"
-            slots={{
-              openPickerIcon: EditCalendarRoundedIcon,
-            }}
-            slotProps={{
-              textField: {
-                label: "Date (MM/DD/YYYY)",
-                variant: "outlined",
-                InputLabelProps: {
-                  shrink: true,
-                },
-              },
-            }}
+            footer={
+              selected
+                ? `Selected: ${selected.toLocaleDateString()}`
+                : "Pick a day."
+            }
           />
+
           <Tooltip
             title={
               <div>
@@ -367,7 +362,7 @@ export default function CreateTournament() {
         <Button variant="contained" type="submit" color="primary">
           Submit
         </Button>
-      </form>
+      </form> */}
     </div>
   )
 }

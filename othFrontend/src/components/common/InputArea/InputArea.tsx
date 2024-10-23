@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useId } from "react"
 import { IconType } from "react-icons/lib"
-import "./InputFiled.scss"
+import "./InputArea.scss"
 
 interface Props {
   placeholder?: string
@@ -11,7 +11,7 @@ interface Props {
   maxWidth?: string
   error?: boolean
   value: string | null | undefined
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 function InputFiled({
@@ -37,7 +37,7 @@ function InputFiled({
     return true
   }, [text, maxTextLength])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value)
     onChange(e)
   }
@@ -48,19 +48,18 @@ function InputFiled({
 
   return (
     <div
-      className="input"
+      className="input-area"
       style={{
         maxWidth,
         outline: error ? " 1px solid var(--osu-red)" : "unset",
       }}
     >
-      <label className="input__label" v-if="label" htmlFor={id}>
+      <label className="input-area__label" v-if="label" htmlFor={id}>
         {label}
       </label>
-      <input
+      <textarea
         id={id}
-        className="input__field"
-        type="text"
+        className="input-area__field"
         value={text || ""}
         onChange={(e) => handleChange(e)}
         placeholder={placeholder}
@@ -69,9 +68,10 @@ function InputFiled({
           backgroundColor: bgColor,
           outline: validTextLength ? "none" : "2px solid var(--osu-red)",
           marginTop: label ? "5px" : "0",
+          height: "100px",
         }}
       />
-      <div className="input__icon">{Icon ? <Icon size={20} /> : null}</div>
+      <div className="input-area__icon">{Icon ? <Icon size={20} /> : null}</div>
     </div>
   )
 }

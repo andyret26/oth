@@ -1,11 +1,23 @@
 .select {
-  color: white;
-  background-color: var(--bg3);
-  padding: 5px;
-  border: none;
-  border-radius: var(--base-border-radius);
+  display: flex;
+  flex-direction: column;
 
-  &:hover {
-    cursor: pointer;
+  &__label {
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  &__field {
+    margin-top: 5px;
+    color: white;
+    background-color: var(--bg3);
+    padding: 5px 10px;
+    border: none;
+    border-radius: var(--base-border-radius);
+    font-family: "Comfortaa", sans-serif;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

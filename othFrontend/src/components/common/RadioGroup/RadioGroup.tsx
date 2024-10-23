@@ -8,43 +8,49 @@ interface RadioOption {
 interface Props {
   id: string
   label?: string
+  labelPosition?: "top-left" | "top-center"
   value: string
   options: RadioOption[]
   direction?: "row" | "column"
-  onChange: (newValue: RadioOption) => void
+  onChange: (newValue: string) => void
 }
 
-function RadioGroup({ id, options, value, direction, label, onChange }: Props) {
-  const handleFieldKeypress = (
-    e: React.KeyboardEvent<HTMLDivElement>,
-    option: RadioOption
-  ) => {
-    if (e.key === "Enter") {
-      onChange(option)
-    }
-  }
+function RadioGroup({
+  id,
+  options,
+  value,
+  direction,
+  label,
+  onChange,
+  labelPosition,
+}: Props) {
   return (
     <div className="radio-group">
-      <legend v-if="label" className="radio-group__label">
-        {label}
-      </legend>
+      {label ? (
+        <legend
+          className="radio-group__label"
+          style={{
+            textAlign: labelPosition === "top-center" ? "center" : "unset",
+          }}
+        >
+          {label}
+        </legend>
+      ) : null}
       <div className="radio-group__fields" style={{ flexDirection: direction }}>
         {options.map((option) => (
-          <div
-            role="button"
-            className="radio-group__field"
-            key={option.label}
-            tabIndex={0}
-            onKeyDown={(e) => handleFieldKeypress(e, option)}
-          >
-            <input
+          <div className="radio-group__field" key={option.value}>
+            <div
+              role="radio"
+              tabIndex={0}
               className="radio-group__input"
               id={`${id}-${option.value}`}
-              name="id"
-              type="radio"
-              onChange={() => onChange(option)}
-              checked={value === option.value}
-            />
+              onClick={() => onChange(option.value)}
+              aria-checked={value === option.value}
+            >
+              {option.value === value ? (
+                <div className="radio-group__dot" />
+              ) : null}
+            </div>
             <label
               className="radio-group__input-label"
               htmlFor={`${id}-${option.value}`}
@@ -57,6 +63,10 @@ function RadioGroup({ id, options, value, direction, label, onChange }: Props) {
       </div>
     </div>
   )
+}
+
+RadioGroup.defaultProps = {
+  labelPosition: "top-center",
 }
 
 export default RadioGroup

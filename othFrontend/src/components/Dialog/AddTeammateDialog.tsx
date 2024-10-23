@@ -1,20 +1,24 @@
-import { Button, Dialog, DialogTitle, Tooltip } from "@mui/material"
+import { Tooltip } from "@mui/material"
 import { useEffect, useState } from "react"
 import InfoIcon from "@mui/icons-material/Info"
 import ChooseTeamSearch from "./ChooseTeamSearch"
-import { GetPlayersMinAsync } from "../services/othApiService"
-import { PlayerMin } from "../helpers/interfaces"
+import { GetPlayersMinAsync } from "../../services/othApiService"
+import { PlayerMin } from "../../helpers/interfaces"
+import "./AddTeammateDialog.scss"
+import StandardBtn from "../common/standardBtn/StandardBtn"
 
-export interface SimpleDialogProps {
-  open: boolean
+interface Props {
   onClose: (value: string) => void
   selectedPlayers: PlayerMin[]
   setSelectedPlayers: React.Dispatch<React.SetStateAction<PlayerMin[]>>
 }
 
-export function SimpleDialog(props: SimpleDialogProps) {
-  const { onClose, open, selectedPlayers, setSelectedPlayers } = props
+export function SimpleDialog({
+  onClose,
 
+  selectedPlayers,
+  setSelectedPlayers,
+}: Props) {
   const [players, setPlayers] = useState<PlayerMin[] | null>(null)
 
   useEffect(() => {
@@ -24,15 +28,10 @@ export function SimpleDialog(props: SimpleDialogProps) {
     fetchPlayers()
   }, [])
 
-  const handleClose = () => {
-    const test = [1, 2, 3]
-    onClose(JSON.stringify(test))
-  }
-
   return (
-    <Dialog onClose={handleClose} open={open} fullWidth maxWidth="md">
-      <div className="flex items-center">
-        <DialogTitle>Choose team members</DialogTitle>
+    <div className="dialog">
+      <div className="">
+        <div>Choose team members</div>
         <Tooltip
           title={
             <div>
@@ -49,22 +48,20 @@ export function SimpleDialog(props: SimpleDialogProps) {
           <InfoIcon />
         </Tooltip>
       </div>
-      <div className="w-full max-h-96 p-6">
+      <div className="dialog__search">
         <ChooseTeamSearch
           players={players}
           selectedPlayers={selectedPlayers}
           setSelectedPlayers={setSelectedPlayers}
         />
-        <div className="pb-5 w-full flex justify-end">
-          <Button
-            variant="contained"
-            sx={{ width: "12vw" }}
-            onClick={() => onClose("Hi")}
-          >
-            Add
-          </Button>
-        </div>
+
+        <StandardBtn
+          onClick={() => onClose("onCloseDialog")}
+          btnText="Add"
+          color="blue"
+          margin="10px 0px 0px 0px"
+        />
       </div>
-    </Dialog>
+    </div>
   )
 }

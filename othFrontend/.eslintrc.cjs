@@ -36,5 +36,6 @@ module.exports = {
     "react/require-default-props": "off",
     "import/no-unresolved": "off", // or the rule causing the error
     "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/control-has-associated-label": "off",
   },
 }

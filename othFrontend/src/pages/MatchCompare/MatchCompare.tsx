@@ -1,8 +1,8 @@
 import { useState } from "react"
-import MatchCompareForm from "../components/MatchCompare/MatchCompareForm"
-import MatchCompareResults from "../components/MatchCompare/MatchCompareResults"
-import "../css/MatchCompare.scss"
-import { MapV1 } from "../helpers/interfaces"
+import MatchCompareForm from "../../components/MatchCompare/MatchCompareForm"
+import MatchCompareResults from "../../components/MatchCompare/MatchCompareResults"
+import "./MatchCompare.scss"
+import { MapV1 } from "../../helpers/interfaces"
 
 export default function MatchCompare() {
   const [maps, setMaps] = useState<MapV1[] | null>(null)

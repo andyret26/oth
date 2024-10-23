@@ -1,0 +1,13 @@
+{
+  "matchId1": 0,
+  "matchId2": 0,
+  "ignoreStart1": 0,
+  "ignoreStart2": 0,
+  "ignoreEnd1": 0,
+  "ignoreEnd2": 0,
+  "teamType": "teams",
+  "team1Color": "blue",
+  "team2Color": "blue",
+  "user1Id": 0,
+  "user2Id": 0
+}
