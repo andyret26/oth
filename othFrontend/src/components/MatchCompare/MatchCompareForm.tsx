@@ -20,19 +20,19 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
 
   const onSubmit = async () => {
     console.log(form)
-    // toast.loading("Comparing matches...")
-    // try {
-    //   const res = await compareMatches(form)
-    //   toast.dismiss()
-    //   onCompare(res)
-    // } catch (e: unknown) {
-    //   toast.dismiss()
-    //   if (e instanceof AxiosError) {
-    //     toast.error(e.response?.data.detail)
-    //   } else {
-    //     toast.error("An error occurred")
-    //   }
-    // }
+    toast.loading("Comparing matches...")
+    try {
+      const res = await compareMatches(form)
+      toast.dismiss()
+      onCompare(res)
+    } catch (e: unknown) {
+      toast.dismiss()
+      if (e instanceof AxiosError) {
+        toast.error(e.response?.data.detail)
+      } else {
+        toast.error("An error occurred")
+      }
+    }
   }
 
   return (

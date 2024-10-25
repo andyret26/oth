@@ -48,9 +48,10 @@
   }
 
   &__map-title {
+    margin: 0;
     font-size: 16px;
     font-weight: 900;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.781);
     position: absolute;
     // align horizontally center
     left: 50%;
@@ -62,7 +63,7 @@
   }
 
   &__map-mod {
-    border-radius: 10px;
+    border-radius: var(--base-border-radius);
     position: absolute;
     width: 35px;
     height: 35px;
