@@ -1,87 +1,39 @@
-import "./EditTournament.scss"
 import { useEffect, useState } from "react"
-import { useForm, SubmitHandler } from "react-hook-form"
-import TextField from "@mui/material/TextField/TextField"
-import InfoIcon from "@mui/icons-material/Info"
-import EditCalendarRoundedIcon from "@mui/icons-material/EditCalendarRounded"
-import Tooltip from "@mui/material/Tooltip"
-import { Autocomplete } from "@mui/material"
-import dayjs, { Dayjs } from "dayjs"
-
-import Button from "@mui/material/Button/Button"
-import { useAuth0 } from "@auth0/auth0-react"
 import { useLocation } from "react-router-dom"
+
+import InfoIcon from "@mui/icons-material/Info"
+import Tooltip from "@mui/material/Tooltip"
+
+import { useAuth0 } from "@auth0/auth0-react"
 import toast from "react-hot-toast"
-import { DayPicker } from "react-day-picker"
 import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
+import "./EditTournament.scss"
 import {
+  AddTournamentAsync,
   GetTournamentById,
-  UpdateTournament,
 } from "../../services/othApiService"
-import NameCard from "../../components/PlayerMinCard/PlayerMinCard"
 import { SimpleDialog } from "../../components/Dialog/AddTeammateDialog"
-import { listOfPlayersToIdArray } from "../../helpers/functions"
-import "react-day-picker/style.css"
+import DatePicker2 from "../../components/common/DatePicker/DatePicker"
+import {
+  convertTournamentToTournamentpost,
+  listOfPlayersToIdArray,
+} from "../../helpers/functions"
+import InputFiled from "../../components/common/InputFiled/InputField"
+import StandardBtn from "../../components/common/standardBtn/StandardBtn"
+import formInit from "../../helpers/tournamentForm.json"
+import SelectBox from "../../components/common/SelectBox/SelectBox"
+import InputArea from "../../components/common/InputArea/InputArea"
+import PlayerMinCard from "../../components/PlayerMinCard/PlayerMinCard"
 
 export default function CreateTournament() {
+  const location = useLocation()
+
+  const [isOpen, setIsOpen] = useState(false)
   const { getIdTokenClaims } = useAuth0()
-  const { pathname } = useLocation()
-  const [date, setDate] = useState<Dayjs | null>(null)
-
-  const [selectedFormat, setSelectedFormat] = useState<string | null>("")
-  const [selectedTeamSize, setSelectedTeamSize] = useState<string | null>("")
-  const [selectedPlacement, setSelectedPlacement] = useState<string | null>("")
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerMin[]>([])
-  const [open, setOpen] = useState<boolean>(false)
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<TournamentPost>()
-
-  useEffect(() => {
-    const tourneyid = pathname.split("/")[3]
-    GetTournamentById(+tourneyid).then((res) => {
-      const tempPlayers: PlayerMin[] = []
-      setDate(res.date ? dayjs(res.date) : null)
-      setValue("name", res.name)
-      setValue("teamName", res.teamName)
-      setValue("rankRange", res.rankRange)
-      setValue("format", res.format)
-      setValue("teamSize", res.teamSize)
-      setValue("seed", res.seed)
-      setValue("placement", res.placement)
-      setValue("notes", res.notes)
-      setValue("forumPostLink", res.forumPostLink)
-      setValue("mainSheetLink", res.mainSheetLink)
-      setValue("bracketLink", res.bracketLink)
-      setValue("imageLink", res.imageLink)
-      setSelectedFormat(res.format)
-      setSelectedTeamSize(res.teamSize)
-      setSelectedPlacement(res.placement)
-      res.teamMates.forEach((p) =>
-        tempPlayers.push({
-          id: p.id,
-          username: p.username,
-        })
-      )
-      setSelectedPlayers(tempPlayers.filter((p) => p.id !== res.addedById))
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const openDialog = () => {
-    setOpen(true)
-  }
-
-  const handleClosedialog = () => {
-    setOpen(false)
-  }
+  const [form, setForm] = useState<TournamentPost>(formInit)
 
   const formatOptions = [
-    "",
     "1 vs 1",
     "2 vs 2",
     "3 vs 3",
@@ -91,7 +43,6 @@ export default function CreateTournament() {
   ]
 
   const teamSizeOptions = [
-    "",
     "Solo",
     "Teams of 2",
     "Teams of 3",
@@ -103,7 +54,6 @@ export default function CreateTournament() {
   ]
 
   const placementOptions = [
-    "",
     "1st",
     "2nd",
     "3rd",
@@ -118,46 +68,70 @@ export default function CreateTournament() {
     "Top 64 (Round of 32)",
     "Did Not Qualify",
   ]
-  const onSubmit: SubmitHandler<TournamentPost> = async (data) => {
-    toast.loading("Loading...")
+
+  const onSubmit = async () => {
+    toast.loading("Submitting...")
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
-    const playersIdsToAdd = listOfPlayersToIdArray(selectedPlayers)
+    const teamMateIds = listOfPlayersToIdArray(selectedPlayers)
+    const convertedDate = form.date?.split("/").reverse().join("-")
 
     const allData = {
-      ...data,
-      date: date?.toISOString(),
-      teamMateIds: [...playersIdsToAdd, +osuId],
-      seed: data.seed ? +data.seed : null,
+      ...form,
+      date: `${convertedDate}T00:00Z`,
+      teamMateIds: [...teamMateIds, +osuId],
+      seed: form.seed ? +form.seed : null,
       addedById: +osuId,
-      id: pathname.split("/")[3],
     }
 
-    const res = await UpdateTournament(allData, claims!.__raw)
+    console.log(allData)
+
+    const res = await AddTournamentAsync(allData, claims!.__raw)
     toast.dismiss()
     if (res !== undefined) {
       toast.error(res.data.detail)
     } else {
-      toast.success("Tournament updated!")
+      toast.success("Tournament added!")
     }
   }
 
+  const openDialog = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const handleClosedialog = () => {
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    const getTournament = async () => {
+      const claims = await getIdTokenClaims()
+      const osuId = claims!.sub.split("|")[2]
+      const tournamentId = parseInt(location.pathname.split("/")[3], 10)
+      const tourney = await GetTournamentById(tournamentId)
+      const converted = convertTournamentToTournamentpost(tourney)
+
+      setSelectedPlayers(
+        tourney.teamMates
+          .flatMap((p) => ({ id: p.id, username: p.username }))
+          .filter((p) => p.id !== parseInt(osuId, 10))
+      )
+
+      setForm(converted)
+    }
+
+    getTournament()
+  })
+
   return (
-    <div className="edit-tournament page">
-      {/* <h1 className="">Edit</h1>
-      <form className="edit-tournament__form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="edit-tournament__date-container">
-          <DayPicker
-            mode="single"
-            selected={date}
-            onSelect={(newValue) => {
-              setDate(newValue)
+    <div className="page create-tournament">
+      <form className="create-tournament__form">
+        <div className="create-tournament__date-container">
+          <DatePicker2
+            value={form.date || ""}
+            onChange={(newDate) => {
+              setForm({ ...form, date: newDate })
             }}
-            footer={
-              selected
-                ? `Selected: ${selected.toLocaleDateString()}`
-                : "Pick a day."
-            }
           />
 
           <Tooltip
@@ -178,49 +152,36 @@ export default function CreateTournament() {
           </Tooltip>
         </div>
 
-        <TextField
-          label="Name *"
-          error={!!errors.name}
-          {...register("name", { required: true })}
-          variant="outlined"
-          helperText={errors.name ? "Name is required" : ""}
-          autoComplete="new-password"
-          InputLabelProps={{
-            shrink: true,
+        <InputFiled
+          value={form.name!}
+          maxWidth="100%"
+          label="Tournament Name *"
+          onChange={(e) => {
+            setForm({ ...form, name: e.target.value })
           }}
         />
 
-        <TextField
+        <InputFiled
+          value={form.teamName}
+          maxWidth="100%"
           label="Team Name"
-          {...register("teamName")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+          onChange={(e) => {
+            setForm({ ...form, teamName: e.target.value })
           }}
-        />
-
-        <SimpleDialog
-          open={open}
-          onClose={handleClosedialog}
-          selectedPlayers={selectedPlayers}
-          setSelectedPlayers={setSelectedPlayers}
         />
 
         <div>
-          <Button onClick={() => openDialog()} variant="outlined">
-            Add TeamMates
-          </Button>
-          <div className="flex flex-wrap gap-2 mt-2">
+          <StandardBtn
+            color="blue"
+            btnText="Add Teammates"
+            onClick={() => openDialog()}
+          />
+
+          <div className="create-tournament__player-cards">
             {selectedPlayers.length ? (
               <>
                 {selectedPlayers.map((p) => (
-                  <NameCard
-                    key={p.id}
-                    selectedPlayers={selectedPlayers}
-                    setSelectedPlayers={setSelectedPlayers}
-                    player={p}
-                  />
+                  <PlayerMinCard hasXBtn key={p.id} player={p} />
                 ))}
               </>
             ) : (
@@ -231,138 +192,96 @@ export default function CreateTournament() {
           </div>
         </div>
 
-        <TextField
+        {isOpen ? (
+          <SimpleDialog
+            onClose={handleClosedialog}
+            selectedPlayers={selectedPlayers}
+            setSelectedPlayers={setSelectedPlayers}
+          />
+        ) : null}
+
+        <InputFiled
+          value={form.rankRange}
+          maxWidth="100%"
           label="Rank Range"
-          {...register("rankRange")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+          onChange={(e) => {
+            setForm({ ...form, rankRange: e.target.value })
           }}
         />
 
-        <Autocomplete
-          disablePortal
-          openOnFocus
+        <SelectBox
+          id="add-tournament-select"
+          label="Format"
           options={formatOptions}
-          value={selectedFormat}
-          onChange={(_, value) => {
-            setSelectedFormat(value)
-            setValue("format", value)
+          onChange={(val) => {
+            setForm({ ...form, format: val })
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Format"
-              variant="outlined"
-              {...register("format")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          )}
         />
 
-        <Autocomplete
-          disablePortal
-          openOnFocus
+        <SelectBox
+          id="add-tournament-select"
+          label="Team Size"
           options={teamSizeOptions}
-          value={selectedTeamSize}
-          onChange={(_, value) => {
-            setValue("teamSize", value)
-            setSelectedTeamSize(value)
+          onChange={(val) => {
+            setForm({ ...form, teamSize: val })
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Team Size"
-              variant="outlined"
-              {...register("teamSize")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          )}
         />
 
-        <TextField
+        <InputFiled
+          value={form.seed ? String(form.seed) : "0"}
+          maxWidth="100%"
           label="Seed"
-          {...register("seed")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+          onChange={(e) => {
+            setForm({ ...form, seed: parseInt(e.target.value, 2) })
           }}
         />
 
-        <Autocomplete
-          disablePortal
-          openOnFocus
+        <SelectBox
+          id="placement"
+          label="Placement"
           options={placementOptions}
-          value={selectedPlacement}
-          onChange={(_, value) => {
-            setSelectedPlacement(value)
-            setValue("placement", value)
+          onChange={(val) => {
+            setForm({ ...form, placement: val })
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Placement"
-              variant="outlined"
-              {...register("placement")}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          )}
         />
 
-        <TextField
-          multiline
-          rows={3}
+        <InputArea
           label="Notes"
-          {...register("notes")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+          maxWidth="100%"
+          value={form.notes}
+          onChange={(e) => {
+            setForm({ ...form, notes: e.target.value })
           }}
         />
 
-        <TextField
-          label="Forum Post Link"
-          {...register("forumPostLink")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+        <InputFiled
+          value={form.forumPostLink}
+          maxWidth="100%"
+          label="Forum post Link"
+          onChange={(e) => {
+            setForm({ ...form, forumPostLink: e.target.value })
           }}
         />
 
-        <TextField
-          label="Main Sheet Link"
-          {...register("mainSheetLink")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+        <InputFiled
+          value={form.mainSheetLink}
+          maxWidth="100%"
+          label="Main sheet link"
+          onChange={(e) => {
+            setForm({ ...form, mainSheetLink: e.target.value })
           }}
         />
 
-        <TextField
-          label="Bracket Link"
-          {...register("bracketLink")}
-          variant="outlined"
-          autoComplete="off"
-          InputLabelProps={{
-            shrink: true,
+        <InputFiled
+          value={form.bracketLink}
+          maxWidth="100%"
+          label="Bracket link"
+          onChange={(e) => {
+            setForm({ ...form, bracketLink: e.target.value })
           }}
         />
-
-        <Button variant="contained" type="submit" color="primary">
-          Submit
-        </Button>
-      </form> */}
+        <StandardBtn btnText="Submit" onClick={() => onSubmit()} />
+      </form>
     </div>
   )
 }

@@ -19,6 +19,7 @@
   }
 
   &__date-container {
+    position: relative;
     width: 100%;
 
     display: flex;
@@ -30,5 +31,18 @@
     & > div {
       width: 100%;
     }
+
+    & > svg {
+      position: absolute;
+      left: 50px;
+      top: -3px;
+    }
+  }
+
+  &__player-cards {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }

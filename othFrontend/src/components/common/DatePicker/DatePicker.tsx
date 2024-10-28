@@ -10,9 +10,10 @@ import InputFiled from "../InputFiled/InputField"
 
 interface Props {
   onChange: (newValue: string) => void
+  value: string
 }
 
-export default function DatePicker({ onChange }: Props) {
+export default function DatePicker({ onChange, value }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const dialogId = useId()
   const headerId = useId()
@@ -68,12 +69,22 @@ export default function DatePicker({ onChange }: Props) {
     } else {
       setSelectedDate(undefined)
     }
+
+    onChange(e.target.value)
   }
 
   useEffect(() => {
-    onChange(inputValue)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValue])
+    setInputValue(value)
+
+    const parsedDate = parse(value, "dd/MM/yyyy", new Date())
+
+    if (isValid(parsedDate)) {
+      setSelectedDate(parsedDate)
+      setMonth(parsedDate)
+    } else {
+      setSelectedDate(undefined)
+    }
+  }, [value])
 
   return (
     <div className="date-picker">
