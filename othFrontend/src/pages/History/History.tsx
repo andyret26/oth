@@ -92,6 +92,7 @@ export default function History() {
       <h1 className="history-page__title">{playerName}&#39;s History</h1>
       <div className="history-page__inputs">
         <InputFiled
+          value={query}
           onChange={handleSearchChange}
           placeholder="Search..."
           Icon={TbSearch}
@@ -100,6 +101,7 @@ export default function History() {
         <div className="history-page__sort">
           <TbArrowsSort size={20} />
           <SelectBox
+            id="history-sort"
             options={[
               { label: "Date (New First)", value: "Date (New First)" },
               { label: "Date (Old First)", value: "Date (Old First)" },

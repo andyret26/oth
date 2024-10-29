@@ -66,6 +66,11 @@ export default function CreateTournament() {
     const osuId = claims!.sub.split("|")[2]
     const teamMateIds = listOfPlayersToIdArray(selectedPlayers)
     const convertedDate = form.date?.split("/").reverse().join("-")
+    if (convertedDate === undefined) {
+      toast.dismiss()
+      toast.error("Date is required")
+      return
+    }
 
     const allData = {
       ...form,
@@ -74,8 +79,6 @@ export default function CreateTournament() {
       seed: form.seed ? +form.seed : null,
       addedById: +osuId,
     }
-
-    console.log(allData)
 
     const res = await AddTournamentAsync(allData, claims!.__raw)
     toast.dismiss()
@@ -99,6 +102,7 @@ export default function CreateTournament() {
       <form className="create-tournament__form">
         <div className="create-tournament__date-container">
           <DatePicker2
+            value={form.date || ""}
             onChange={(newDate) => {
               setForm({ ...form, date: newDate })
             }}

@@ -55,6 +55,7 @@ export default function DatePicker({ onChange, value }: Props) {
     } else {
       setSelectedDate(date)
       setInputValue(format(date, "dd/MM/yyyy"))
+      onChange(format(date, "dd/MM/yyyy"))
     }
     dialogRef.current?.close()
   }

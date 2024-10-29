@@ -9,8 +9,8 @@ import toast from "react-hot-toast"
 import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
 import "./EditTournament.scss"
 import {
-  AddTournamentAsync,
   GetTournamentById,
+  UpdateTournament,
 } from "../../services/othApiService"
 import { SimpleDialog } from "../../components/Dialog/AddTeammateDialog"
 import DatePicker2 from "../../components/common/DatePicker/DatePicker"
@@ -84,14 +84,12 @@ export default function CreateTournament() {
       addedById: +osuId,
     }
 
-    console.log(allData)
-
-    const res = await AddTournamentAsync(allData, claims!.__raw)
+    const res = await UpdateTournament(allData, claims!.__raw)
     toast.dismiss()
     if (res !== undefined) {
       toast.error(res.data.detail)
     } else {
-      toast.success("Tournament added!")
+      toast.success("Tournament updated!")
     }
   }
 
@@ -121,7 +119,9 @@ export default function CreateTournament() {
     }
 
     getTournament()
-  })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="page create-tournament">

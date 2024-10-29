@@ -19,7 +19,6 @@ export default function MatchCompareForm({ onCompare }: CompProps) {
   const [ignoreMaps, setIgnoreMaps] = useState(false)
 
   const onSubmit = async () => {
-    console.log(form)
     toast.loading("Comparing matches...")
     try {
       const res = await compareMatches(form)

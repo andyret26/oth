@@ -24,7 +24,6 @@ function ProfileMenu({ logdinId, profileImg, logout }: Props) {
       !(menuBtnRef.current && menuBtnRef.current.contains(e.target as Node))
     ) {
       setProfileMenuIsOpen(false)
-      console.log("test")
     }
   }
 

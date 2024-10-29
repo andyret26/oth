@@ -6,6 +6,7 @@ import { Tournament } from "../../helpers/interfaces"
 import TeamBox from "../TeamBox/TeamBox"
 import "./TourneyCard.scss"
 import LinkBtn from "../common/LinkBtn/LinkBtn"
+import TournamentImage from "./TournamentImg"
 
 interface CompProps {
   tournament: Tournament
@@ -15,22 +16,11 @@ interface CompProps {
 export default function TourneyCard({ tournament, logdinId }: CompProps) {
   const [showTeam, setShowTeam] = useState<boolean>(false)
   const t = tournament
+
   return (
     <div className="tournament-card">
       <div className="tournament-card__bg-image">
-        <img
-          style={{ height: "100%", width: "100%" }}
-          src={
-            t.imageLink
-              ? t.imageLink
-              : "https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg"
-          }
-          alt="img"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://i.ytimg.com/vi/isjoS8N4QZk/maxresdefault.jpg"
-          }}
-        />
+        <TournamentImage imageLink={t.imageLink} />
       </div>
       <div className="tournament-card__content">
         <div className="tournament-card__header">
