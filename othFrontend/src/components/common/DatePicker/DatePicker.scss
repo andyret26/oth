@@ -1,0 +1,19 @@
+.date-picker {
+  display: flex;
+  background-color: var(--bg2);
+  align-items: center;
+  position: relative;
+
+  &__dialog {
+    background-color: var(--bg3);
+    color: white;
+    border: none;
+    border-radius: var(--base-border-radius);
+  }
+
+  & > button {
+    position: absolute;
+    left: 175px;
+    bottom: 3px;
+  }
+}

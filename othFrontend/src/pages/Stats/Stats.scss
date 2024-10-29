@@ -1,0 +1,48 @@
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+
+  &__value {
+    margin-left: 10px;
+  }
+
+  &__content {
+    width: 350px;
+    background-color: var(--bg2);
+    padding: 20px;
+    border-radius: var(--base-border-radius);
+  }
+
+  &__placement {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  &__rate {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__podium {
+    p {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__1st {
+    color: var(--gold-color);
+  }
+  &__2nd {
+    color: var(--silver-color);
+  }
+  &__3rd {
+    color: var(--bronze-color);
+  }
+}

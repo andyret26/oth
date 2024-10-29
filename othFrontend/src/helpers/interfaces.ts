@@ -25,20 +25,20 @@ export interface OsuUserData {
 export interface TournamentPost {
   id: string | null | undefined
   date: string | null | undefined
-  name: string
-  teamName: string | null
-  forumPostLink: string | null
-  mainSheetLink: string | null
-  bracketLink: string | null
-  rankRange: string | null
-  seed: number | null
-  format: string | null
-  teamSize: string | null
-  placement: string | null
-  notes: string | null
-  imageLink: string | null
-  teamMateIds: number[] | string | null
-  addedById: number
+  name: string | null | undefined
+  teamName: string | null | undefined
+  forumPostLink: string | null | undefined
+  mainSheetLink: string | null | undefined
+  bracketLink: string | null | undefined
+  rankRange: string | null | undefined
+  seed: number | null | undefined
+  format: string | null | undefined
+  teamSize: string | null | undefined
+  placement: string | null | undefined
+  notes: string | null | undefined
+  imageLink: string | null | undefined
+  teamMateIds: number[] | string | null | undefined
+  addedById: number | null | undefined
 }
 
 export interface Tournament {

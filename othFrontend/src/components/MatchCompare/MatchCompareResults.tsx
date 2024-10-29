@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import { Button } from "@mui/material"
 import { MapV1 } from "../../helpers/interfaces"
+import StandardBtn from "../common/standardBtn/StandardBtn"
 
 interface CompProps {
   onReset: () => void
@@ -10,9 +10,7 @@ interface CompProps {
 export default function MatchCompareResults({ onReset, maps }: CompProps) {
   return (
     <div className="results">
-      <Button className="results__btn-new" onClick={onReset} variant="outlined">
-        New Compare
-      </Button>
+      <StandardBtn onClick={onReset} btnText="New Compare" color="blue" />
       <div className="results__maps">
         {maps.map((map) => (
           <div

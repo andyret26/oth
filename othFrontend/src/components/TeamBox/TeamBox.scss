@@ -1,0 +1,43 @@
+.team-box {
+  border-radius: var(--base-border-radius);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  row-gap: 16px;
+  column-gap: 32px;
+  justify-content: center;
+  z-index: 5;
+  min-width: 300px;
+  position: absolute;
+  top: 140px;
+  transform: translateX(50%);
+  right: 50%;
+  background: opacity(0.2);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.9;
+    z-index: -1;
+    border-radius: var(--base-border-radius);
+    background-color: var(--bg3);
+  }
+
+  &__player {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    &-avatar {
+      border-radius: var(--base-border-radius);
+
+      height: 24px;
+    }
+    &-flag {
+      height: 20px;
+    }
+  }
+}

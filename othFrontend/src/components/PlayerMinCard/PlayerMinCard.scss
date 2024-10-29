@@ -1,0 +1,47 @@
+.player-min-card {
+  display: flex;
+  gap: 20px;
+  background-color: var(--bg3);
+  border-radius: var(--base-border-radius);
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  &__username {
+    margin: 0;
+    margin-bottom: 0px;
+    font-weight: bolder;
+  }
+
+  &__id {
+    font-size: 12px;
+    margin: 0;
+    margin-top: 5px;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__check,
+  &__x {
+    background-color: var(--bg1);
+    padding: 3px;
+    border-radius: 99999px;
+
+    &:hover {
+      background-color: var(--bg2);
+      cursor: pointer;
+    }
+  }
+
+  &__check {
+    color: var(--osu-green);
+  }
+
+  &__x {
+    color: var(--osu-red);
+  }
+}

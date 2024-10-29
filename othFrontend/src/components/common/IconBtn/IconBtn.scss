@@ -1,0 +1,25 @@
+.icon-btn {
+  --size: 35px;
+  font-weight: bolder;
+  font-size: 16px;
+
+  height: var(--size);
+  width: var(--size);
+  border: none;
+  border-radius: 999999px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(1.07);
+  }
+
+  &:disabled {
+    filter: grayscale(0.75);
+    cursor: not-allowed;
+    background-color: red;
+  }
+}

@@ -19,7 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "include": [
     ".eslintrc.cjs",
@@ -28,5 +28,8 @@
     "postcss.config.js",
     "cypress"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }

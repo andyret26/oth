@@ -1,0 +1,28 @@
+.checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  &__label {
+    font-weight: 900;
+  }
+
+  &__input {
+    position: relative;
+    border: 2px solid var(--osu-pink);
+    border-radius: var(--base-border-radius);
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--bg3);
+    }
+  }
+
+  &__check {
+    position: absolute;
+    top: -2px;
+    left: -3px;
+  }
+}

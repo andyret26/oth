@@ -1,0 +1,21 @@
+.btn {
+  font-weight: bolder;
+  font-size: 16px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: var(--base-border-radius);
+
+  &:hover {
+    cursor: pointer;
+    filter: grayscale(0.25);
+  }
+
+  &:active {
+    filter: grayscale(0);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.75);
+  }
+}
