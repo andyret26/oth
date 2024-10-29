@@ -57,11 +57,12 @@ export default function AddPlayer() {
           { label: "Username", value: "username" },
         ]}
         value={addBy}
-        onChange={(e) => setAddBy(e.value as "id" | "username")}
+        onChange={(e) => setAddBy(e as "id" | "username")}
         direction="row"
       />
 
       <InputFiled
+        value={userToAdd}
         onChange={(e) => {
           setUserToAdd(e.target.value)
           setError(false)

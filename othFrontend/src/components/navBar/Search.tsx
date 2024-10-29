@@ -7,7 +7,7 @@ import "./Search.scss"
 import InputFiled from "../common/InputFiled/InputField"
 
 const Search = () => {
-  const [, setQuery] = useState<string>("")
+  const [query, setQuery] = useState<string>("")
   const [players, setPlayers] = useState<PlayerMin[] | null>(null)
   const [searchPlayers, setSearchPlayers] = useState<PlayerMin[] | null>(null)
   const searchDropdownRef = useRef<HTMLDivElement>(null)
@@ -71,7 +71,7 @@ const Search = () => {
 
   return (
     <div className="search">
-      <InputFiled Icon={TbSearch} onChange={handleChange} />
+      <InputFiled value={query} Icon={TbSearch} onChange={handleChange} />
 
       {searchPlayers ? (
         <div className="search__dropdown" ref={searchDropdownRef}>
