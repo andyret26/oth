@@ -232,7 +232,7 @@ export default function CreateTournament() {
           maxWidth="100%"
           label="Seed"
           onChange={(e) => {
-            setForm({ ...form, seed: parseInt(e.target.value, 2) })
+            setForm({ ...form, seed: parseInt(e.target.value, 10) })
           }}
         />
 
