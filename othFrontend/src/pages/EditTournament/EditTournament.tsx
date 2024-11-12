@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import InfoIcon from "@mui/icons-material/Info"
 import Tooltip from "@mui/material/Tooltip"
@@ -27,6 +27,7 @@ import PlayerMinCard from "../../components/PlayerMinCard/PlayerMinCard"
 
 export default function CreateTournament() {
   const location = useLocation()
+  const nav = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false)
   const { getIdTokenClaims } = useAuth0()
@@ -90,6 +91,7 @@ export default function CreateTournament() {
       toast.error(res.data.detail)
     } else {
       toast.success("Tournament updated!")
+      nav(`/history/${osuId}`)
     }
   }
 
