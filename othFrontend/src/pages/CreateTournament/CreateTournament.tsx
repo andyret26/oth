@@ -5,6 +5,7 @@ import Tooltip from "@mui/material/Tooltip"
 
 import { useAuth0 } from "@auth0/auth0-react"
 import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
 import "./CreateTournament.scss"
 import { AddTournamentAsync } from "../../services/othApiService"
@@ -19,6 +20,7 @@ import InputArea from "../../components/common/InputArea/InputArea"
 import PlayerMinCard from "../../components/PlayerMinCard/PlayerMinCard"
 
 export default function CreateTournament() {
+  const nav = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const { getIdTokenClaims } = useAuth0()
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerMin[]>([])
@@ -86,6 +88,7 @@ export default function CreateTournament() {
       toast.error(res.data.detail)
     } else {
       toast.success("Tournament added!")
+      nav(`/history/${osuId}`)
     }
   }
 
