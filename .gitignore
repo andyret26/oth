@@ -82,3 +82,5 @@ node_modules/.cache/
 */google-service-account.json
 googleCredentials.ts
 googleCreds.json
+
+*.local.json
