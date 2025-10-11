@@ -68,6 +68,7 @@ export default function CreateTournament() {
     "Top 48 (Round of 16)",
     "Top 64 (Round of 32)",
     "Did Not Qualify",
+    "TBD",
   ]
 
   const onSubmit = async () => {
