@@ -10,16 +10,16 @@ interface Props {
 }
 
 export default function StandardBtn({
-  btnText,
-  color,
-  disabled,
-  textColor,
+  btnText = "Default",
+  color = "pink",
+  disabled = false,
+  textColor = "white",
   onClick,
-  margin,
+  margin = "0px",
 }: Props) {
   return (
     <button
-      className="btn"
+      className="standard-btn btn"
       type="button"
       disabled={disabled}
       style={{
@@ -34,10 +34,3 @@ export default function StandardBtn({
   )
 }
 
-StandardBtn.defaultProps = {
-  btnText: "Defualt",
-  color: "pink",
-  textColor: "white",
-  disabled: false,
-  margin: "0px",
-}
