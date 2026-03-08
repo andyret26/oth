@@ -14,6 +14,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   >
     <App />
 
-    <div className="branch">{__GIT_BRANCH__}</div>
+    <div className="branch">{__APP_VERSION__}</div>
   </Auth0Provider>
 )

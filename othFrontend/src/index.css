@@ -108,7 +108,8 @@ button:focus {
 .branch {
   position: fixed;
   bottom: 10px;
-  right: 10px;
+  left: 10px;
   font-size: 12px;
   color: var(--text-color2);
+  letter-spacing: 3px;
 }
