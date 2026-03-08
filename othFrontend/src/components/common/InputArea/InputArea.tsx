@@ -15,7 +15,7 @@ interface Props {
 }
 
 function InputFiled({
-  bgColor,
+  bgColor = "var(--bg3)",
   Icon,
   label,
   maxTextLength,

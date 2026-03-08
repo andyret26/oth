@@ -13,5 +13,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     }}
   >
     <App />
+
+    <div className="branch">{__GIT_BRANCH__}</div>
   </Auth0Provider>
 )

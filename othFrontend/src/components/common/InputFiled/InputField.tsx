@@ -15,15 +15,15 @@ interface Props {
 }
 
 function InputFiled({
-  bgColor,
+  bgColor = "var(--bg3)",
   Icon,
   label,
   maxTextLength,
-  maxWidth,
+  maxWidth = "200px",
   placeholder,
   onChange,
   value,
-  error,
+  error = false,
 }: Props) {
   const id = useId()
   const [text, setText] = useState<string | null | undefined>("")
@@ -74,12 +74,6 @@ function InputFiled({
       <div className="input__icon">{Icon ? <Icon size={20} /> : null}</div>
     </div>
   )
-}
-
-InputFiled.defaultProps = {
-  bgColor: "var(--bg3)",
-  maxWidth: "200px",
-  error: false,
 }
 
 export default InputFiled
