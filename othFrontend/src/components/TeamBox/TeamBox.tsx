@@ -14,7 +14,7 @@ export default function TeamBox({ t }: CompProps) {
             src={tm.avatar_url}
             alt="avatar"
           />
-          {tm.username}
+          <a href={`https://osu.ppy.sh/users/${tm.id}`} target="_blank" rel="noopener noreferrer">{tm.username}</a>
           <img
             src={`https://flagsapi.com/${tm.country_code}/shiny/64.png`}
             alt="Flag"

@@ -83,6 +83,9 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
               }
             }}
             onBlur={() => {
+              if(isTeamClicked){
+                return
+              }
               setShowTeam(false)
               setIsTeamClicked(false)
             }}

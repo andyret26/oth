@@ -1,4 +1,8 @@
 .team-box {
+  a {
+    border-radius: var(--base-border-radius);
+    padding: 2px;
+  }
   border-radius: var(--base-border-radius);
   display: flex;
   flex-wrap: wrap;
