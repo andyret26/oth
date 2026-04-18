@@ -15,6 +15,7 @@ interface CompProps {
 
 export default function TourneyCard({ tournament, logdinId }: CompProps) {
   const [showTeam, setShowTeam] = useState<boolean>(false)
+  const [isTeamClicked, setIsTeamClicked] = useState<boolean>(false)
   const t = tournament
 
   return (
@@ -72,23 +73,30 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
         </div>
 
         {t.teamMates.length > 1 ? (
-          <div className="tournament-card__team">
-            <div
-              id="team"
-              onMouseEnter={() => {
-                setShowTeam(true)
-              }}
-              onMouseOut={() => {
+          <button className={`tournament-card__team ${isTeamClicked ? "tournament-card__team--is-clicked": ""}`}
+            onMouseEnter={() => {
+               setShowTeam(true)
+            }}
+            onMouseOut={() => {
+              if (!isTeamClicked){
+                  setShowTeam(false)
+              }
+            }}
+            onBlur={() => {
+              setShowTeam(false)
+              setIsTeamClicked(false)
+            }}
+            onClick={() => {
+              if(isTeamClicked){
                 setShowTeam(false)
-              }}
-              onBlur={() => {
-                setShowTeam(false)
-              }}
-              className=""
-            >
+                setIsTeamClicked(false)
+                return
+              }
+              setShowTeam(true)
+              setIsTeamClicked(true)
+              }}>
               {t.teamName}
-            </div>
-          </div>
+          </button>
         ) : null}
 
         {showTeam ? <TeamBox t={t} /> : null}
