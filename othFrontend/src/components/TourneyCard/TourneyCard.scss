@@ -81,6 +81,7 @@
   }
 
   &__team {
+    text-align: center;
     padding: 5px;
     border-radius: var(--base-border-radius);
     position: absolute;
@@ -90,11 +91,17 @@
     transform: translate(50%);
     border: 2px solid var(--osu-pink2);
     color: var(--osu-pink2);
+    background-color: transparent;
 
     &:hover {
       color: white;
       background-color: var(--osu-pink2);
-      cursor: default;
+      cursor: pointer;
+    }
+
+    &--is-clicked {
+      color: white;
+      background-color: var(--osu-pink2);
     }
   }
 
