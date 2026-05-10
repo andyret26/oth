@@ -1,0 +1,156 @@
+.landing {
+  padding: 0;
+  &__hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(100vh - 70px);
+    background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+    position: relative;
+    overflow: hidden;
+
+    &-content {
+      flex: 1;
+      max-width: 600px;
+      z-index: 2;
+    }
+
+    &-visual {
+      flex: 1;
+      position: relative;
+      height: 400px;
+      z-index: 1;
+    }
+
+    &-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+
+      &--purple {
+        width: 300px;
+        height: 300px;
+        background: var(--osu-purple);
+        top: 0;
+        right: 0;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      &--blue {
+        width: 200px;
+        height: 200px;
+        background: var(--osu-pink);
+        top: 100px;
+        right: 150px;
+        animation: float 8s ease-in-out infinite reverse;
+      }
+
+      &--green {
+        width: 150px;
+        height: 150px;
+        background: var(--osu-blue);
+        bottom: 50px;
+        right: 50px;
+        animation: float 7s ease-in-out infinite;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+
+    &-highlight {
+      color: var(--osu-pink);
+      text-shadow: var(--boxshadow-blue);
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.25rem;
+    color: var(--text-color2);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  &__hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--osu-pink);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--base-border-radius);
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--osu-pink2);
+      transform: translateY(-2px);
+      box-shadow: var(--boxshadow-blue);
+    }
+
+    &--secondary {
+      background: transparent;
+      border: 2px solid var(--osu-blue);
+      color: var(--osu-blue);
+
+      &:hover {
+        background: var(--osu-blue);
+        color: white;
+      }
+    }
+  } 
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .landing {
+    &__hero {
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem 1rem;
+
+      &-visual {
+        height: 200px;
+        margin-top: 2rem;
+      }
+    }
+
+    &__title {
+      font-size: 2.5rem;
+    }
+
+    &__hero-actions {
+      justify-content: center;
+    }
+
+    &__features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
