@@ -27,7 +27,7 @@
   --bronze-color: #cf640d;
   --boxshadow-blue: 0px 0px 10px 2px var(--osu-blue);
   --boxshadow-white: 0px 0px 5px 1px white;
-  --bg-gradient: linear-gradient(180deg, var(--bg1), var(--bg2), var(--bg3));
+  --bg-gradient: linear-gradient(180deg, var(--bg1), var(--bg2));
   color: var(--text-color);
   font-family: "Comfortaa", sans-serif;
   font-size: var(--base-font-size);
