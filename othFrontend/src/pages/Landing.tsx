@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useAuth0 } from "@auth0/auth0-react"
-import { TbTournament, TbChartBar, TbUsers, TbPlus, TbTrendingUp } from "react-icons/tb"
+import { TbPlus } from "react-icons/tb"
 import LinkBtn from "../components/common/LinkBtn/LinkBtn"
 import "./Landing.scss"
 
