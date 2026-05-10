@@ -27,20 +27,27 @@
   --bronze-color: #cf640d;
   --boxshadow-blue: 0px 0px 10px 2px var(--osu-blue);
   --boxshadow-white: 0px 0px 5px 1px white;
-  background-color: var(--bg1);
+  --bg-gradient: linear-gradient(180deg, var(--bg1), var(--bg2), var(--bg3));
   color: var(--text-color);
   font-family: "Comfortaa", sans-serif;
   font-size: var(--base-font-size);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-gradient) fixed no-repeat;
+  background-size: cover;
 }
 
 ::placeholder {
   color: var(--text-color2);
   font-family: "Comfortaa", sans-serif;
   font-size: var(--base-font-size);
-}
-
-body {
-  margin: 0;
 }
 
 button {

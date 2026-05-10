@@ -1,13 +1,10 @@
 .landing {
-  min-height: 100vh;
   padding: 0;
-
   &__hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4rem 2rem;
-    min-height: 70vh;
+    height: calc(100vh - 70px);
     background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
     position: relative;
     overflow: hidden;
@@ -42,7 +39,7 @@
       &--blue {
         width: 200px;
         height: 200px;
-        background: var(--osu-blue);
+        background: var(--osu-pink);
         top: 100px;
         right: 150px;
         animation: float 8s ease-in-out infinite reverse;
@@ -51,7 +48,7 @@
       &--green {
         width: 150px;
         height: 150px;
-        background: var(--osu-green);
+        background: var(--osu-blue);
         bottom: 50px;
         right: 50px;
         animation: float 7s ease-in-out infinite;
@@ -115,105 +112,7 @@
         color: white;
       }
     }
-  }
-
-  &__features {
-    padding: 4rem 2rem;
-    background: var(--bg2);
-  }
-
-  &__section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 3rem;
-    color: var(--osu-yellow);
-  }
-
-  &__features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__feature-card {
-    background: var(--bg3);
-    padding: 2rem;
-    border-radius: var(--base-border-radius);
-    text-align: center;
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-    }
-
-    h3 {
-      color: var(--osu-blue);
-      margin-bottom: 1rem;
-      font-size: 1.25rem;
-    }
-
-    p {
-      color: var(--text-color2);
-      line-height: 1.6;
-    }
-  }
-
-  &__feature-icon {
-    color: var(--osu-pink);
-    margin-bottom: 1rem;
-  }
-
-  &__stats {
-    padding: 4rem 2rem;
-    background: var(--bg1);
-  }
-
-  &__stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  &__stat {
-    text-align: center;
-
-    &-number {
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--osu-green);
-      margin-bottom: 0.5rem;
-    }
-
-    &-label {
-      color: var(--text-color2);
-      font-size: 1.1rem;
-    }
-  }
-
-  &__cta {
-    padding: 4rem 2rem;
-    text-align: center;
-    background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: var(--osu-pink);
-    }
-
-    p {
-      color: var(--text-color2);
-      margin-bottom: 2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
+  } 
 }
 
 @keyframes float {
