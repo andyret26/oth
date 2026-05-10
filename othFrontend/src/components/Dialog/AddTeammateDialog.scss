@@ -1,14 +1,112 @@
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 8, 12, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  padding: 24px;
+}
+
 .dialog {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-  height: 500px;
-  width: 80%;
-  max-width: 750px;
-  background-color: var(--bg2);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
   overflow-y: auto;
-  z-index: 100;
-  padding: 20px;
-  border-radius: var(--base-border-radius);
+  background: rgba(48, 37, 43, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.dialog__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.dialog__header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.dialog__header p {
+  margin: 8px 0 0;
+  color: var(--text-color2);
+  max-width: 520px;
+}
+
+.dialog__info-icon {
+  color: var(--osu-blue);
+  cursor: help;
+}
+
+.dialog__body {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 18px;
+}
+
+.dialog__column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dialog__column--summary {
+  position: sticky;
+  top: 24px;
+}
+
+.dialog__summary-card {
+  padding: 18px;
+  background: rgba(71, 58, 63, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  min-height: 220px;
+}
+
+.dialog__summary-card h3 {
+  margin: 0 0 8px;
+}
+
+.dialog__summary-card p {
+  margin: 0 0 14px;
+  color: var(--text-color2);
+}
+
+.dialog__selected-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-height: 390px;
+  overflow-y: auto;
+}
+
+.dialog__placeholder {
+  display: block;
+  padding: 18px;
+  color: var(--text-color2);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+}
+
+.dialog__footer {
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 860px) {
+  .dialog__body {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog__column--summary {
+    position: static;
+  }
 }
