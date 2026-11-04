@@ -92,7 +92,7 @@ export default function DatePicker({ onChange, value }: Props) {
       <InputFiled
         value={inputValue}
         label="Date"
-        placeholder="MM/dd/yyyy"
+        placeholder="dd/MM/yyyy"
         onChange={handleInputChange}
       />
       <IconBtn

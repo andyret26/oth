@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 
 import InfoIcon from "@mui/icons-material/Info"
 import Tooltip from "@mui/material/Tooltip"
@@ -93,172 +93,213 @@ export default function CreateTournament() {
     }
   }
 
+  const handleRemovePlayer = (player: PlayerMin) => {
+    setSelectedPlayers(selectedPlayers.filter((p) => p.id !== player.id))
+  }
+
   const openDialog = () => {
-    setIsOpen(!isOpen)
+    setIsOpen(true)
   }
 
   const handleClosedialog = () => {
     setIsOpen(false)
   }
 
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    onSubmit()
+  }
+
   return (
     <div className="page create-tournament">
-      <form className="create-tournament__form">
-        <div className="create-tournament__date-container">
-          <DatePicker2
-            value={form.date || ""}
-            onChange={(newDate) => {
-              setForm({ ...form, date: newDate })
-            }}
-          />
+      <form className="create-tournament__form" onSubmit={handleFormSubmit}>
+        <header className="create-tournament__header">
+          <div>
+            <h1>Create Tournament</h1>
+            <p className="create-tournament__subtext">
+              Add tournament details, links and teammates.
+            </p>
+          </div>
+        </header>
 
-          <Tooltip
-            title={
-              <div>
-                You can use: <br />
-                Date of forum post
-                <br />
-                Date registered
-                <br />
-                Date of first match
-                <br />
-                Keep it consistant
+        <div className="create-tournament__row">
+          <div className="create-tournament__section">
+            <div className="create-tournament__field-row">
+              <DatePicker2
+                value={form.date || ""}
+                onChange={(newDate) => {
+                  setForm({ ...form, date: newDate })
+                }}
+              />
+
+              <Tooltip
+                title={
+                  <div>
+                    You can use:
+                    <br />
+                    Date of forum post
+                    <br />
+                    Date registered
+                    <br />
+                    Date of first match
+                    <br />
+                    Keep it consistent
+                  </div>
+                }
+              >
+                <InfoIcon className="create-tournament__info-icon" />
+              </Tooltip>
+            </div>
+
+            <InputFiled
+              value={form.name!}
+              maxWidth="100%"
+              label="Tournament Name *"
+              onChange={(e) => {
+                setForm({ ...form, name: e.target.value })
+              }}
+            />
+
+            <InputFiled
+              value={form.teamName}
+              maxWidth="100%"
+              label="Team Name"
+              onChange={(e) => {
+                setForm({ ...form, teamName: e.target.value })
+              }}
+            />
+
+            <div className="create-tournament__teammate-panel">
+              <div className="create-tournament__teammate-header">
+                <div>
+                  <h2>Teammates</h2>
+                  <p className="create-tournament__subtext">
+                    {selectedPlayers.length > 0
+                      ? `${selectedPlayers.length} player${
+                          selectedPlayers.length > 1 ? "s" : ""
+                        } added`
+                      : "Add players to your team, leave empty for solo."}
+                  </p>
+                </div>
+                <StandardBtn
+                  color="blue"
+                  btnText="Add Teammates"
+                  onClick={openDialog}
+                />
               </div>
-            }
-          >
-            <InfoIcon />
-          </Tooltip>
-        </div>
 
-        <InputFiled
-          value={form.name!}
-          maxWidth="100%"
-          label="Tournament Name *"
-          onChange={(e) => {
-            setForm({ ...form, name: e.target.value })
-          }}
-        />
+              <div className="create-tournament__player-cards">
+                {selectedPlayers.length ? (
+                  selectedPlayers.map((p) => (
+                    <PlayerMinCard
+                      hasXBtn
+                      key={p.id}
+                      player={p}
+                      onXClick={() => handleRemovePlayer(p)}
+                    />
+                  ))
+                ) : (
+                  <p className="create-tournament__empty-state">
+                    No teammates added yet.
+                  </p>
+                )}
+              </div>
+            </div>
 
-        <InputFiled
-          value={form.teamName}
-          maxWidth="100%"
-          label="Team Name"
-          onChange={(e) => {
-            setForm({ ...form, teamName: e.target.value })
-          }}
-        />
+            {isOpen ? (
+              <SimpleDialog
+                onClose={handleClosedialog}
+                selectedPlayers={selectedPlayers}
+                setSelectedPlayers={setSelectedPlayers}
+              />
+            ) : null}
+          </div>
 
-        <div>
-          <StandardBtn
-            color="blue"
-            btnText="Add Teammates"
-            onClick={() => openDialog()}
-          />
+          <div className="create-tournament__section">
+            <InputFiled
+              value={form.rankRange}
+              maxWidth="100%"
+              label="Rank Range"
+              onChange={(e) => {
+                setForm({ ...form, rankRange: e.target.value })
+              }}
+            />
 
-          <div className="create-tournament__player-cards">
-            {selectedPlayers.length ? (
-              <>
-                {selectedPlayers.map((p) => (
-                  <PlayerMinCard hasXBtn key={p.id} player={p} />
-                ))}
-              </>
-            ) : (
-              <p className="pl-2">
-                No team mates added (don&#39;t add if solo)
-              </p>
-            )}
+            <SelectBox
+              id="add-tournament-format"
+              label="Format"
+              options={formatOptions}
+              onChange={(val) => {
+                setForm({ ...form, format: val })
+              }}
+            />
+
+            <SelectBox
+              id="add-tournament-team-size"
+              label="Team Size"
+              options={teamSizeOptions}
+              onChange={(val) => {
+                setForm({ ...form, teamSize: val })
+              }}
+            />
+
+            <InputFiled
+              value={form.seed ? String(form.seed) : "0"}
+              maxWidth="100%"
+              label="Seed"
+              onChange={(e) => {
+                setForm({ ...form, seed: parseInt(e.target.value, 10) })
+              }}
+            />
+
+            <SelectBox
+              id="add-tournament-placement"
+              label="Placement"
+              options={placementOptions}
+              onChange={(val) => {
+                setForm({ ...form, placement: val })
+              }}
+            />
           </div>
         </div>
 
-        {isOpen ? (
-          <SimpleDialog
-            onClose={handleClosedialog}
-            selectedPlayers={selectedPlayers}
-            setSelectedPlayers={setSelectedPlayers}
+        <div className="create-tournament__section create-tournament__section--full">
+          <InputFiled
+            value={form.forumPostLink}
+            label="Forum Post Link"
+            onChange={(e) => {
+              setForm({ ...form, forumPostLink: e.target.value })
+            }}
           />
-        ) : null}
 
-        <InputFiled
-          value={form.rankRange}
-          maxWidth="100%"
-          label="Rank Range"
-          onChange={(e) => {
-            setForm({ ...form, rankRange: e.target.value })
-          }}
-        />
+          <InputFiled
+            value={form.mainSheetLink}
+            label="Main Sheet Link"
+            onChange={(e) => {
+              setForm({ ...form, mainSheetLink: e.target.value })
+            }}
+          />
 
-        <SelectBox
-          id="add-tournament-select"
-          label="Format"
-          options={formatOptions}
-          onChange={(val) => {
-            setForm({ ...form, format: val })
-          }}
-        />
+          <InputFiled
+            value={form.bracketLink}
+            label="Bracket Link"
+            onChange={(e) => {
+              setForm({ ...form, bracketLink: e.target.value })
+            }}
+          />
 
-        <SelectBox
-          id="add-tournament-select"
-          label="Team Size"
-          options={teamSizeOptions}
-          onChange={(val) => {
-            setForm({ ...form, teamSize: val })
-          }}
-        />
+          <InputArea
+            label="Notes"
+            value={form.notes}
+            onChange={(e) => {
+              setForm({ ...form, notes: e.target.value })
+            }}
+          />
+        </div>
 
-        <InputFiled
-          value={form.seed ? String(form.seed) : "0"}
-          maxWidth="100%"
-          label="Seed"
-          onChange={(e) => {
-            setForm({ ...form, seed: parseInt(e.target.value, 10) })
-          }}
-        />
-
-        <SelectBox
-          id="placement"
-          label="Placement"
-          options={placementOptions}
-          onChange={(val) => {
-            setForm({ ...form, placement: val })
-          }}
-        />
-
-        <InputArea
-          label="Notes"
-          maxWidth="100%"
-          value={form.notes}
-          onChange={(e) => {
-            setForm({ ...form, notes: e.target.value })
-          }}
-        />
-
-        <InputFiled
-          value={form.forumPostLink}
-          maxWidth="100%"
-          label="Forum post Link"
-          onChange={(e) => {
-            setForm({ ...form, forumPostLink: e.target.value })
-          }}
-        />
-
-        <InputFiled
-          value={form.mainSheetLink}
-          maxWidth="100%"
-          label="Main sheet link"
-          onChange={(e) => {
-            setForm({ ...form, mainSheetLink: e.target.value })
-          }}
-        />
-
-        <InputFiled
-          value={form.bracketLink}
-          maxWidth="100%"
-          label="Bracket link"
-          onChange={(e) => {
-            setForm({ ...form, bracketLink: e.target.value })
-          }}
-        />
-        <StandardBtn btnText="Submit" onClick={() => onSubmit()} />
+        <div className="create-tournament__submit-row">
+          <StandardBtn btnText="Submit" onClick={onSubmit} />
+        </div>
       </form>
     </div>
   )
