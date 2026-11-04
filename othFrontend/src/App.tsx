@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import "./index.css"
 import { useAuth0 } from "@auth0/auth0-react"
 import { Toaster } from "react-hot-toast"
@@ -21,7 +21,7 @@ function App() {
   return (
     <div>
       <Toaster position="bottom-center" />
-      <HashRouter>
+      <BrowserRouter>
         <>
           <NavBar />
           <Routes>
@@ -69,7 +69,7 @@ function App() {
             <Route path="*" Component={NotFound} />
           </Routes>
         </>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   )
 }
