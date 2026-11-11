@@ -1,0 +1,5 @@
+allowBuilds:
+  '@parcel/watcher': true
+  browser-tabs-lock: false
+  cypress: false
+  esbuild: true
