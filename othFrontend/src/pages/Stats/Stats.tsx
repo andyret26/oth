@@ -3,65 +3,68 @@ import { CircularProgress } from "@mui/material"
 import { PlayerStats } from "../../helpers/interfaces"
 import { GetPlayerStatsAsync } from "../../services/othApiService"
 import "./Stats.scss"
+import { useParams } from "react-router-dom"
 
 export default function Stats() {
+  const { id } = useParams()
   const [stats, setStats] = useState<PlayerStats>()
+  const [isLoading, setIsLoading] = useState<boolean>()
   useEffect(() => {
+    setIsLoading(true)
     const getStats = async () => {
-      const pStats = await GetPlayerStatsAsync(
-        parseInt(window.location.hash.split("/")[2], 10)
-      )
-      setStats(pStats)
+        
+        const pStats = await GetPlayerStatsAsync(parseInt(id || "0", 10))
+        setStats(pStats)
     }
-
     getStats()
+    setIsLoading(false)
   }, [])
   return (
     <div className="stats">
       <h1 className="stats__title">Stats</h1>
-      {stats ? (
+      {!isLoading && stats ? (
         <div className="stats__content">
           <p>
             Total Tournaments:{" "}
-            <span className="stats__value">{stats?.totalTournaments}</span>
+            <span className="stats__value">{stats.totalTournaments}</span>
           </p>
           <div className="stats__placement">
             <div className="stats__rate">
               <p>
                 Win Rate:{" "}
-                <span className="stats__value">{stats?.firstRate}%</span>
+                <span className="stats__value">{stats.firstRate}%</span>
               </p>
               <p>
                 Top 3 Rate:{" "}
-                <span className="stats__value">{stats?.top3Rate}%</span>
+                <span className="stats__value">{stats.top3Rate}%</span>
               </p>
             </div>
             <div className="stats__podium">
               <p className="stats__1st">
-                1st: <span className="stats__value">{stats?.firstPlaces}</span>
+                1st: <span className="stats__value">{stats.firstPlaces}</span>
               </p>
               <p className="stats__2nd">
-                2nd: <span className="stats__value">{stats?.secondPlaces}</span>
+                2nd: <span className="stats__value">{stats.secondPlaces}</span>
               </p>
               <p className="stats__3rd">
-                3rd: <span className="stats__value">{stats?.thirdPlaces}</span>
+                3rd: <span className="stats__value">{stats.thirdPlaces}</span>
               </p>
             </div>
           </div>
           <p>
             Average Placement:{" "}
-            <span className="stats__value">{stats?.avgPlacement}</span>
+            <span className="stats__value">{stats.avgPlacement}</span>
           </p>
           <div className="">
             <p>
               Unique Team players:{" "}
               <span className="stats__value">
-                {stats?.uniqueTeamMatesCount}
+                {stats.uniqueTeamMatesCount}
               </span>
             </p>
             <p>
               Unique Countries:{" "}
-              <span className="stats__value">{stats?.uniqueFlagCount}</span>
+              <span className="stats__value">{stats.uniqueFlagCount}</span>
             </p>
           </div>
         </div>

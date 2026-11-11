@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { useAuth0 } from "@auth0/auth0-react"
 import { AxiosError } from "axios"
-import { AddPlayerAsync } from "../../services/othApiService"
+import { AddPlayerAsync, PlayerExists } from "../../services/othApiService"
 import Search from "./Search"
 import StandardBtn from "../common/standardBtn/StandardBtn"
 import ProfileMenu from "./ProfileMenu"
@@ -29,15 +29,12 @@ export default function NavBar() {
     const osuId = claims!.sub.split("|")[2]
     setLogdinId(osuId)
     try {
-      await AddPlayerAsync(osuId, claims!.__raw)
+      if (!PlayerExists(osuId)){
+        await AddPlayerAsync(osuId, claims!.__raw)
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          // User already exists
-          // Do nothing
-        } else {
-          console.error(error)
-        }
+        console.error(error)
       }
     }
   }

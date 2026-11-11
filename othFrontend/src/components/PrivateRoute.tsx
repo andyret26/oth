@@ -6,18 +6,22 @@ interface RouteProps {
 }
 
 export const PrivateRoute: React.FC<RouteProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth0()
-  // Up to you specific app to decide how to get this value
-  const isLoggedIn: boolean = isAuthenticated
+  const { isAuthenticated, isLoading, user } = useAuth0()
   const location = useLocation()
 
-  return isLoggedIn ? (
-    <div>{children}</div>
-  ) : (
-    <Navigate
+  console.log("Auth0 State:", { isAuthenticated, isLoading, user })
+
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate
       replace
       to="/Unauthorized"
       state={{ from: `${location.pathname}${location.search}` }}
     />
-  )
+  }
+
+  return <div>{children}</div>
 }

@@ -1,14 +1,10 @@
 import { useState } from "react"
 import { useAuth0 } from "@auth0/auth0-react"
-import { AxiosError } from "axios"
-import toast from "react-hot-toast"
-import RadioGroup from "../../components/common/RadioGroup/RadioGroup"
+import { RadioGroup, InputFiled, StandardBtn } from "@components/common"
 import {
   AddPlayerAsync,
   AddPlayerByUsernameAsync,
 } from "../../services/othApiService"
-import InputFiled from "../../components/common/InputFiled/InputField"
-import StandardBtn from "../../components/common/standardBtn/StandardBtn"
 import "./AddPlayer.scss"
 
 export default function AddPlayer() {
@@ -33,15 +29,6 @@ export default function AddPlayer() {
         await AddPlayerByUsernameAsync(userToAdd, claims!.__raw)
       } else {
         console.log("nothing error ??")
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 409) {
-          toast.error(err.response.data)
-        }
-        if (err.response?.status === 404) {
-          toast.error(err.response.data)
-        }
       }
     } finally {
       setLoading(false)
