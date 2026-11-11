@@ -22,7 +22,7 @@ export default function Landing() {
             {isAuthenticated ? (
               <Link to="/tournament/create" className="landing__cta-button">
                 <TbPlus size={20} />
-                Create Tournament
+                Add Tournament
               </Link>
             ) : (
               <button
