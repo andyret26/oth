@@ -6,12 +6,12 @@ import Tooltip from "@mui/material/Tooltip"
 import { useAuth0 } from "@auth0/auth0-react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import { PlayerMin, TournamentPost } from "../../helpers/interfaces"
+import { PlayerMin, TournamenErrors, TournamentPost } from "../../helpers/interfaces"
 import "./CreateTournament.scss"
 import { AddTournamentAsync } from "../../services/othApiService"
 import { SimpleDialog } from "../../components/Dialog/AddTeammateDialog"
 import DatePicker2 from "../../components/common/DatePicker/DatePicker"
-import { listOfPlayersToIdArray } from "../../helpers/functions"
+import { listOfPlayersToIdArray, validateTournament } from "../../helpers/functions"
 import InputFiled from "../../components/common/InputFiled/InputField"
 import StandardBtn from "../../components/common/standardBtn/StandardBtn"
 import formInit from "../../helpers/tournamentForm.json"
@@ -25,6 +25,7 @@ export default function CreateTournament() {
   const { getIdTokenClaims } = useAuth0()
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerMin[]>([])
   const [form, setForm] = useState<TournamentPost>(formInit)
+  const [errors, setErrors] = useState<TournamenErrors>()
 
   const formatOptions = [
     "1 vs 1",
@@ -68,13 +69,16 @@ export default function CreateTournament() {
     const claims = await getIdTokenClaims()
     const osuId = claims!.sub.split("|")[2]
     const teamMateIds = listOfPlayersToIdArray(selectedPlayers)
-    const convertedDate = form.date?.split("/").reverse().join("-")
-    if (convertedDate === undefined) {
+    const formErrors = validateTournament(form)
+    setErrors(formErrors)
+
+    if(Object.keys(formErrors).length > 0){
       toast.dismiss()
-      toast.error("Date is required")
+      toast.error("Please fix the highlighted fields")
       return
     }
 
+    const convertedDate = form.date?.split("/").reverse().join("-")
     const allData = {
       ...form,
       date: `${convertedDate}T00:00Z`,
@@ -152,10 +156,18 @@ export default function CreateTournament() {
             </div>
 
             <InputFiled
+              error={errors ? errors.name ? true : false : false}
               value={form.name!}
               maxWidth="100%"
+              minTextLength={3}
               label="Tournament Name *"
               onChange={(e) => {
+                if (errors && errors?.name){
+                  const newErrors = {...errors}
+                  delete newErrors["name"]
+                  setErrors(newErrors)
+                }
+                
                 setForm({ ...form, name: e.target.value })
               }}
             />

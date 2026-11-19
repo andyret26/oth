@@ -119,3 +119,9 @@ export interface MapV1 {
   imgUrl: string
   slimcoverUrl: string
 }
+
+
+export interface TournamenErrors {
+  date?: string
+  name?: string
+}

@@ -10,15 +10,20 @@
 
   &__field {
     box-sizing: border-box;
-    border: none;
+    border: 1px solid transparent;
     color: inherit;
     width: 100%;
     padding: 10px 30px 10px 10px;
     border-radius: var(--base-border-radius);
     height: 40px;
 
-    &:focus {
-      outline: 1px solid #6b575e;
+    &:focus-visible {
+      outline: 2px solid var(--osu-blue);
+      outline-offset: 2px;
+    }
+
+    &--error {
+      border-color: var(--osu-red);
     }
   }
 
