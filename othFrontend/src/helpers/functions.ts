@@ -1,4 +1,4 @@
-import { PlayerMin, Tournament, TournamentPost } from "./interfaces"
+import { PlayerMin, TournamenErrors, Tournament, TournamentPost } from "./interfaces"
 
 /**
  * Converts an array of PlayerMin objects to an array of player IDs.
@@ -22,4 +22,22 @@ export function convertTournamentToTournamentpost(
     teamMateIds: tourney.teamMates.flatMap((p) => p.id),
     date: tourney.date.toString().split("T")[0].split("-").reverse().join("/"),
   }
+}
+
+
+export function validateTournament(form: TournamentPost): TournamenErrors
+{
+  const errors: TournamenErrors = {}
+
+  const convertedDate = form.date?.split("/").reverse().join("-")
+  if (convertedDate === undefined) {
+    errors.date = "Date is required"
+  }
+
+  if (form.name == null || form.name.trim().length < 3) {
+    errors.name = "Name must be at least 3 characters"
+  }
+
+
+  return errors
 }

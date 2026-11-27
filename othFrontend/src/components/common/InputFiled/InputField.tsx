@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useId } from "react"
+import { useId, useState } from "react"
 import { IconType } from "react-icons/lib"
 import "./InputFiled.scss"
 
@@ -7,6 +7,7 @@ interface Props {
   Icon?: IconType
   bgColor?: string
   maxTextLength?: number
+  minTextLength?: number
   label?: string
   maxWidth?: string
   error?: boolean
@@ -19,6 +20,7 @@ function InputFiled({
   Icon,
   label,
   maxTextLength,
+  minTextLength,
   maxWidth = "200px",
   placeholder,
   onChange,
@@ -26,48 +28,35 @@ function InputFiled({
   error = false,
 }: Props) {
   const id = useId()
-  const [text, setText] = useState<string | null | undefined>("")
+  const [reachedMinLimit, setReareachedMinLimit] = useState<boolean>(false)
 
-  const validTextLength = useMemo<boolean>(() => {
-    const modelText = text
+  const text = value ?? ""
 
-    if (modelText && maxTextLength && modelText.length > maxTextLength) {
-      return false
-    }
-    return true
-  }, [text, maxTextLength])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value)
-    onChange(e)
-  }
-
-  useEffect(() => {
-    setText(value)
-  }, [value])
+  const isLengthValid =
+    (maxTextLength == null || text.length <= maxTextLength) &&
+    (minTextLength == null || text.length >= minTextLength)
+  const isInvalid = error || (reachedMinLimit && !isLengthValid)
 
   return (
     <div
       className="input"
       style={{
         maxWidth,
-        outline: error ? " 1px solid var(--osu-red)" : "unset",
       }}
     >
-      <label className="input__label" v-if="label" htmlFor={id}>
-        {label}
-      </label>
+      {label ? <label className="input__label" htmlFor={id}>{label}</label> : null}
+
       <input
         id={id}
-        className="input__field"
+        className={`input__field${isInvalid ? " input__field--error" : ""}`}
         type="text"
-        value={text || ""}
-        onChange={(e) => handleChange(e)}
+        value={text}
+        onChange={onChange}
+        onBlur={() => setReareachedMinLimit(true)}
         placeholder={placeholder}
         autoComplete="off"
         style={{
           backgroundColor: bgColor,
-          outline: validTextLength ? "none" : "2px solid var(--osu-red)",
           marginTop: label ? "5px" : "0",
         }}
       />
