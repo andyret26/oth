@@ -131,6 +131,7 @@ export default function CreateTournament() {
             <div className="create-tournament__field-row">
               <DatePicker2
                 value={form.date || ""}
+                error={errors ? errors.date ? true : false : false}
                 onChange={(newDate) => {
                   setForm({ ...form, date: newDate })
                 }}
