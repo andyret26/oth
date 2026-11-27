@@ -11,9 +11,10 @@ import InputFiled from "../InputFiled/InputField"
 interface Props {
   onChange: (newValue: string) => void
   value: string
+  error: boolean
 }
 
-export default function DatePicker({ onChange, value }: Props) {
+export default function DatePicker({ onChange, value, error = false }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const dialogId = useId()
   const headerId = useId()
@@ -94,6 +95,7 @@ export default function DatePicker({ onChange, value }: Props) {
         label="Date"
         placeholder="dd/MM/yyyy"
         onChange={handleInputChange}
+        error = {error}
       />
       <IconBtn
         Icon={TbCalendar}
