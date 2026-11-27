@@ -1,10 +1,14 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { useEffect, useState } from "react"
 import { TbSearch, TbArrowsSort } from "react-icons/tb"
+import toast from "react-hot-toast"
 import dayjs from "dayjs"
 import CircularProgress from "@mui/material/CircularProgress"
-import { useLocation } from "react-router-dom"
-import { GetTournamentsByPlayerIdAsync } from "../../services/othApiService"
+import { useParams } from "react-router-dom"
+import {
+  DeleteTournamentAsync,
+  GetTournamentsByPlayerIdAsync,
+} from "../../services/othApiService"
 import { Tournament } from "../../helpers/interfaces"
 import "animate.css"
 import TournamentContainer from "../../components/TournamentContainer"
@@ -14,11 +18,15 @@ import "./History.scss"
 
 export default function History() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0()
-  const location = useLocation()
+  const { id } = useParams()
+  const historyPlayerId = Number(id)
   const [query, setQuery] = useState<string>("")
   const [tournaments, setTournaments] = useState<Tournament[] | null>(null)
   const [playerName, setPlayerName] = useState<string>("")
-  const [logdinId, setLogdinId] = useState<number>(0)
+  const [loggedInId, setLoggedInId] = useState<number>(0)
+  const [deletingTournamentId, setDeletingTournamentId] = useState<
+    number | null
+  >(null)
   const [, setSortOpt] = useState<string>("Date (New First)")
 
   let content
@@ -33,28 +41,34 @@ export default function History() {
         tournamentsList={tournaments.filter((t) =>
           t.name.toLowerCase().includes(query.toLowerCase())
         )}
-        logdinId={logdinId}
+        logdinId={loggedInId}
+        isOwnHistory={isAuthenticated && historyPlayerId === loggedInId}
+        deletingTournamentId={deletingTournamentId}
+        onDeleteTournament={handleDeleteTournament}
       />
     )
   }
 
   useEffect(() => {
-    const id = location.pathname.split("/")[2]
     const getTournaments = () => {
-      GetTournamentsByPlayerIdAsync(+id).then((res) => {
+      GetTournamentsByPlayerIdAsync(historyPlayerId).then((res) => {
         setTournaments(res)
-        setPlayerName(res[0].teamMates.find((p) => p.id === +id)!.username)
+        const player = res[0]?.teamMates.find((p) => p.id === historyPlayerId)
+        if (player) setPlayerName(player.username)
       })
     }
     getTournaments()
 
     if (isAuthenticated) {
       getIdTokenClaims().then((res) => {
-        setLogdinId(+res!.sub.split("|")[2])
+        const userId = Number(res?.sub.split("|")[2])
+        setLoggedInId(Number.isFinite(userId) ? userId : 0)
       })
+    } else {
+      setLoggedInId(0)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, isAuthenticated])
+  }, [historyPlayerId, isAuthenticated])
 
   function handleSortChange(sortValue: string) {
     setSortOpt(sortValue)
@@ -85,6 +99,38 @@ export default function History() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+  }
+
+  async function handleDeleteTournament(tournamentId: number) {
+    const tournament = tournaments?.find((t) => t.id === tournamentId)
+    if (
+      !isAuthenticated ||
+      historyPlayerId !== loggedInId ||
+      !tournament ||
+      tournament.addedById !== loggedInId
+    )
+      return
+
+    const confirmed = window.confirm(
+      `Delete "${tournament.name}"? This will remove it from every teammate's history.`
+    )
+    if (!confirmed) return
+
+    setDeletingTournamentId(tournamentId)
+    try {
+      const claims = await getIdTokenClaims()
+      if (!claims?.__raw) throw new Error("Missing authentication token")
+
+      await DeleteTournamentAsync(tournamentId, claims.__raw)
+      setTournaments((current) =>
+        current?.filter((t) => t.id !== tournamentId) ?? null
+      )
+      toast.success("Tournament deleted!")
+    } catch {
+      toast.error("Could not delete tournament. Please try again.")
+    } finally {
+      setDeletingTournamentId(null)
+    }
   }
 
   return (

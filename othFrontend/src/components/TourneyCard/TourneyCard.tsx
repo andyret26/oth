@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { TbEdit, TbTournament, TbFileSpreadsheet } from "react-icons/tb"
+import {
+  TbEdit,
+  TbTournament,
+  TbFileSpreadsheet,
+  TbTrash,
+} from "react-icons/tb"
 import dayjs from "dayjs"
 import { Tournament } from "../../helpers/interfaces"
 import TeamBox from "../TeamBox/TeamBox"
@@ -11,9 +16,18 @@ import TournamentImage from "./TournamentImg"
 interface CompProps {
   tournament: Tournament
   logdinId: number
+  isOwnHistory: boolean
+  isDeleting: boolean
+  onDelete: (tournamentId: number) => void
 }
 
-export default function TourneyCard({ tournament, logdinId }: CompProps) {
+export default function TourneyCard({
+  tournament,
+  logdinId,
+  isOwnHistory,
+  isDeleting,
+  onDelete,
+}: CompProps) {
   const [showTeam, setShowTeam] = useState<boolean>(false)
   const [isTeamClicked, setIsTeamClicked] = useState<boolean>(false)
   const t = tournament
@@ -28,12 +42,26 @@ export default function TourneyCard({ tournament, logdinId }: CompProps) {
           <p className="tournament-card__title">{t.name}</p>
         </div>
         {logdinId === t.addedById ? (
-          <Link
-            className="tournament-card__edit"
-            to={`/tournament/edit/${t.id}`}
-          >
-            <TbEdit size={20} />
-          </Link>
+          <>
+            <Link
+              className="tournament-card__edit"
+              to={`/tournament/edit/${t.id}`}
+            >
+              <TbEdit size={20} />
+            </Link>
+            {isOwnHistory ? (
+              <button
+                className="tournament-card__delete"
+                type="button"
+                aria-label={`Delete ${t.name}`}
+                title={`Delete ${t.name}`}
+                disabled={isDeleting}
+                onClick={() => onDelete(t.id)}
+              >
+                <TbTrash size={20} />
+              </button>
+            ) : null}
+          </>
         ) : null}
 
         <div className="tournament-card__info">
