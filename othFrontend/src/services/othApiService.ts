@@ -118,6 +118,15 @@ export async function UpdateTournament(
   }
 }
 
+export async function DeleteTournamentAsync(
+  id: number,
+  token: string
+): Promise<void> {
+  await apiclient.delete(`/tournament/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+}
+
 export async function compareMatches(
   requestObj: MatchCompareRequest
 ): Promise<MapV1[]> {
